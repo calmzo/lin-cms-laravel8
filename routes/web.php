@@ -19,3 +19,11 @@ Route::get('/', function () {
 
 Route::get('/test', [\App\Http\Controllers\TestController::class, 'index']);
 
+Route::prefix('v1')->group(function () {
+    Route::get('/banner', [\App\Http\Controllers\TestController::class, 'index']);
+    Route::post('/banner', [\App\Http\Controllers\TestController::class, 'index']);
+
+});
+
+
+
