@@ -15,6 +15,7 @@
         "laravel/framework": "^8.0",
         "laravel/tinker": "^2.0",
         "owner888/phpspider": "^2.1",
+        "tymon/jwt-auth": "^1.0",
         "vdb/php-spider": "^0.6.3"
     },
     "require-dev": {

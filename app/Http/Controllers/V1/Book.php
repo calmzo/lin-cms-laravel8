@@ -6,7 +6,7 @@
  * Time: 19:57
  */
 
-namespace app\api\controller\v1;
+namespace app\api\controller\V1;
 
 use app\api\model\Book as BookModel;
 use think\facade\Hook;

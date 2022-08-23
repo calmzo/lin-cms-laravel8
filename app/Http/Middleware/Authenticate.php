@@ -2,6 +2,8 @@
 
 namespace App\Http\Middleware;
 
+use App\Exceptions\BusinessException;
+use App\Utils\CodeResponse;
 use Illuminate\Auth\Middleware\Authenticate as Middleware;
 
 class Authenticate extends Middleware
@@ -17,5 +19,13 @@ class Authenticate extends Middleware
         if (! $request->expectsJson()) {
             return route('login');
         }
+    }
+
+    protected function unauthenticated($request, array $guards)
+    {
+        if ($request->expectsJson() || in_array('cms', $guards)) {
+            throw new BusinessException(CodeResponse::UN_LOGIN);
+        }
+        parent::unauthenticated($request, $guards);
     }
 }
