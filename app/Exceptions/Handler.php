@@ -3,6 +3,7 @@
 namespace App\Exceptions;
 
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Throwable;
 
 class Handler extends ExceptionHandler
 {
@@ -33,5 +34,53 @@ class Handler extends ExceptionHandler
     public function register()
     {
         //
+    }
+
+    public function render($request, Throwable $e)
+    {
+//        if ($e instanceof BusinessException) {
+//            return response()->json([
+//                'errno' => $e->getCode(),
+//                'errmsg' => $e->getMessage()
+//            ]);
+//        }
+        $status = 200;
+        if ($e instanceof AuthFailedException) {
+            $status = 403;
+            $response = [
+                'code' => $e->getCode(),
+                'message' => $e->getMessage()
+            ];
+        } elseif ($e instanceof ForbiddenException) {
+            $status = 401;
+            $response = [
+                'code' => $e->getCode(),
+                'message' => $e->getMessage()
+            ];
+        } elseif ($e instanceof NotFoundException) {
+            $status = 404;
+            $response = [
+                'code' => $e->getCode(),
+                'message' => $e->getMessage()
+            ];
+        } elseif ($e instanceof OperationException) {
+            $status = 400;
+            $response = [
+                'code' => $e->getCode(),
+                'message' => $e->getMessage()
+            ];
+        } elseif ($e instanceof RepeatException) {
+            $status = 400;
+            $response = [
+                'code' => $e->getCode(),
+                'message' => $e->getMessage()
+            ];
+        } else {
+            $response = [
+                'code' => $e->getCode(),
+                'message' => $e->getMessage()
+            ];
+        }
+        return response()->json($response, $status);
     }
 }

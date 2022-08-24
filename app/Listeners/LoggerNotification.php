@@ -3,6 +3,8 @@
 namespace App\Listeners;
 
 use App\Events\Logger;
+use App\Models\Admin\LinLog;
+use App\Services\Token\LoginTokenService;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 
@@ -30,25 +32,24 @@ class LoggerNotification
         if (is_array($params)) {
             list('uid' => $uid, 'username' => $username, 'msg' => $message) = $params;
         } else {
-            $tokenService = LoginToken::getInstance();
-            $uid = $tokenService->getCurrentUid();
-            $username = $tokenService->getCurrentUserName();
+            $user = LoginTokenService::user();
+            $uid = $user['id'] ?? 0;
+            $username = $user['username'] ?? '';
             $message = $params;
         }
+        $request = request();
 
         $data = [
             'message' => $username . $message,
             'user_id' => $uid,
             'username' => $username,
-            'status_code' => Response::getCode(),
-            'method' => Request::method(),
-            'path' => '/' . Request::path(),
+            'status_code' => $request->server('REDIRECT_STATUS'),
+            'method' => $request->method(),
+            'path' => '/' . $request->path(),
             'permission' => null
         ];
 
-        LinLog::create($data);
-
-
+        LinLog::query()->create($data);
 
     }
 }

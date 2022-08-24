@@ -2,14 +2,14 @@
 
 namespace App\Models\Admin;
 
-use think\Model;
+use App\Models\BaseModel;
 use think\model\concern\SoftDelete;
 
-class LinLog extends Model
+class LinLog extends BaseModel
 {
-    use SoftDelete;
-
-    public $autoWriteTimestamp = 'datetime';
+    protected $fillable = [
+        'message', 'user_id', 'username', 'status_code', 'method', 'path', 'permission'
+    ];
     protected $hidden = ['update_time', 'delete_time'];
 
     public static function getLogs(int $start, int $count, $params = []): array

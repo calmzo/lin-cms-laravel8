@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Cms;
 //use app\api\validate\user\LoginForm;  # 开启注释验证器以后，本行可以去掉，这里做更替说明
 //use app\api\validate\user\RegisterForm; # 开启注释验证器以后，本行可以去掉，这里做更替说明
 use app\api\service\token\LoginToken;
+use App\Events\Logger;
 use App\Services\Admin\UserService;
 use App\Services\Token\LoginTokenService;
 use App\Utils\CodeResponse;
@@ -48,7 +49,7 @@ class UserController extends BaseController
     {
         $params = $request->all();
         $user = UserService::createUser($params);
-//        Hook::listen('logger', "新建了用户：{$user['username']}");
+        Logger::dispatch("新建了用户：{$user['username']}");
         return $this->success($user['id'], '注册用户成功');
     }
 
@@ -68,7 +69,7 @@ class UserController extends BaseController
         $password = $request->input('password', '');
         $user = UserService::verify($username, $password);
         $token = LoginTokenService::getToken($user);
-//        Hook::listen('logger', array('uid' => $user->id, 'username' => $user->identifier, 'msg' => '登陆成功获取了令牌'));
+        Logger::dispatch(array('uid' => $user->id, 'username' => $user->username, 'msg' => '登陆成功获取了令牌'));
         return [
             'access_token' => $token['accessToken'],
             'refresh_token' => $token['refreshToken']

@@ -13,7 +13,8 @@ class CodeResponse
     const BADARGUMENT = [401, '参数不对'];
     const PARAM_VALUE_ILLEGAL = [402, '参数值不对'];
     const FORBIDDEN = [403, '权限不足，请联系管理员'];
-    const NOT_FOUND = [404, '资源不存在'];
+    const ACCOUNT_NOT_FOUND = [20000, '账户不存在'];
+    const PASSWORD_WRONG = [20001, '密码错误，请重新输入'];
 
 
     const UN_LOGIN = [501, '请登录'];

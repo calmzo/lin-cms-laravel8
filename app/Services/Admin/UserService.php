@@ -71,12 +71,13 @@ class UserService
     {
         $user = self::getByUsername($username);
         if (empty($user)) {
-            throw new NotFoundException(CodeResponse::NOT_FOUND, '用户不存在');
+            throw new NotFoundException(CodeResponse::ACCOUNT_NOT_FOUND, '用户不存在');
         }
         //验证密码
         $is_pass = Hash::check($password, $user->password);
         if (!$is_pass) {
-            throw new AuthFailedException();
+            throw new NotFoundException(CodeResponse::PASSWORD_WRONG, '密码错误，请重新输入');
+//            throw new AuthFailedException();
         }
         //更新登录情况
 //        $user->last_login_time = now();
