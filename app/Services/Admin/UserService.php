@@ -4,13 +4,17 @@ namespace App\Services\Admin;
 
 
 use App\Enums\GroupLevelEnums;
+use App\Enums\MountTypeEnums;
 use App\Exceptions\ForbiddenException;
 use App\Exceptions\NotFoundException;
 use App\Exceptions\AuthFailedException;
 use App\Exceptions\OperationException;
 use App\Exceptions\RepeatException;
 use App\Models\Admin\LinGroup;
+use App\Models\Admin\LinGroupPermission;
+use App\Models\Admin\LinPermission;
 use App\Models\Admin\LinUser;
+use App\Models\Admin\LinUserGroup;
 use App\Utils\CodeResponse;
 use App\Models\Admin\LinUser as LinUserModel;
 use Illuminate\Support\Facades\DB;
@@ -103,27 +107,25 @@ class UserService
 
     public static function getPermissions(int $uid): array
     {
-        $user = LinUserModel::get($uid);
+        $user = LinUser::query()->where('id', $uid)->first();
+        $user = $user->toArray() ?? [];
+        $groupIds = LinUserGroup::query()->where('user_id', $uid)
+            ->pluck('group_id');
 
-        $groupIds = LinUserGroupModel::where('user_id', $uid)
-            ->column('group_id');
-
-        $root = LinGroupModel::where('level', GroupLevelEnum::ROOT)
-            ->whereIn('id', $groupIds)->find();
-
-        $user = $user->hidden(['username'])->toArray();
+        $root = LinGroup::query()->where('level', GroupLevelEnums::ROOT)
+            ->whereIn('id', $groupIds)->first();
         $user['admin'] = $root ? true : false;
 
         if ($root) {
-            $permissions = LinPermissionModel::where('mount', MountTypeEnum::MOUNT)
+            $permissions = LinPermission::where('mount', MountTypeEnums::MOUNT)
                 ->select()
                 ->toArray();
             $user['permissions'] = formatPermissions($permissions);
         } else {
-            $permissionIds = LinGroupPermissionModel::whereIn('group_id', $groupIds)
-                ->column('permission_id');
-            $permissions = LinPermissionModel::where('mount', MountTypeEnum::MOUNT)
-                ->select($permissionIds)->toArray();
+            $permissionIds = LinGroupPermission::query()->whereIn('group_id', $groupIds)
+                ->pluck('permission_id');
+            $permissions = LinPermission::query()->where('mount', MountTypeEnums::MOUNT)
+                ->whereIn('id', $permissionIds)->get()->toArray();
 
             $user['permissions'] = formatPermissions($permissions);
 

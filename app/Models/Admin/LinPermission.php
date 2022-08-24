@@ -2,13 +2,12 @@
 
 namespace App\Models\Admin;
 
-use think\Model;
+use App\Models\BaseModel;
+use App\Models\BooleanSoftDeletes;
 use think\model\concern\SoftDelete;
 
-class LinPermission extends Model
+class LinPermission extends BaseModel
 {
-    use SoftDelete;
+    use BooleanSoftDeletes;
 
-    public $autoWriteTimestamp = 'datetime';
-    public $hidden = ['create_time', 'update_time', 'delete_time'];
 }

@@ -75,7 +75,14 @@ class Handler extends ExceptionHandler
                 'code' => $e->getCode(),
                 'message' => $e->getMessage()
             ];
+        } elseif ($e instanceof ParameterException) {
+            $status = 400;
+            $response = [
+                'code' => $e->getCode(),
+                'message' => $e->getMessage()
+            ];
         } else {
+            $status = 400;
             $response = [
                 'code' => $e->getCode(),
                 'message' => $e->getMessage()

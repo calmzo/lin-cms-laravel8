@@ -2,13 +2,12 @@
 
 namespace App\Http\Controllers\Cms;
 
-//use app\api\validate\user\LoginForm;  # 开启注释验证器以后，本行可以去掉，这里做更替说明
-//use app\api\validate\user\RegisterForm; # 开启注释验证器以后，本行可以去掉，这里做更替说明
 use app\api\service\token\LoginToken;
 use App\Events\Logger;
+use App\Services\User\TokenService;
+use App\Validates\User\LoginFormValidate;
 use App\Services\Admin\UserService;
 use App\Services\Token\LoginTokenService;
-use App\Utils\CodeResponse;
 use Illuminate\Http\Request;
 
 
@@ -54,25 +53,24 @@ class UserController extends BaseController
     }
 
     /**
-     * @param Request $request
-     * @validate('LoginForm')
+     * 用户登录
+     * @param LoginFormValidate $loginFormValidate
      * @return array
-     * @throws DataNotFoundException
-     * @throws DbException
-     * @throws ModelNotFoundException
-     * @throws NotFoundException
-     * @throws AuthFailedException
+     * @throws \App\Exceptions\AuthFailedException
+     * @throws \App\Exceptions\NotFoundException
+     * @throws \App\Exceptions\ParameterException
      */
-    public function userLogin(Request $request)
+    public function userLogin(LoginFormValidate $loginFormValidate)
     {
-        $username = $request->input('username', '');
-        $password = $request->input('password', '');
+        $params = $loginFormValidate->check();
+        $username = $params['username'];
+        $password = $params['password'];
         $user = UserService::verify($username, $password);
         $token = LoginTokenService::getToken($user);
         Logger::dispatch(array('uid' => $user->id, 'username' => $user->username, 'msg' => '登陆成功获取了令牌'));
         return [
             'access_token' => $token['accessToken'],
-            'refresh_token' => $token['refreshToken']
+            'refresh_token' => $token['refreshToken'] ?? ''
         ];
     }
 
@@ -94,7 +92,7 @@ class UserController extends BaseController
      */
     public function getAllowedApis()
     {
-        $uid = $this->loginTokenService->getCurrentUid();
+        $uid = LoginTokenService::userId();
         return UserService::getPermissions($uid);
     }
 

@@ -3,6 +3,7 @@
 namespace App\Models\Admin;
 
 use App\Models\BaseModel;
+use App\Models\BooleanSoftDeletes;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
@@ -15,7 +16,7 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
 class LinUser extends BaseModel implements JWTSubject, AuthenticatableContract,
     AuthorizableContract
 {
-    use HasFactory, Notifiable, Authenticatable, Authorizable;
+    use HasFactory, Notifiable, Authenticatable, Authorizable, BooleanSoftDeletes;
 
 
 //    protected $table = 'lin_user';

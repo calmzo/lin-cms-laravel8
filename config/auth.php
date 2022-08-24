@@ -50,7 +50,7 @@ return [
         'cms' => [
             'driver' => 'jwt',
             'provider' => 'users',
-            'hash' => false,
+            'hash' => 'HS256',
         ],
     ],
 
@@ -74,7 +74,7 @@ return [
     'providers' => [
         'users' => [
             'driver' => 'eloquent',
-            'model' => App\Models\User::class,
+            'model' => App\Models\Admin\LinUser::class,
         ],
 
         // 'users' => [

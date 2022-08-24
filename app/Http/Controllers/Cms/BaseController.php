@@ -4,14 +4,12 @@ namespace App\Http\Controllers\Cms;
 
 use App\Http\Controllers\Controller;
 use App\Utils\CodeResponse;
-use App\VerifyRequestInpuit;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 
 class BaseController extends Controller
 {
-    use VerifyRequestInpuit;
     protected $only;
     protected $except;
 

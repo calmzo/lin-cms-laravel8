@@ -2,10 +2,9 @@
 
 namespace App\Models\Admin;
 
+use App\Models\BaseModel;
 
-use think\Model;
-
-class LinGroupPermission extends Model
+class LinGroupPermission extends BaseModel
 {
 
 }

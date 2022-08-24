@@ -51,10 +51,10 @@ class LoginTokenService
     public static function getToken($user)
     {
         $accessToken = Auth::guard('cms')->login($user);
-        $refreshToken = Auth::guard('cms')->refresh();
+//        $refreshToken = Auth::guard('cms')->refresh();
         $token = [
             'accessToken' => $accessToken,
-            'refreshToken' => $refreshToken,
+//            'refreshToken' => $refreshToken,
         ];
         return $token;
     }
