@@ -20,18 +20,20 @@ use App\Http\Controllers\Cms\FileController;
 // 账户相关接口分组
 Route::prefix('user')->group(function () {
     // 登陆接口
-    Route::post('login', [UserController::class, 'userLogin']);
-    // 刷新令牌
+    Route::post('login', [UserController::class, 'login']);
+    // 刷新令牌 todo
     Route::get('refresh', [UserController::class, 'refreshToken']);
     // 查询自己拥有的权限
-    Route::get('permissions', [UserController::class, 'getAllowedApis']);
+    Route::get('auths', [UserController::class, 'getAllowedApis']);
     // 注册一个用户
     Route::post('register', [UserController::class, 'register']);
+    // 更新头像
+    Route::put('avatar',[UserController::class, 'setAvatar']);
     // 查询自己信息
     Route::get('information', [UserController::class, 'getInformation']);
     // 用户更新信息
     Route::put('', [UserController::class, 'update']);
-    // 修改自己密码
+    // 修改自己密码 todo
     Route::put('change_password', [UserController::class, 'changePassword']);
 });
 // 管理类接口

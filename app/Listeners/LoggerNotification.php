@@ -42,11 +42,11 @@ class LoggerNotification
         $data = [
             'message' => $username . $message,
             'user_id' => $uid,
-            'username' => $username,
+            'user_name' => $username,
             'status_code' => $request->server('REDIRECT_STATUS'),
             'method' => $request->method(),
             'path' => '/' . $request->path(),
-            'permission' => null
+            'authority' => null
         ];
 
         LinLog::query()->create($data);

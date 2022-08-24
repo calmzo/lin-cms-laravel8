@@ -28,20 +28,26 @@ class BaseController extends Controller
         $this->middleware('auth:cms', $options);
     }
 
-    protected function codeReturn(array $codeResponse, $data = null, $message = '')
+    protected function codeReturn(array $codeResponse, $data = null, $info = '')
     {
         list($code, $message) = $codeResponse;
         $ret = ['code' => $code];
         if (!is_null($data)) {
             $ret['result'] = $data;
         }
-        $ret['message'] = $message ?: $message;
+        $ret['message'] = $info ?: $message;
         return response()->json($ret);
     }
 
-    protected function success($data = null, $message)
+    protected function success($data = null, $info)
     {
-        return $this->codeReturn(CodeResponse::SUCCESS, $data, $message);
+        list($code, $message) = CodeResponse::SUCCESS;
+        $ret = ['code' => $code];
+        if (!is_null($data)) {
+            $ret['result'] = $data;
+        }
+        $ret['msg'] = $info ?: $message;
+        return response()->json($ret);
     }
 
     protected function fail(array $codeResponse = CodeResponse::FAIL, $message = '')

@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\Cms;
 
-use app\api\service\token\LoginToken;
 use App\Events\Logger;
 use App\Services\User\TokenService;
+use App\Services\Users\UserServices;
 use App\Validates\User\LoginFormValidate;
 use App\Services\Admin\UserService;
 use App\Services\Token\LoginTokenService;
@@ -17,32 +17,13 @@ class UserController extends BaseController
     protected $except = ['userLogin', 'register'];
 
     /**
-     * @var LoginToken
-     */
-//    private $loginTokenService;
-
-//    /**
-//     * User constructor.
-//     */
-//    public function __construct()
-//    {
-//        $this->loginTokenService = LoginToken::getInstance();
-//    }
-
-
-    /**
-     * @adminRequired
-     * @permission('注册','管理员','hidden')
+     * 注册
      * @param Request $request
-     * @validate('RegisterForm')
-     * @return Json
-     * @throws NotFoundException
-     * @throws OperationException
-     * @throws RepeatException
-     * @throws ForbiddenException
-     * @throws DataNotFoundException
-     * @throws ModelNotFoundException
-     * @throws DbException
+     * @return array|\Illuminate\Http\JsonResponse
+     * @throws \App\Exceptions\ForbiddenException
+     * @throws \App\Exceptions\NotFoundException
+     * @throws \App\Exceptions\OperationException
+     * @throws \App\Exceptions\RepeatException
      */
     public function register(Request $request)
     {
@@ -60,7 +41,7 @@ class UserController extends BaseController
      * @throws \App\Exceptions\NotFoundException
      * @throws \App\Exceptions\ParameterException
      */
-    public function userLogin(LoginFormValidate $loginFormValidate)
+    public function login(LoginFormValidate $loginFormValidate)
     {
         $params = $loginFormValidate->check();
         $username = $params['username'];
@@ -88,12 +69,14 @@ class UserController extends BaseController
     }
 
     /**
-     * @loginRequired
+     * 查询自己拥有的权限
+     * @return array
+     * @throws \App\Exceptions\UserException
      */
     public function getAllowedApis()
     {
         $uid = LoginTokenService::userId();
-        return UserService::getPermissions($uid);
+        return UserService::getUserByUID($uid);
     }
 
     /**
@@ -102,7 +85,7 @@ class UserController extends BaseController
      */
     public function getInformation()
     {
-        $uid = $this->loginTokenService->getCurrentUid();
+        $uid = LoginTokenService::userId();
         return UserService::getInformation($uid);
     }
 
@@ -117,7 +100,7 @@ class UserController extends BaseController
     {
         $params = $request->put();
         $row = UserService::updateUser($params);
-        return writeJson(200, $row, '用户信息更新成功');
+        return $this->success([], '用户信息更新成功');
     }
 
     /**
@@ -130,12 +113,26 @@ class UserController extends BaseController
      */
     public function changePassword(Request $request)
     {
-        $oldPassword = $request->put('old_password');
-        $newPassword = $request->put('new_password');
+        $oldPassword = $request->input('old_password');
+        $newPassword = $request->input('new_password');
 
         $row = UserService::changePassword($oldPassword, $newPassword);
+        Logger::dispatch("修改了自己的密码");
+        return $this->success([], '密码修改成功');
+    }
 
-        Hook::listen('logger', '修改了自己的密码');
-        return writeJson(200, $row, '密码修改成功');
+    /**
+     * 更新头像
+     * @param Request $request
+     * @return array|\Illuminate\Http\JsonResponse
+     * @throws \App\Exceptions\UserException
+     */
+    public function setAvatar(Request $request)
+    {
+        $url = $request->input('avatar');
+        $uid = LoginTokenService::userId();
+        UserService::updateUserAvatar($uid, $url);
+
+        return $this->success([], '更新头像成功');
     }
 }

@@ -35,7 +35,7 @@ class LinUser extends BaseModel implements JWTSubject, AuthenticatableContract,
      * @var array
      */
     protected $hidden = [
-        'create_time', 'update_time', 'delete_time'
+        'create_time', 'update_time', 'delete_time', 'password'
     ];
 
     public static function getUsers(int $start, int $count, array $params = [])

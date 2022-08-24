@@ -10,11 +10,14 @@ use App\Exceptions\NotFoundException;
 use App\Exceptions\AuthFailedException;
 use App\Exceptions\OperationException;
 use App\Exceptions\RepeatException;
+use App\Exceptions\UserException;
+use App\Models\Admin\LinAuth;
 use App\Models\Admin\LinGroup;
 use App\Models\Admin\LinGroupPermission;
 use App\Models\Admin\LinPermission;
 use App\Models\Admin\LinUser;
 use App\Models\Admin\LinUserGroup;
+use App\Services\Token\LoginTokenService;
 use App\Utils\CodeResponse;
 use App\Models\Admin\LinUser as LinUserModel;
 use Illuminate\Support\Facades\DB;
@@ -65,10 +68,6 @@ class UserService
      * @param string $username
      * @param string $password
      * @return Model
-     * @throws AuthFailedException
-     * @throws DataNotFoundException
-     * @throws DbException
-     * @throws ModelNotFoundException
      * @throws NotFoundException
      */
     public static function verify(string $username, string $password): Model
@@ -81,7 +80,6 @@ class UserService
         $is_pass = Hash::check($password, $user->password);
         if (!$is_pass) {
             throw new NotFoundException(CodeResponse::PASSWORD_WRONG, '密码错误，请重新输入');
-//            throw new AuthFailedException();
         }
         //更新登录情况
 //        $user->last_login_time = now();
@@ -136,50 +134,29 @@ class UserService
 
     public static function getInformation(int $uid)
     {
-        return LinUser::get($uid, 'groups');
+        return LinUser::query()->where('id', $uid)->get();
     }
 
     public static function updateUser(array $params): int
     {
-        $user = LoginToken::getInstance()->getTokenExtend();
-        if (isset($params['username']) && $params['username'] !== $user['username']) {
-            $isExit = LinUserModel::where('username', $params['username'])
-                ->find();
-            if ($isExit) {
-                throw new RepeatException(['msg' => "用户名已被占用"]);
-            }
-        }
+        $user = LoginTokenService::user();
+        if (isset($params['email']) && $user['email'] != $params['email']) {
+            $exists = LinUser::query()->where('email', $params['email'])
+                ->first(['email']);
 
-        if (isset($params['email']) && $params['email'] !== $user['email']) {
-            $isExit = LinUserModel::where('email', $params['email'])
-                ->find();
-            if ($isExit) {
-                throw new RepeatException(['msg' => "邮箱已被占用"]);
-            }
+            if ($exists) throw  new UserException(CodeResponse::BADPARAMETER, '注册邮箱重复，请重新输入');
         }
-
-        $user = LinUserModel::get($user['id']);
-        return $user->allowField(true)->save($params);
+        return $user->update($params);
     }
 
     public static function changePassword(string $oldPassword, string $newPassword): int
     {
-        $currentUser = LoginToken::getInstance()->getTokenExtend();
-        $user = new LinUserIdentityModel();
-
-        $user = $user::where('identity_type', IdentityTypeEnum::PASSWORD)
-            ->where('identifier', $currentUser['identifier'])
-            ->find();
-
-        if (!$user) {
-            throw new NotFoundException();
+        $user = LoginTokenService::user();
+        $is_pass = Hash::check($oldPassword, $user->password);
+        if (!$is_pass) {
+            throw new UserException(CodeResponse::BADPARAMETER, '原始密码错误，请重新输入');
         }
-
-        if (!$user->checkPassword($oldPassword)) {
-            throw new AuthFailedException();
-        }
-
-        $user->credential = md5($newPassword);
+        $user->password = Hash::make($newPassword);
         return $user->save();
     }
 
@@ -192,17 +169,14 @@ class UserService
     {
         DB::beginTransaction();
         try {
-//            $user->identity()->save([
-//                'identity_type' => IdentityTypeEnum::PASSWORD,
-//                'identifier' => $user['username'],
-//                'credential' => md5($params['password'])
-//            ]);
             $user = new LinUser();
             $user->username = $params['username'];
             $user->password = Hash::make($params['password']);
             $user->email = $params['email'];
             $user->avatar = 'https://yanxuan.nosdn.127.net/80841d741d7fa3073e0ae27bf487339f.jpg?imageView&quality=90&thumbnail=64x64';
             $user->nickname = $params['username'];
+            $user->admin = 1;
+            $user->active = 1;
 //        $user->last_login_time = now();
 //        $user->last_login_ip = $request->getClientIp();
             $user->save();
@@ -224,28 +198,6 @@ class UserService
 
     }
 
-    // private static function formatPermissions(array $permissions)
-    // {
-    //     $groupPermission = [];
-    //     foreach ($permissions as $permission) {
-    //         $item = [
-    //             'name' => $permission['name'],
-    //             'module' => $permission['module']
-    //         ];
-    //         $groupPermission[$permission['module']][] = $item;
-    //     }
-    //
-    //     $result[] = array_map(function ($item) {
-    //         return $item;
-    //     }, $groupPermission);
-    //     return $result;
-    // }
-
-    public static function aa(){
-        $user = UserServices::getInstance()->getByUsername($username);
-        return $user;
-    }
-
     /**
      * 根据用户名获取用户
      * @param  string  $username
@@ -254,5 +206,41 @@ class UserService
     public function getByUsername(string $username)
     {
         return LinUserModel::query()->where('username', $username)->first();
+    }
+
+
+    public static function getUserByUID($uid)
+    {
+        try {
+            $user = LinUser::query()->where('id', $uid)->first()->toArray();
+        } catch (\Exception $ex) {
+            throw new UserException();
+        }
+
+        $groupName = '';
+        if (!empty($user['group_id'])) {
+            $group = LinGroup::query()->where('id', $user['group_id'])->first(['name']);
+            $groupName = $group['name'];
+        }
+        $user['group_name'] = $groupName;
+
+        $auths = LinAuth::query()->where('group_id', $user['group_id'])
+        ->get()->toArray();
+
+        $auths = empty($auths) ? [] : split_modules($auths);
+
+        $user['auths'] = $auths;
+
+        return $user;
+    }
+
+    public static function updateUserAvatar($uid, $url)
+    {
+        $user = LinUser::query()->where('id', $uid)->first();
+        if (!$user) {
+            throw new UserException();
+        }
+        $user->avatar = $url;
+        $user->save();
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Services\Token;
 
+use App\Models\Admin\LinUser;
 use Illuminate\Support\Facades\Auth;
 use Lcobucci\JWT\Signer\Hmac\Sha256;
 use Lcobucci\JWT\Builder;
