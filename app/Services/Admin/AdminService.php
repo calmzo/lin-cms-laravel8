@@ -2,26 +2,10 @@
 
 namespace App\Services\Admin;
 
-use app\api\model\admin\LinGroup as LinGroupModel;
-use app\api\model\admin\LinPermission as LinPermissionModel;
-use app\api\model\admin\LinUser as LinUserModel;
-use app\api\model\admin\LinUserGroup as LinUserGroupModel;
-use app\api\model\admin\LinUserIdentity as LinUserIdentityModel;
-use app\lib\authenticator\PermissionScan;
-use app\lib\enum\GroupLevelEnum;
-use app\lib\enum\MountTypeEnum;
-use app\lib\exception\NotFoundException;
-use app\lib\exception\OperationException;
-use app\lib\exception\token\ForbiddenException;
-use LinCmsTp5\exception\ParameterException;
-use PDOStatement;
-use ReflectionException;
-use think\Db;
-use think\db\exception\DataNotFoundException;
-use think\db\exception\ModelNotFoundException;
-use think\Exception;
-use think\exception\DbException;
-use think\model\Collection;
+use App\Enums\GroupLevelEnums;
+use App\Models\Admin\LinGroup;
+use App\Models\Admin\LinUser;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class AdminService
 {
@@ -60,18 +44,18 @@ class AdminService
      * @return array
      * @throws ParameterException
      */
-    public static function getUsers(int $page, int $count, int $groupId = null): array
+    public static function getUsers(int $page, int $count, int $groupId = null): LengthAwarePaginator
     {
-        list($start, $count) = paginate($count, $page);
-        $params = $groupId ? ['group_id' => $groupId] : [];
-        $users = LinUserModel::getUsers($start, $count, $params);
-
-        return [
-            'items' => $users['userList'],
-            'count' => $count,
-            'page' => $page,
-            'total' => $users['total']
-        ];
+        list($page, $count) = paginate($page, $count);
+        $query = LinUser::query();
+        if ($groupId) {
+            $query->where('group_id', $groupId);
+        }
+        $users = $query
+            ->where('username', '<>', 'root')
+            ->with('groups')
+            ->paginate($count, ['*'], 'page', $page);
+        return $users;
     }
 
     /**
@@ -169,7 +153,7 @@ class AdminService
      */
     public static function getAllGroups()
     {
-        $groups = LinGroupModel::where('level', '<>', GroupLevelEnum::ROOT)->select();
+        $groups = LinGroup::query()->where('level', '<>', GroupLevelEnums::ROOT)->get();
         if ($groups->isEmpty()) {
             throw new NotFoundException();
         }

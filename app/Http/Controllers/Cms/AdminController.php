@@ -2,21 +2,8 @@
 
 namespace App\Http\Controllers\Cms;
 
-use app\api\service\admin\Admin as AdminService;
-use app\lib\exception\NotFoundException;
-use app\lib\exception\OperationException;
-use app\lib\exception\token\ForbiddenException;
-use LinCmsTp5\exception\ParameterException;
-use PDOStatement;
-use ReflectionException;
-use think\db\exception\DataNotFoundException;
-use think\db\exception\ModelNotFoundException;
-use think\db\Query;
-use think\exception\DbException;
-use think\facade\Hook;
-use think\model\Collection;
-use think\Request;
-use think\response\Json;
+use App\Services\Admin\AdminService;
+use Illuminate\Http\Request;
 
 class AdminController extends BaseController
 {
@@ -49,11 +36,10 @@ class AdminController extends BaseController
      */
     public function getAdminUsers(Request $request)
     {
-        $page = $request->get('page/d', 0);
-        $count = $request->get('count/d', 10);
-        $groupId = $request->get('group_id/d');
-
-        return AdminService::getUsers($page, $count, $groupId);
+        $page = $request->input('page', 0);
+        $count = $request->input('count', 10);
+        $groupId = $request->input('group_id');
+        return $this->successPaginate(AdminService::getUsers($page, $count, $groupId));
     }
 
     /**
