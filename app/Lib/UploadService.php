@@ -25,7 +25,7 @@ class UploadService extends File
                     array_push($ret, [
                         'id' => $exists['id'],
                         'key' => $key,
-                        'path' => $exists['path'],
+                        'path' => $url,
                         'url' => $url
                     ]);
                 } else {
@@ -50,14 +50,15 @@ class UploadService extends File
                     array_push($ret, [
                         'id' => $linFile->id,
                         'key' => $key,
-                        'path' => $path,
+                        'path' => $url,
                         'url' => $url
                     ]);
 
                 }
             }
         } else {
-            $md5 = self::generateMd5($files);
+            $file = $files;
+            $md5 = self::generateMd5($file);
             $exists = LinFile::query()->where('md5', $md5)->first();
             if ($exists) {
                 $path = $exists['path'];
@@ -69,7 +70,7 @@ class UploadService extends File
                 array_push($ret, [
                     'id' => $exists['id'],
                     'key' => 0,
-                    'path' => $exists['path'],
+                    'path' =>$url,
                     'url' => $url
                 ]);
             } else {
@@ -94,7 +95,7 @@ class UploadService extends File
                 array_push($ret, [
                     'id' => $linFile->id,
                     'key' => 0,
-                    'path' => $path,
+                    'path' => $url,
                     'url' => $url
                 ]);
 

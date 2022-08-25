@@ -98,7 +98,7 @@ class UserController extends BaseController
      */
     public function update(Request $request)
     {
-        $params = $request->put();
+        $params = $request->all();
         $row = UserService::updateUser($params);
         return $this->success([], '用户信息更新成功');
     }

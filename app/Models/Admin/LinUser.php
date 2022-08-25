@@ -27,6 +27,7 @@ class LinUser extends BaseModel implements JWTSubject, AuthenticatableContract,
      * @var array
      */
     protected $fillable = [
+        'avatar', 'email', 'username'
     ];
 
     /**

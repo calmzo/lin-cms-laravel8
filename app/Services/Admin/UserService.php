@@ -145,8 +145,8 @@ class UserService
             }
         }
         if (isset($params['email']) && $params['email'] !== $user['email']) {
-            $isExit = LinUser::where('email', $params['email'])
-                ->find();
+            $isExit = LinUser::query()->where('email', $params['email'])
+                ->first();
             if ($isExit) {
                 throw new RepeatException('邮箱已被占用');
             }
