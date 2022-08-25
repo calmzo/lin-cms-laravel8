@@ -39,7 +39,7 @@ class BaseController extends Controller
         return response()->json($ret);
     }
 
-    protected function success($data = null, $info)
+    protected function success($data = null, $info = '成功')
     {
         list($code, $message) = CodeResponse::SUCCESS;
         $ret = ['code' => $code];
@@ -57,7 +57,8 @@ class BaseController extends Controller
 
     protected function successPaginate($page)
     {
-        return $this->success($this->paginate($page));
+//        return $this->success($this->paginate($page));
+        return $this->paginate($page);
     }
 
     protected function paginate($page)
@@ -65,10 +66,9 @@ class BaseController extends Controller
         if ($page instanceof LengthAwarePaginator) {
             return [
                 'total' => $page->total(),
-                'page' => $page->currentPage(),
-                'limit' => $page->perPage(),
-                'pages' => $page->lastPage(),
-                'list' => $page->items()
+                'page' => $page->currentPage() - 1,
+                'count' => $page->perPage(),
+                'items' => $page->items()
             ];
         }
         if ($page instanceof Collection) {
@@ -80,10 +80,9 @@ class BaseController extends Controller
         $total = count($page);
         return [
             'total' => $total,
-            'page' => 1,
+            'page' => 0,
             'limit' => $total,
-            'pages' => 1,
-            'list' => $page
+            'items' => $page
         ];
 
         return $page;

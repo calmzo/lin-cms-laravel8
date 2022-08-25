@@ -3,10 +3,13 @@
 namespace App\Models\Admin;
 
 use App\Models\BaseModel;
+use App\Models\BooleanSoftDeletes;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use think\model\concern\SoftDelete;
 
 class LinLog extends BaseModel
 {
+    use BooleanSoftDeletes;
     protected $fillable = [
         'message', 'user_id', 'username', 'status_code', 'method', 'path', 'permission'
     ];

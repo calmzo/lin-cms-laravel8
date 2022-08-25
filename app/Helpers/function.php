@@ -1,5 +1,8 @@
 <?php
 
+use Illuminate\Pagination\LengthAwarePaginator;
+use App\Exceptions\ParameterException;
+
 /**
  * 权限数组格式化函数
  * @param array $permissions
@@ -48,4 +51,31 @@ function split_modules($auths, $key = 'module')
     }
     return $result;
 
+}
+
+function paginator($list, $page = 1, $count = 10)
+{
+    //分页
+    $offset = ($page * $count) - $count;
+    //实例化LengthAwarePaginator类，并传入对应的参数
+    $paginator = new LengthAwarePaginator(array_slice($list, $offset, $count, true), count($list), $count, $page);
+    return $paginator;
+}
+
+
+/**
+ * 分页参数处理函数
+ * @param int $page
+ * @param int $count
+ * @return int[]
+ */
+function paginate(int $page = 0, int $count = 10)
+{
+//    $count = $count >= 15 ? 15 : $count;
+//    $start = $page * $count;
+//
+//    if ($start < 0 || $count < 0) throw new ParameterException();
+    $count = $count >= 15 ? 15 : $count;
+    $page = $page + 1;
+    return [$page, $count];
 }

@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers\Cms;
 
-use app\api\service\admin\Log as LogService;
+use App\Services\Admin\LogService;
 use LinCmsTp5\exception\ParameterException;
-use think\Request;
+use Illuminate\Http\Request;
 
-class LogController
+class LogController extends BaseController
 {
     protected $only = [];
 
@@ -24,13 +24,13 @@ class LogController
      */
     public function getLogs(Request $request)
     {
-        $start = $request->get('start');
-        $end = $request->get('end');
-        $name = $request->get('name');
-        $page = $request->get('page/d', 0);
-        $count = $request->get('count/d', 10);
+        $start = $request->input('start');
+        $end = $request->input('end');
+        $name = $request->input('name');
+        $page = $request->input('page', 0);
+        $count = $request->input('count', 10);
 
-        return LogService::getLogs($page, $count, $start, $end, $name);
+        return $this->successPaginate(LogService::getLogs($page, $count, $start, $end, $name));
     }
 
     /**
@@ -50,10 +50,10 @@ class LogController
         $end = $request->get('end');
         $name = $request->get('name');
         $keyword = $request->get('keyword');
-        $page = $request->get('page/d', 0);
-        $count = $request->get('count/d', 10);
+        $page = $request->get('page', 0);
+        $count = $request->get('count', 10);
 
-        return LogService::searchLogs($page, $count, $start, $end, $name, $keyword);
+        return $this->successPaginate(LogService::searchLogs($page, $count, $start, $end, $name, $keyword));
     }
 
     /**
@@ -67,9 +67,9 @@ class LogController
      */
     public function getUsers(Request $request)
     {
-        $page = $request->get('page/d', 0);
-        $count = $request->get('count/d', 10);
-
-        return LogService::getUserNames($page, $count);
+        $page = $request->input('page', 0);
+        $count = $request->input('count', 10);
+        $list = LogService::getUserNames($page, $count);
+        return $this->successPaginate($list);
     }
 }

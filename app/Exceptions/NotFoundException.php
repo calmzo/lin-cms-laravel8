@@ -2,14 +2,15 @@
 
 namespace App\Exceptions;
 
+use App\Utils\CodeResponse;
 use Exception;
 
 class NotFoundException extends Exception
 {
     //
-    public function __construct(array $codeSponse = [10021, '资源不存在'], $info = '资源不存在')
+    public function __construct($info = '资源不存在')
     {
-        list($code, $message) = $codeSponse;
+        list($code, $message) = CodeResponse::EXCEPTION;
         parent::__construct($message = $info ?: $message, $code);
     }
 

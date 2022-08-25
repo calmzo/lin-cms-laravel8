@@ -12,8 +12,11 @@ class CodeResponse
     const REPEAT = [400, '资源已存在'];
     const FORBIDDEN = [403, '权限不足，请联系管理员'];
     const BADPARAMETER = [10030, '参数错误'];
-    const ACCOUNT_NOT_FOUND = [20000, '账户不存在'];
-    const PASSWORD_WRONG = [20001, '密码错误，请重新输入'];
+    const REPEATEXCEPTION = [10071, '资源已存在'];
+
+    const EXCEPTION = [10021, '异常'];
+
+    const AUTHFAILED = [10021, '密码错误，请重新输入'];
 
 
     const UN_LOGIN = [501, '请登录'];

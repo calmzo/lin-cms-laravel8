@@ -74,12 +74,12 @@ class UserService
     {
         $user = self::getByUsername($username);
         if (empty($user)) {
-            throw new NotFoundException(CodeResponse::ACCOUNT_NOT_FOUND, '用户不存在');
+            throw new NotFoundException('用户不存在');
         }
         //验证密码
         $is_pass = Hash::check($password, $user->password);
         if (!$is_pass) {
-            throw new NotFoundException(CodeResponse::PASSWORD_WRONG, '密码错误，请重新输入');
+            throw new AuthFailedException();
         }
         //更新登录情况
 //        $user->last_login_time = now();
@@ -109,15 +109,12 @@ class UserService
         $user = $user->toArray() ?? [];
         $groupIds = LinUserGroup::query()->where('user_id', $uid)
             ->pluck('group_id');
-
         $root = LinGroup::query()->where('level', GroupLevelEnums::ROOT)
             ->whereIn('id', $groupIds)->first();
         $user['admin'] = $root ? true : false;
 
         if ($root) {
-            $permissions = LinPermission::where('mount', MountTypeEnums::MOUNT)
-                ->select()
-                ->toArray();
+            $permissions = LinPermission::query()->where('mount', MountTypeEnums::MOUNT)->get()->toArray();
             $user['permissions'] = formatPermissions($permissions);
         } else {
             $permissionIds = LinGroupPermission::query()->whereIn('group_id', $groupIds)
@@ -134,17 +131,25 @@ class UserService
 
     public static function getInformation(int $uid)
     {
-        return LinUser::query()->where('id', $uid)->get();
+        return LinUser::query()->where('id', $uid)->with('groups')->first();
     }
 
     public static function updateUser(array $params): int
     {
         $user = LoginTokenService::user();
-        if (isset($params['email']) && $user['email'] != $params['email']) {
-            $exists = LinUser::query()->where('email', $params['email'])
-                ->first(['email']);
-
-            if ($exists) throw  new UserException(CodeResponse::BADPARAMETER, '注册邮箱重复，请重新输入');
+        if (isset($params['username']) && $params['username'] !== $user['username']) {
+            $isExit = LinUser::query()->where('username', $params['username'])
+                ->first();
+            if ($isExit) {
+                throw new RepeatException('用户名已被占用');
+            }
+        }
+        if (isset($params['email']) && $params['email'] !== $user['email']) {
+            $isExit = LinUser::where('email', $params['email'])
+                ->find();
+            if ($isExit) {
+                throw new RepeatException('邮箱已被占用');
+            }
         }
         return $user->update($params);
     }
@@ -154,7 +159,7 @@ class UserService
         $user = LoginTokenService::user();
         $is_pass = Hash::check($oldPassword, $user->password);
         if (!$is_pass) {
-            throw new UserException(CodeResponse::BADPARAMETER, '原始密码错误，请重新输入');
+            throw new AuthFailedException('旧密码错误');
         }
         $user->password = Hash::make($newPassword);
         return $user->save();
@@ -200,7 +205,7 @@ class UserService
 
     /**
      * 根据用户名获取用户
-     * @param  string  $username
+     * @param string $username
      * @return \Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Model|object|null
      */
     public function getByUsername(string $username)
@@ -225,7 +230,7 @@ class UserService
         $user['group_name'] = $groupName;
 
         $auths = LinAuth::query()->where('group_id', $user['group_id'])
-        ->get()->toArray();
+            ->get()->toArray();
 
         $auths = empty($auths) ? [] : split_modules($auths);
 

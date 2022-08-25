@@ -3,6 +3,8 @@
 namespace App\Services\Admin;
 
 use app\api\model\admin\LinLog as LinLogModel;
+use App\Models\Admin\LinLog;
+use Illuminate\Pagination\LengthAwarePaginator;
 use LinCmsTp5\exception\ParameterException;
 
 class LogService
@@ -18,16 +20,16 @@ class LogService
      */
     public static function getLogs(int $page, int $count, string $start = null, string $end = null, string $name = null)
     {
-        list($offset, $count) = paginate($count, $page);
-        $params = ['start' => $start, 'end' => $end, 'name' => $name];
-        $logsRes = LinLogModel::getLogs($offset, $count, $params);
-
-        return [
-            'items' => $logsRes['logList'],
-            'count' => $count,
-            'page' => $page,
-            'total' => $logsRes['total']
-        ];
+        list($page, $count) = paginate($page, $count);
+        $query = LinLog::query();
+        if ($name) {
+            $query->where('username', 'like', '%' . $name . '%');
+        }
+        if ($start && $end) {
+            $query->whereBetween('create_time', [$start, $end]);
+        }
+        $res = $query->orderByDesc('create_time')->paginate($count, ['*'], 'page', $page);
+        return $res;
     }
 
     /**
@@ -43,17 +45,21 @@ class LogService
     public static function searchLogs(int $page, int $count, string $start = null,
                                       string $end = null, string $name = null, string $keyword = null)
     {
-        list($offset, $count) = paginate($count, $page);
-        $params = ['start' => $start, 'end' => $end, 'name' => $name, 'keyword' => $keyword];
+        list($page, $count) = paginate($page, $count);
+        $query = LinLog::query();
+        if ($name) {
+            $query->where('username', 'like', '%' . $name . '%');
+        }
+        if ($start && $end) {
+            $query->whereBetween('create_time', [$start, $end]);
+        }
 
-        $logsRes = LinLogModel::searchLogs($offset, $count, $params);
+        if ($keyword) {
+            $query->where('message', 'like', '%' . $keyword . '%');
+        }
 
-        return [
-            'items' => $logsRes['logList'],
-            'count' => $count,
-            'page' => $page,
-            'total' => $logsRes['total']
-        ];
+        $res = $query->orderByDesc('create_time')->paginate($count, ['*'], 'page', $page);
+        return $res;
     }
 
     /**
@@ -64,17 +70,8 @@ class LogService
      */
     public static function getUserNames(int $page, int $count)
     {
-        list($start, $count) = paginate($count, $page);
-        $usersRes = LinLogModel::getUserNames($start, $count);
-        $items = array_map(function ($item) {
-            return $item['username'];
-        }, $usersRes['userList']->toArray());
-
-        return [
-            'items' => $items,
-            'count' => $count,
-            'page' => $page,
-            'total' => $usersRes['total']
-        ];
+        list($page, $count) = paginate($page, $count);
+        $list = LinLog::query()->groupBy('username')->get(['username'])->pluck('username')->toArray();
+        return paginator($list, $page, $count);
     }
 }

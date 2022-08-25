@@ -14,7 +14,7 @@ use Illuminate\Http\Request;
 class UserController extends BaseController
 {
 
-    protected $except = ['userLogin', 'register'];
+    protected $except = ['login', 'register'];
 
     /**
      * 注册
@@ -76,7 +76,7 @@ class UserController extends BaseController
     public function getAllowedApis()
     {
         $uid = LoginTokenService::userId();
-        return UserService::getUserByUID($uid);
+        return UserService::getPermissions($uid);
     }
 
     /**
