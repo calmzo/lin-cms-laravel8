@@ -9,14 +9,17 @@ class LinGroup extends BaseModel
 
     protected $table = 'lin_group';
 
+    public $fillable = [
+        'name', 'info'
+    ];
 
     public function users()
     {
-        return $this->belongsToMany('LinUserModel', 'Lin_user_group', 'user_id', 'group_id');
+        return $this->belongsToMany(LinUser::class, 'Lin_user_group', 'group_id', 'user_id');
     }
 
     public function permissions()
     {
-        return $this->belongsToMany('LinPermissionModel', 'lin_group_permission', 'permission_id', 'group_id');
+        return $this->belongsToMany(LinPermission::class, 'lin_group_permission', 'group_id', 'permission_id');
     }
 }

@@ -46,7 +46,7 @@ class BaseController extends Controller
         if (!is_null($data)) {
             $ret['result'] = $data;
         }
-        $ret['msg'] = $info ?: $message;
+        $ret['message'] = $info ?: $message;
         return response()->json($ret);
     }
 

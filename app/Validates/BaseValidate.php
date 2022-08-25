@@ -3,6 +3,7 @@
 namespace App\Validates;
 
 use App\Exceptions\ParameterException;
+use App\Exceptions\ValidateException;
 use App\Utils\CodeResponse;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
@@ -75,7 +76,7 @@ class BaseValidate {
         $param = $this->request->all();
         $result = $this->validate($param);
         if (!$result) {
-            throw new ParameterException(CodeResponse::BADPARAMETER, $this->getError());
+            throw new ValidateException(CodeResponse::VALIDATE_EXCEPTION, $this->getError());
         } else {
             return $param;
         }
@@ -122,7 +123,6 @@ class BaseValidate {
             $this->error = $validator->errors()->first();
             return false;
         }
-
         return !empty($this->error) ? false : true;
     }
 

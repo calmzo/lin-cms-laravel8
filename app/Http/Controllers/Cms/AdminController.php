@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Cms;
 
+use App\Events\Logger;
+use App\Listeners\LoggerNotification;
 use App\Services\Admin\AdminService;
 use Illuminate\Http\Request;
 
@@ -14,10 +16,7 @@ class AdminController extends BaseController
      * @adminRequired
      * @permission('查询所有可分配的权限','管理员','hidden')
      * @return array
-     * @throws DataNotFoundException
-     * @throws DbException
-     * @throws ModelNotFoundException
-     * @throws ReflectionException
+     * @throws \ReflectionException
      */
     public function getAllPermissions()
     {
@@ -28,11 +27,7 @@ class AdminController extends BaseController
      * @adminRequired
      * @permission('查询所有用户','管理员','hidden')
      * @param Request $request
-     * @param('page','分页数','integer')
-     * @param('count','分页值','integer')
-     * @param('group_id','分组id','integer')
-     * @return array
-     * @throws ParameterException
+     * @return array|mixed
      */
     public function getAdminUsers(Request $request)
     {
@@ -92,11 +87,12 @@ class AdminController extends BaseController
      */
     public function updateUser(Request $request, $id)
     {
-        $groupIds = $request->put('group_ids');
+        $groupIds = $request->input('group_ids');
         AdminService::updateUserInfo($id, $groupIds);
+        Logger::dispatch("更新了用户：{$id}的所属分组");
+        return $this->success($id, '更新用户成功');
 
-        Hook::listen('logger', "更新了用户：{$id}的所属分组");
-        return writeJson(201, $id, '更新用户成功', 6);
+//        return writeJson(201, $id, '更新用户成功', 6);
     }
 
     /**
@@ -142,14 +138,14 @@ class AdminController extends BaseController
      */
     public function createGroup(Request $request)
     {
-        $name = $request->post('name');
-        $info = $request->post('info');
+        $name = $request->input('name');
+        $info = $request->input('info');
         $permissionIds = $request->post('permission_ids');
 
         $groupId = AdminService::createGroup($name, $info, $permissionIds);
-
-        Hook::listen('logger', "创建了分组：{$name}");
-        return writeJson(201, $groupId, '新增分组成功', 15);
+        Logger::dispatch("创建了分组：{$name}");
+        return $this->success($groupId,"新增分组成功");
+//        writeJson(201, $groupId, '新增分组成功', 15);
     }
 
     /**
@@ -168,13 +164,13 @@ class AdminController extends BaseController
      */
     public function updateGroup(Request $request, int $id)
     {
-        $name = $request->put('name');
-        $info = $request->put('info');
+        $name = $request->input('name');
+        $info = $request->input('info');
 
         $res = AdminService::updateGroup($id, $name, $info);
-
-        Hook::listen('logger', "更新了id为{$id}的分组");
-        return writeJson(200, $res, '更新分组信息成功', 7);
+        Logger::dispatch("更新了id为{$id}的分组");
+        return $this->success($res,"更新分组信息成功");
+//        return writeJson(200, $res, '更新分组信息成功', 7);
     }
 
     /**
@@ -190,9 +186,8 @@ class AdminController extends BaseController
     public function deleteGroup(int $id)
     {
         AdminService::deleteGroup($id);
-
-        Hook::listen('logger', "删除了id为{$id}的分组");
-        return writeJson(200, null, '删除分组成功', 8);
+        Logger::dispatch("删除了id为{$id}的分组");
+        return $this->success([],"删除分组成功");
     }
 
     /**
@@ -208,13 +203,12 @@ class AdminController extends BaseController
      */
     public function dispatchPermissions(Request $request)
     {
-        $groupId = $request->post('group_id');
-        $permissionIds = $request->post('permission_ids');
+        $groupId = $request->input('group_id');
+        $permissionIds = $request->input('permission_ids');
 
         AdminService::dispatchPermissions($groupId, $permissionIds);
-
-        Hook::listen('logger', "修改了分组ID为{$groupId}的权限");
-        return writeJson(200, null, '分配权限成功', 9);
+        Logger::dispatch("修改了分组ID为{$groupId}的权限");
+        return $this->success([],'分配权限成功');
     }
 
     /**

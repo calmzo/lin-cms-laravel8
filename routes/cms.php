@@ -53,7 +53,7 @@ Route::prefix('admin')->group(function () {
     // 查询指定分组及其权限
     Route::get('group/{id}', [AdminController::class, 'getGroup']);
     // 更新一个权限组
-    Route::put('group/{id}', [AdminController::class, 'deleteGroup']);
+    Route::put('group/{id}', [AdminController::class, 'updateGroup']);
     // 删除一个分组
     Route::delete('group/{id}', [AdminController::class, 'deleteGroup']);
     // 删除多个权限

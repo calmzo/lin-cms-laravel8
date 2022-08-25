@@ -2,9 +2,8 @@
 
 namespace App\Http\Controllers\Cms;
 
+use App\Validates\User\RegisterFormValidate;
 use App\Events\Logger;
-use App\Services\User\TokenService;
-use App\Services\Users\UserServices;
 use App\Validates\User\LoginFormValidate;
 use App\Services\Admin\UserService;
 use App\Services\Token\LoginTokenService;
@@ -18,6 +17,8 @@ class UserController extends BaseController
 
     /**
      * 注册
+     * @adminRequired
+     * @permission('注册','管理员','hidden')
      * @param Request $request
      * @return array|\Illuminate\Http\JsonResponse
      * @throws \App\Exceptions\ForbiddenException
@@ -25,9 +26,9 @@ class UserController extends BaseController
      * @throws \App\Exceptions\OperationException
      * @throws \App\Exceptions\RepeatException
      */
-    public function register(Request $request)
+    public function register(RegisterFormValidate $registerFormValidate)
     {
-        $params = $request->all();
+        $params = $registerFormValidate->check();
         $user = UserService::createUser($params);
         Logger::dispatch("新建了用户：{$user['username']}");
         return $this->success($user['id'], '注册用户成功');

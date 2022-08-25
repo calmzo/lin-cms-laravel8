@@ -10,4 +10,8 @@ class LinPermission extends BaseModel
 {
     use BooleanSoftDeletes;
 
+    public $fillable = [
+        'name', 'module', 'mount'
+    ];
+
 }

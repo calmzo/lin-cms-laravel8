@@ -3,33 +3,41 @@
 namespace App\Services\Admin;
 
 use App\Enums\GroupLevelEnums;
+use App\Enums\MountTypeEnums;
+use App\Exceptions\ForbiddenException;
+use App\Exceptions\NotFoundException;
+use App\Exceptions\OperationException;
 use App\Models\Admin\LinGroup;
+use App\Models\Admin\LinGroupPermission;
+use App\Models\Admin\LinPermission;
 use App\Models\Admin\LinUser;
+use App\Models\Admin\LinUserGroup;
+use app\super\controller\Code;
+use App\Utils\CodeResponse;
 use Illuminate\Pagination\LengthAwarePaginator;
+use App\Lib\Authenticator\PermissionScan;
+use Illuminate\Support\Facades\DB;
 
 class AdminService
 {
     /**
      * @return array
-     * @throws DataNotFoundException
-     * @throws DbException
-     * @throws ModelNotFoundException
-     * @throws ReflectionException
+     * @throws \ReflectionException
      */
     public static function getAllPermissions(): array
     {
         $permissionList = (new PermissionScan())->run();
         foreach ($permissionList as $permission) {
-            $model = LinPermissionModel::where('name', $permission['name'])
+            $model = LinPermission::query()->where('name', $permission['name'])
                 ->where('module', $permission['module'])
-                ->find();
+                ->first();
             if (!$model) {
                 self::createPermission($permission['name'], $permission['module']);
             }
         }
 
-        $permissions = LinPermissionModel::where('mount', MountTypeEnum::MOUNT)
-            ->select()->toArray();
+        $permissions = LinPermission::query()->where('mount', MountTypeEnums::MOUNT)
+            ->get()->toArray();
         $result = [];
         foreach ($permissions as $permission) {
             $result[$permission['module']][] = $permission;
@@ -40,16 +48,17 @@ class AdminService
     /**
      * @param int $page
      * @param int $count
-     * @param int $groupId
-     * @return array
-     * @throws ParameterException
+     * @param int|null $groupId
+     * @return LengthAwarePaginator
      */
     public static function getUsers(int $page, int $count, int $groupId = null): LengthAwarePaginator
     {
         list($page, $count) = paginate($page, $count);
         $query = LinUser::query();
         if ($groupId) {
-            $query->where('group_id', $groupId);
+            $query->whereHas('groups', function ($query) use ($groupId){
+                $query->where('group_id', $groupId);
+            });
         }
         $users = $query
             ->where('username', '<>', 'root')
@@ -109,38 +118,38 @@ class AdminService
      */
     public static function updateUserInfo(int $uid, array $groupIds): void
     {
-        $user = LinUserModel::get($uid);
+        $user = LinUser::query()->where('id', $uid)->first();
         if (!$user) {
             throw new NotFoundException();
         }
 
-        $userGroupIds = LinUserGroupModel::where('user_id', $uid)->column('group_id');
-        $isAdmin = LinGroupModel::where('level', GroupLevelEnum::ROOT)
+        $userGroupIds = LinUserGroup::query()->where('user_id', $uid)->pluck('group_id');
+        $isAdmin = LinGroup::query()->where('level', GroupLevelEnums::ROOT)
             ->whereIn('id', $userGroupIds)
-            ->find();
+            ->first();
         if ($isAdmin) {
             throw new ForbiddenException(['code' => 10078, 'msg' => '不允许调整root分组信息']);
         }
 
         foreach ($userGroupIds as $groupId) {
-            $group = LinGroupModel::get($groupId);
-            if ($group['level'] === GroupLevelEnum::ROOT) {
-                throw new ForbiddenException(['code' => 10073, 'msg' => '不允许添加用户到root分组']);
+            $group = LinGroup::query()->where('id', $groupId)->first();
+            if ($group['level'] === GroupLevelEnums::ROOT) {
+                throw new ForbiddenException([10073, '不允许添加用户到root分组']);
             }
 
             if (!$group) {
-                throw new NotFoundException(['code' => 10077]);
+                throw new NotFoundException(['10077', '资源不存在']);
             }
         }
 
-        Db::startTrans();
+        DB::beginTransaction();
         try {
             $user->groups()->detach();
             $user->groups()->attach($groupIds);
-            Db::commit();
-        } catch (Exception $ex) {
+            DB::commit();
+        } catch (\Exception $ex) {
             DB::rollback();
-            throw new OperationException(['msg' => "更新用户分组失败"]);
+            throw new OperationException(CodeResponse::OPERATION_EXCEPTION, '更新用户分组失败');
         }
     }
 
@@ -168,8 +177,8 @@ class AdminService
      */
     public static function getGroup(int $id)
     {
-        $group = LinGroupModel::where('level', '<>', GroupLevelEnum::ROOT)
-            ->get($id, 'permissions');
+        $group = LinGroup::query()->where('level', '<>', GroupLevelEnums::ROOT)
+            ->where('id', $id)->with('permissions')->first();
         if (!$group) {
             throw new NotFoundException();
         }
@@ -190,28 +199,34 @@ class AdminService
      */
     public static function createGroup(string $name, string $info, array $permissionIds): int
     {
-        $isExist = LinGroupModel::where('name', $name)->find();
+        $isExist = LinGroup::query()->where('name', $name)->first();
         if ($isExist) {
-            throw new OperationException(['msg' => '分组名已存在']);
+            throw new OperationException(CodeResponse::OPERATION_EXCEPTION, '分组名已存在');
         }
 
         foreach ($permissionIds as $permissionId) {
-            $permission = LinPermissionModel::where('mount', MountTypeEnum::MOUNT)
-                ->get($permissionId);
+            $permission = LinPermission::query()->where('mount', MountTypeEnums::MOUNT)
+                ->where('id', $permissionId)->first();
             if (!$permission) {
-                throw new NotFoundException(['error_code' => 10231, 'msg' => '分配了不存在的权限']);
+                throw new NotFoundException([10231, '分配了不存在的权限']);
             }
         }
 
-        Db::startTrans();
+        DB::beginTransaction();
         try {
-            $group = LinGroupModel::create(['name' => $name, 'info' => $info], true);
-            $group->permissions()->saveAll($permissionIds);
-            Db::commit();
-            return $group->getAttr('id');
+            $group = LinGroup::query()->create(['name' => $name, 'info' => $info]);
+            foreach ($permissionIds as $permissionId) {
+                $permissionData[] = [
+                    'group_id' => $group->id ?? 0,
+                    'permission_id' => $permissionId,
+                ];
+            }
+            LinGroupPermission::query()->insert($permissionData);
+            DB::commit();
+            return $group->id;
         } catch (\Exception $ex) {
-            Db::rollback();
-            throw new OperationException(['msg' => "新增分组失败:{$ex->getMessage()}"]);
+            DB::rollback();
+            throw new OperationException(CodeResponse::OPERATION_EXCEPTION, "新增分组失败:{$ex->getMessage()}");
         }
 
     }
@@ -228,14 +243,16 @@ class AdminService
      */
     public static function updateGroup(int $id, string $name, string $info): int
     {
-        $group = LinGroupModel::where('level', '<>', GroupLevelEnum::ROOT)
-            ->find($id);
+        $group = LinGroup::query()->where('level', '<>', GroupLevelEnums::ROOT)->where('id', $id)
+            ->first();
 
         if (!$group) {
             throw new NotFoundException();
         }
-
-        return $group->save(['name' => $name, 'info' => $info]);
+        $group->name = $name;
+        $group->info = $info;
+        $group->save();
+        return $group->id;
     }
 
     /**
@@ -246,58 +263,59 @@ class AdminService
      */
     public static function deleteGroup(int $id): void
     {
-        $group = LinGroupModel::find($id);
+        $group = LinGroup::query()->where('id', $id)->first();
 
         if (!$group) {
             throw new NotFoundException();
         }
 
-        if ($group->getAttr('level') === GroupLevelEnum::ROOT) {
-            throw new ForbiddenException(['msg' => '不允许删除root分组']);
+        if ($group->level === GroupLevelEnums::ROOT) {
+            throw new ForbiddenException(CodeResponse::FORBIDDEN_EXCEPTION, '不允许删除root分组');
         }
 
-        if ($group->getAttr('level') === GroupLevelEnum::GUEST) {
-            throw new ForbiddenException(['msg' => '不允许删除guest分组']);
+        if ($group->level === GroupLevelEnums::GUEST) {
+            throw new ForbiddenException(CodeResponse::FORBIDDEN_EXCEPTION, '不允许删除guest分组');
         }
 
-        Db::startTrans();
+        DB::beginTransaction();
         try {
+            $group->delete();
             $group->permissions()->detach();
             $group->users()->detach();
-            Db::commit();
-        } catch (Exception $ex) {
-            Db::rollback();
-            throw new OperationException(['msg' => "删除分组失败:{$ex->getMessage()}"]);
+            DB::commit();
+        } catch (\Exception $ex) {
+            DB::rollback();
+            throw new OperationException(CodeResponse::OPERATION_EXCEPTION, "删除分组失败:{$ex->getMessage()}");
         }
     }
 
     /**
      * @param int $id
      * @param array $permissionIds
-     * @throws DbException
      * @throws NotFoundException
      * @throws OperationException
      */
     public static function dispatchPermissions(int $id, array $permissionIds)
     {
-        $group = LinGroupModel::where('level', '<>', GroupLevelEnum::ROOT)
-            ->get($id);
+        $group = LinGroup::query()
+            ->where('level', '<>', GroupLevelEnums::ROOT)
+            ->where('id', $id)
+            ->first();
         if (!$group) {
             throw new NotFoundException();
         }
 
         foreach ($permissionIds as $permissionId) {
-            $permission = LinPermissionModel::where('mount', MountTypeEnum::MOUNT)
-                ->get($permissionId);
+            $permission = LinPermission::query()->where('mount', MountTypeEnums::MOUNT)->where('id', $permissionId)->first();
             if (!$permission) {
-                throw new NotFoundException(['error_code' => 10231, 'msg' => '分配了不存在的权限']);
+                throw new NotFoundException(CodeResponse::PERMISSION_NOT_EXIST);
             }
         }
 
         try {
             $group->permissions()->attach($permissionIds);
-        } catch (Exception $ex) {
-            throw new OperationException(['msg' => '权限分配失败']);
+        } catch (\Exception $ex) {
+            throw new OperationException(CodeResponse::OPERATION_EXCEPTION, '权限分配失败');
         }
     }
 
@@ -310,7 +328,7 @@ class AdminService
      */
     public static function removePermissions(int $id, array $permissionIds): int
     {
-        $group = LinGroupModel::where('level', '<>', GroupLevelEnum::ROOT)
+        $group = LinGroupModel::where('level', '<>', GroupLevelEnums::ROOT)
             ->get($id);
         if (!$group) {
             throw new NotFoundException();
@@ -327,8 +345,8 @@ class AdminService
         return $group->permissions()->detach($permissionIds);
     }
 
-    public static function createPermission(string $name, string $module): LinPermissionModel
+    public static function createPermission(string $name, string $module): LinPermission
     {
-        return LinPermissionModel::create(['name' => $name, 'module' => $module, 'mount' => 1]);
+        return LinPermission::create(['name' => $name, 'module' => $module, 'mount' => 1]);
     }
 }

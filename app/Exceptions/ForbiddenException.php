@@ -2,12 +2,13 @@
 
 namespace App\Exceptions;
 
+use App\Utils\CodeResponse;
 use Exception;
 
 class ForbiddenException extends Exception
 {
     //
-    public function __construct(array $codeSponse = [1002, '权限不足，请联系管理员'], $info = '权限不足，请联系管理员')
+    public function __construct(array $codeSponse = CodeResponse::FORBIDDEN_EXCEPTION, $info = '')
     {
         list($code, $message) = $codeSponse;
         parent::__construct($message = $info ?: $message, $code);

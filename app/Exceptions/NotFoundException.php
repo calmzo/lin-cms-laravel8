@@ -8,9 +8,9 @@ use Exception;
 class NotFoundException extends Exception
 {
     //
-    public function __construct($info = '资源不存在')
+    public function __construct(array $codeSponse = CodeResponse::NOT_FOUND_EXCEPTION, $info = '')
     {
-        list($code, $message) = CodeResponse::EXCEPTION;
+        list($code, $message) = $codeSponse;
         parent::__construct($message = $info ?: $message, $code);
     }
 

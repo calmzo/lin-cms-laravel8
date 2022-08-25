@@ -87,8 +87,14 @@ class Handler extends ExceptionHandler
                 'code' => $e->getCode(),
                 'message' => $e->getMessage()
             ];
+        } elseif ($e instanceof ValidateException) {
+            $status = 404;
+            $response = [
+                'code' => $e->getCode(),
+                'message' => $e->getMessage(),
+            ];
         } else {
-            $status = 400;
+            $status = 404;
             $response = [
                 'code' => $e->getCode(),
                 'message' => $e->getMessage()

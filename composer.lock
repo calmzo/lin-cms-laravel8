@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "03b1854a93fa35bb13e6f13d498e1721",
+    "content-hash": "873b84ef1ac5a6bd805059368d1ec66d",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -7112,6 +7112,52 @@
                 }
             ],
             "time": "2022-01-24T18:55:24+00:00"
+        },
+        {
+            "name": "wangyu/reflex-core",
+            "version": "0.1.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/china-wangyu/php-reflex-core.git",
+                "reference": "69acbc94841951fa59261f6b8aee6e8278bfc578"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/china-wangyu/php-reflex-core/zipball/69acbc94841951fa59261f6b8aee6e8278bfc578",
+                "reference": "69acbc94841951fa59261f6b8aee6e8278bfc578",
+                "shasum": "",
+                "mirrors": [
+                    {
+                        "url": "https://mirrors.aliyun.com/composer/dists/%package%/%reference%.%type%",
+                        "preferred": true
+                    }
+                ]
+            },
+            "require": {
+                "php": ">=7.1.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "WangYu\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "wangyu",
+                    "email": "china_wangyu@aliyun.com"
+                }
+            ],
+            "description": "原生PHP的反射注释模型,composer扩展",
+            "support": {
+                "issues": "https://github.com/china-wangyu/php-reflex-core/issues",
+                "source": "https://github.com/china-wangyu/php-reflex-core/tree/dev"
+            },
+            "time": "2020-05-17T08:07:43+00:00"
         },
         {
             "name": "webmozart/assert",

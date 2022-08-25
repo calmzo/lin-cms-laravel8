@@ -2,12 +2,12 @@
 
 namespace App\Exceptions;
 
-use Exception;
+use App\Utils\CodeResponse;
 
-class UserException extends Exception
+class ValidateException extends \Exception
 {
     //
-    public function __construct(array $codeSponse = [10020, '账户不存在'], $info = '')
+    public function __construct(array $codeSponse = CodeResponse::VALIDATE_EXCEPTION, $info = '')
     {
         list($code, $message) = $codeSponse;
         parent::__construct($message = $info ?: $message, $code);

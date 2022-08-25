@@ -8,9 +8,9 @@ use Exception;
 class RepeatException extends Exception
 {
     //
-    public function __construct($info = '资源已存在')
+    public function __construct(array $codeSponse = CodeResponse::REPEAT_EXCEPTION, $info = '')
     {
-        list($code, $message) = CodeResponse::REPEATEXCEPTION;
+        list($code, $message) = $codeSponse;
         parent::__construct($message = $info ?: $message, $code);
     }
 

@@ -11,13 +11,18 @@ class CodeResponse
 
     const REPEAT = [400, '资源已存在'];
     const FORBIDDEN = [403, '权限不足，请联系管理员'];
-    const BADPARAMETER = [10030, '参数错误'];
-    const REPEATEXCEPTION = [10071, '资源已存在'];
+    const PARAMETER_EXCEPTION = [10030, '参数错误'];
+    const REPEAT_EXCEPTION = [10071, '资源已存在'];
     const FILEEXCEPTION = [6000, '文件体积过大'];
+    const OPERATION_EXCEPTION = [10001, '权限不足，请联系管理员'];
+    const FORBIDDEN_EXCEPTION = [10002, '权限不足，请联系管理员'];
+    const VALIDATE_EXCEPTION = [10073, '参数错误'];
 
     const EXCEPTION = [10021, '异常'];
+    const NOT_FOUND_EXCEPTION = [10021, '资源不存在'];
 
     const AUTHFAILED = [10021, '密码错误，请重新输入'];
+    const PERMISSION_NOT_EXIST = [10231, '分配了不存在的权限'];
 
 
     const UN_LOGIN = [501, '请登录'];

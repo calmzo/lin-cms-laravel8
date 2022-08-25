@@ -58,7 +58,7 @@ class LinUser extends BaseModel implements JWTSubject, AuthenticatableContract,
 
     public function groups()
     {
-        return $this->belongsToMany(LinGroup::class, 'lin_user_group', 'group_id', 'user_id');
+        return $this->belongsToMany(LinGroup::class, 'lin_user_group', 'user_id', 'group_id');
     }
 
     public function identity()

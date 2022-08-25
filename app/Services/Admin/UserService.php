@@ -41,12 +41,12 @@ class UserService
     {
         $user = LinUserModel::query()->where('username', $params['username'])->first();
         if ($user) {
-            throw new RepeatException(CodeResponse::REPEAT, '用户名已存在');
+            throw new RepeatException(CodeResponse::VALIDATE_EXCEPTION, '用户名已存在');
         }
         if (isset($params['email'])) {
             $user = LinUserModel::query()->where('email', $params['email'])->first();
             if ($user) {
-                throw new RepeatException(CodeResponse::REPEAT, '邮箱地址已存在');
+                throw new RepeatException(CodeResponse::VALIDATE_EXCEPTION, '邮箱地址已存在');
             }
         }
         if (isset($params['group_ids'])) {
@@ -74,7 +74,7 @@ class UserService
     {
         $user = self::getByUsername($username);
         if (empty($user)) {
-            throw new NotFoundException('用户不存在');
+            throw new NotFoundException(CodeResponse::EXCEPTION, '用户不存在');
         }
         //验证密码
         $is_pass = Hash::check($password, $user->password);
@@ -141,14 +141,14 @@ class UserService
             $isExit = LinUser::query()->where('username', $params['username'])
                 ->first();
             if ($isExit) {
-                throw new RepeatException('用户名已被占用');
+                throw new RepeatException(CodeResponse::REPEAT_EXCEPTION, '用户名已被占用');
             }
         }
         if (isset($params['email']) && $params['email'] !== $user['email']) {
             $isExit = LinUser::query()->where('email', $params['email'])
                 ->first();
             if ($isExit) {
-                throw new RepeatException('邮箱已被占用');
+                throw new RepeatException(CodeResponse::REPEAT_EXCEPTION, '邮箱已被占用');
             }
         }
         return $user->update($params);
