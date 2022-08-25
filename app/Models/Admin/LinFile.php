@@ -2,12 +2,19 @@
 
 namespace App\Models\Admin;
 
-use think\Model;
-use think\model\concern\SoftDelete;
+use App\Models\BaseModel;
+use App\Models\BooleanSoftDeletes;
 
-class LinFile extends Model
+class LinFile extends BaseModel
 {
-    use SoftDelete;
+    use BooleanSoftDeletes;
 
-    public $autoWriteTimestamp = 'datetime';
+    public $fillable = [
+        'name',
+        'path',
+        'size',
+        'extension',
+        'md5',
+        'type'
+    ];
 }

@@ -13,6 +13,7 @@ class CodeResponse
     const FORBIDDEN = [403, '权限不足，请联系管理员'];
     const BADPARAMETER = [10030, '参数错误'];
     const REPEATEXCEPTION = [10071, '资源已存在'];
+    const FILEEXCEPTION = [6000, '文件体积过大'];
 
     const EXCEPTION = [10021, '异常'];
 

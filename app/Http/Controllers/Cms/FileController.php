@@ -2,15 +2,17 @@
 
 namespace App\Http\Controllers\Cms;
 
-use think\facade\Request;
-use app\lib\file\LocalUploader;
-use app\lib\exception\file\FileException;
+use App\Exceptions\File\FileException;
+use App\Lib\UploadService;
+use App\Models\Admin\LinFile;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 /**
  * Class File
  * @package app\api\controller\cms
  */
-class FileController
+class FileController extends BaseController
 {
     protected $only = [];
 
@@ -19,16 +21,12 @@ class FileController
      * @throws FileException
      * @throws \LinCmsTp\exception\FileException
      */
-    public function postFile()
+    public function postFile(Request $request)
     {
-        try {
-            $request = Request::file();
-        } catch (\Exception $e) {
-            throw new FileException([
-                'msg' => '字段中含有非法字符',
-            ]);
+        if(!$request->hasFile('file'))
+        {
+            throw new FileException();
         }
-        $file = (new LocalUploader($request))->upload();
-        return $file;
+        return UploadService::upload($request->file('file'));
     }
 }
