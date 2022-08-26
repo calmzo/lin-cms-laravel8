@@ -110,20 +110,32 @@ composer install
 
 ## 数据库配置
 
-Lin 需要你自己在 MySQL 中新建一个数据库，名字由你自己决定。例如，新建一个名为` lin-cms `的数据库。接着，我们需要在工程中进行一项简单的配置。使用编辑器打开 Lin 工程根目录下``/config/database.php``，找到如下配置项：
+MySQL 中新建一个数据库，名为` lin-cms `数据库,编辑env文件，配置数据库：
 
-```dotenv
+```env
 DB_CONNECTION=mysql
-DB_HOST=115.28.184.68
+DB_HOST=127.0.0.1
 DB_PORT=3306
-DB_DATABASE=lin_cms
-DB_USERNAME=lin_cms
-DB_PASSWORD=wrJ6dy2NLd3jtNw8
+DB_DATABASE=laravel
+DB_USERNAME=root
+DB_PASSWORD=
   //省略后面一堆的配置项
 ```
-
 **请务必根据自己的实际情况修改此配置项**
 
 ## 导入数据
+项目已初始化表数据  主要为root用户和用户组
+1、执行 `migrate Artisan` 命令，执行数据库迁移：
+```bash
+php artisan migrate
+```
 
-接下来使用你本机上任意一款数据库可视化工具，为已经创建好的`lin-cms`数据库运行lin-cms-laravel根目录下的`schema.sql`文件，这个SQL脚本文件将为为你生成一些基础的数据库表和数据。
+2、运行 Seeders
+```bash
+#运行 DatabaseSeeder 类
+php artisan db:seed
+
+#指定一个特定的 seeder 类
+php artisan db:seed --class=UserSeeder
+```
+
