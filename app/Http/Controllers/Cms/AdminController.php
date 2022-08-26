@@ -192,20 +192,16 @@ class AdminController extends BaseController
      * @adminRequired
      * @permission('删除多个权限','管理员','hidden')
      * @param Request $request
-     * @param('group_id','分组id','require|integer')
-     * @param('permission_ids','权限id','require|array|min:1')
-     * @return Json
-     * @throws DbException
-     * @throws NotFoundException
+     * @return array|\Illuminate\Http\JsonResponse
+     * @throws \App\Exceptions\NotFoundException
      */
     public function removePermissions(Request $request)
     {
-        $groupId = $request->post('group_id');
-        $permissionIds = $request->post('permission_ids');
+        $groupId = $request->input('group_id');
+        $permissionIds = $request->input('permission_ids');
 
         $deleted = AdminService::removePermissions($groupId, $permissionIds);
-
-        Hook::listen('logger', "修改了分组ID为{$groupId}的权限");
-        return writeJson(200, $deleted, '删除权限成功', 10);
+        Logger::dispatch("修改了分组ID为{$groupId}的权限");
+        return $this->success($deleted, '删除权限成功');
     }
 }

@@ -317,25 +317,21 @@ class AdminService
      * @param int $id
      * @param array $permissionIds
      * @return int
-     * @throws DbException
      * @throws NotFoundException
      */
     public static function removePermissions(int $id, array $permissionIds): int
     {
-        $group = LinGroupModel::where('level', '<>', GroupLevelEnums::ROOT)
-            ->get($id);
+        $group = LinGroup::query()->where('level', '<>', GroupLevelEnums::ROOT)->where('id', $id)->first();
         if (!$group) {
             throw new NotFoundException();
         }
 
         foreach ($permissionIds as $permissionId) {
-            $permission = LinPermissionModel::where('mount', MountTypeEnum::MOUNT)
-                ->get($permissionId);
+            $permission = LinPermission::query()->where('mount', MountTypeEnums::MOUNT)->where('id', $permissionId)->first();
             if (!$permission) {
-                throw new NotFoundException(['error_code' => 10231, 'msg' => '分配了不存在的权限']);
+                throw new NotFoundException([10231, '分配了不存在的权限']);
             }
         }
-
         return $group->permissions()->detach($permissionIds);
     }
 
