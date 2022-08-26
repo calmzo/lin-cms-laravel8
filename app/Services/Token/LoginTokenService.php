@@ -33,7 +33,7 @@ class LoginTokenService
 //    }
 //
 
-    public static function user()
+    public static function user(): LinUser
     {
         return Auth::guard('cms')->user();
     }
@@ -44,11 +44,18 @@ class LoginTokenService
         return !is_null(self::user());
     }
 
+    /**
+     * @return mixed
+     */
     public static function userId()
     {
         return self::user()->getAuthIdentifier();
     }
 
+    /**
+     * @param $user
+     * @return array
+     */
     public static function getToken($user)
     {
         $accessToken = Auth::guard('cms')->login($user);

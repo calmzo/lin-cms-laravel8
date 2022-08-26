@@ -29,10 +29,7 @@ class UserService
     /**
      * @param array $params
      * @return LinUserModel
-     * @throws DataNotFoundException
-     * @throws DbException
      * @throws ForbiddenException
-     * @throws ModelNotFoundException
      * @throws NotFoundException
      * @throws OperationException
      * @throws RepeatException
@@ -68,6 +65,7 @@ class UserService
      * @param string $username
      * @param string $password
      * @return Model
+     * @throws AuthFailedException
      * @throws NotFoundException
      */
     public static function verify(string $username, string $password): Model
@@ -129,11 +127,20 @@ class UserService
         return $user;
     }
 
+    /**
+     * @param int $uid
+     * @return \Illuminate\Database\Eloquent\Builder|Model|object|null
+     */
     public static function getInformation(int $uid)
     {
         return LinUser::query()->where('id', $uid)->with('groups')->first();
     }
 
+    /**
+     * @param array $params
+     * @return int
+     * @throws RepeatException
+     */
     public static function updateUser(array $params): int
     {
         $user = LoginTokenService::user();
@@ -154,6 +161,12 @@ class UserService
         return $user->update($params);
     }
 
+    /**
+     * @param string $oldPassword
+     * @param string $newPassword
+     * @return int
+     * @throws AuthFailedException
+     */
     public static function changePassword(string $oldPassword, string $newPassword): int
     {
         $user = LoginTokenService::user();

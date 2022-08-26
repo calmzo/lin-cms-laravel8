@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers\Cms;
 
+use App\Validates\User\ChangePasswordFormValidate;
 use App\Validates\User\RegisterFormValidate;
 use App\Events\Logger;
 use App\Validates\User\LoginFormValidate;
 use App\Services\Admin\UserService;
 use App\Services\Token\LoginTokenService;
+use App\Validates\User\UpdateUserFormValidate;
 use Illuminate\Http\Request;
 
 
@@ -16,15 +18,15 @@ class UserController extends BaseController
     protected $except = ['login', 'register'];
 
     /**
-     * 注册
      * @adminRequired
      * @permission('注册','管理员','hidden')
-     * @param Request $request
+     * @param RegisterFormValidate $registerFormValidate
      * @return array|\Illuminate\Http\JsonResponse
      * @throws \App\Exceptions\ForbiddenException
      * @throws \App\Exceptions\NotFoundException
      * @throws \App\Exceptions\OperationException
      * @throws \App\Exceptions\RepeatException
+     * @throws \App\Exceptions\ValidateException
      */
     public function register(RegisterFormValidate $registerFormValidate)
     {
@@ -35,12 +37,11 @@ class UserController extends BaseController
     }
 
     /**
-     * 用户登录
      * @param LoginFormValidate $loginFormValidate
      * @return array
      * @throws \App\Exceptions\AuthFailedException
      * @throws \App\Exceptions\NotFoundException
-     * @throws \App\Exceptions\ParameterException
+     * @throws \App\Exceptions\ValidateException
      */
     public function login(LoginFormValidate $loginFormValidate)
     {
@@ -72,7 +73,6 @@ class UserController extends BaseController
     /**
      * 查询自己拥有的权限
      * @return array
-     * @throws \App\Exceptions\UserException
      */
     public function getAllowedApis()
     {
@@ -81,8 +81,7 @@ class UserController extends BaseController
     }
 
     /**
-     * @loginRequired
-     * @return mixed
+     * @return \Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Model|object|null
      */
     public function getInformation()
     {
@@ -91,35 +90,32 @@ class UserController extends BaseController
     }
 
     /**
-     * @loginRequired
-     * @param Request $request
-     * @validate('UpdateUserForm')
-     * @return Json
-     * @throws RepeatException
+     * @param UpdateUserFormValidate $updateUserFormValidate
+     * @return array|\Illuminate\Http\JsonResponse
+     * @throws \App\Exceptions\RepeatException
+     * @throws \App\Exceptions\ValidateException
      */
-    public function update(Request $request)
+    public function update(UpdateUserFormValidate $updateUserFormValidate)
     {
-        $params = $request->all();
+        $params = $updateUserFormValidate->check();
         $row = UserService::updateUser($params);
         return $this->success([], '用户信息更新成功');
     }
 
     /**
-     * @loginRequired
-     * @validate('ChangePasswordForm')
-     * @param Request $request
-     * @return Json
-     * @throws AuthFailedException
-     * @throws NotFoundException
+     * @param ChangePasswordFormValidate $changePasswordFormValidate
+     * @return array|\Illuminate\Http\JsonResponse
+     * @throws \App\Exceptions\AuthFailedException
+     * @throws \App\Exceptions\ValidateException
      */
-    public function changePassword(Request $request)
+    public function changePassword(ChangePasswordFormValidate $changePasswordFormValidate)
     {
-        $oldPassword = $request->input('old_password');
-        $newPassword = $request->input('new_password');
-
+        $params = $changePasswordFormValidate->check();
+        $oldPassword = $params['old_password'];
+        $newPassword = $params['new_password'];
         $row = UserService::changePassword($oldPassword, $newPassword);
         Logger::dispatch("修改了自己的密码");
-        return $this->success([], '密码修改成功');
+        return $this->success($row, '密码修改成功');
     }
 
     /**
