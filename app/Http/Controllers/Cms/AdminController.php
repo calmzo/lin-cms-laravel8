@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Cms;
 
 use App\Events\Logger;
-use App\Listeners\LoggerNotification;
 use App\Services\Admin\AdminService;
+use App\Validates\User\ResetPasswordValidate;
 use Illuminate\Http\Request;
 
 class AdminController extends BaseController
@@ -40,19 +40,18 @@ class AdminController extends BaseController
     /**
      * @adminRequired
      * @permission('修改用户密码','管理员','hidden')
-     * @validate('ResetPasswordValidator')
-     * @param Request $request
+     * @param ResetPasswordValidate $resetPasswordValidate
      * @param $id
-     * @return Json
-     * @throws NotFoundException
+     * @return array|\Illuminate\Http\JsonResponse
+     * @throws \App\Exceptions\NotFoundException
+     * @throws \App\Exceptions\ValidateException
      */
-    public function changeUserPassword(Request $request, $id)
+    public function changeUserPassword(ResetPasswordValidate $resetPasswordValidate, $id)
     {
-        $newPassword = $request->put('new_password');
-        AdminService::changeUserPassword($id, $newPassword);
-        Hook::listen('logger', "修改了用户ID为{$id}的密码");
-
-        return writeJson(200, null, '修改成功', 4);
+        $param = $resetPasswordValidate->check();
+        AdminService::changeUserPassword($id, $param['new_password']);
+        Logger::dispatch("修改了用户ID为{$id}的密码");
+        return $this->success([], '修改成功');
     }
 
     /**
@@ -144,7 +143,7 @@ class AdminController extends BaseController
 
         $groupId = AdminService::createGroup($name, $info, $permissionIds);
         Logger::dispatch("创建了分组：{$name}");
-        return $this->success($groupId,"新增分组成功");
+        return $this->success($groupId, "新增分组成功");
 //        writeJson(201, $groupId, '新增分组成功', 15);
     }
 
@@ -169,7 +168,7 @@ class AdminController extends BaseController
 
         $res = AdminService::updateGroup($id, $name, $info);
         Logger::dispatch("更新了id为{$id}的分组");
-        return $this->success($res,"更新分组信息成功");
+        return $this->success($res, "更新分组信息成功");
 //        return writeJson(200, $res, '更新分组信息成功', 7);
     }
 
@@ -187,7 +186,7 @@ class AdminController extends BaseController
     {
         AdminService::deleteGroup($id);
         Logger::dispatch("删除了id为{$id}的分组");
-        return $this->success([],"删除分组成功");
+        return $this->success([], "删除分组成功");
     }
 
     /**
@@ -208,7 +207,7 @@ class AdminController extends BaseController
 
         AdminService::dispatchPermissions($groupId, $permissionIds);
         Logger::dispatch("修改了分组ID为{$groupId}的权限");
-        return $this->success([],'分配权限成功');
+        return $this->success([], '分配权限成功');
     }
 
     /**

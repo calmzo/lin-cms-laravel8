@@ -17,6 +17,7 @@ use App\Utils\CodeResponse;
 use Illuminate\Pagination\LengthAwarePaginator;
 use App\Lib\Authenticator\PermissionScan;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
 class AdminService
 {
@@ -74,12 +75,12 @@ class AdminService
      */
     public static function changeUserPassword(int $uid, string $newPassword): void
     {
-        $user = LinUserModel::get($uid);
+        $user = LinUser::query()->find($uid);
         if (!$user) {
             throw new NotFoundException();
         }
-
-        LinUserIdentityModel::resetPassword($user, $newPassword);
+        $user->password = Hash::make($newPassword);
+        $user->save();
 
     }
 

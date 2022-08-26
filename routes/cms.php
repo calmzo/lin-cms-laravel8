@@ -41,7 +41,7 @@ Route::prefix('admin')->group(function () {
     // 查询所有用户
     Route::get('users', [AdminController::class, 'getAdminUsers']);
     // 修改用户密码
-    Route::put('user/:id/password', [AdminController::class, 'changeUserPassword']);
+    Route::put('user/{id}/password', [AdminController::class, 'changeUserPassword']);
     // 删除用户
     Route::delete('user/{id}', [AdminController::class, 'deleteUser']);
     // 更新用户信息
