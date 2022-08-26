@@ -189,12 +189,10 @@ class UserService
         try {
             $user = new LinUser();
             $user->username = $params['username'];
+            $user->nickname = $params['username'];
             $user->password = Hash::make($params['password']);
             $user->email = $params['email'];
             $user->avatar = 'https://yanxuan.nosdn.127.net/80841d741d7fa3073e0ae27bf487339f.jpg?imageView&quality=90&thumbnail=64x64';
-            $user->nickname = $params['username'];
-            $user->admin = 1;
-            $user->active = 1;
 //        $user->last_login_time = now();
 //        $user->last_login_ip = $request->getClientIp();
             $user->save();

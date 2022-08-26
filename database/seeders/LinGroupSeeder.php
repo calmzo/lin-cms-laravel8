@@ -14,7 +14,7 @@ class LinGroupSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('lin_group')->insert(
+        DB::table('lin_group')->insert([
             [
                 'name' => 'root',
                 'info' => '超级用户组',
@@ -28,6 +28,7 @@ class LinGroupSeeder extends Seeder
                 'level' => 2,
                 'create_time' => now(),
                 'update_time' => now(),
-            ]);
+            ]
+        ]);
     }
 }
