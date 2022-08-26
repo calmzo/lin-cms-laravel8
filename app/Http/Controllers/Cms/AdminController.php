@@ -87,8 +87,6 @@ class AdminController extends BaseController
         AdminService::updateUserInfo($id, $groupIds);
         Logger::dispatch("更新了用户：{$id}的所属分组");
         return $this->success($id, '更新用户成功');
-
-//        return writeJson(201, $id, '更新用户成功', 6);
     }
 
     /**
@@ -132,7 +130,6 @@ class AdminController extends BaseController
         $groupId = AdminService::createGroup($name, $info, $permissionIds);
         Logger::dispatch("创建了分组：{$name}");
         return $this->success($groupId, "新增分组成功");
-//        writeJson(201, $groupId, '新增分组成功', 15);
     }
 
     /**
@@ -151,7 +148,6 @@ class AdminController extends BaseController
         $res = AdminService::updateGroup($id, $name, $info);
         Logger::dispatch("更新了id为{$id}的分组");
         return $this->success($res, "更新分组信息成功");
-//        return writeJson(200, $res, '更新分组信息成功', 7);
     }
 
     /**

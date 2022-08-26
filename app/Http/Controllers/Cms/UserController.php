@@ -99,7 +99,7 @@ class UserController extends BaseController
     {
         $params = $updateUserFormValidate->check();
         $row = UserService::updateUser($params);
-        return $this->success([], '用户信息更新成功');
+        return $this->success($row, '用户信息更新成功');
     }
 
     /**

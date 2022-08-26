@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Cms;
 
 use App\Services\Admin\LogService;
+use App\Validates\Log\LogListValidate;
+use App\Validates\Log\LogSearchValidate;
 use LinCmsTp5\exception\ParameterException;
 use Illuminate\Http\Request;
 
@@ -14,45 +16,39 @@ class LogController extends BaseController
     /**
      * @groupRequired
      * @permission('查询所有日志','日志')
-     * @param Request $request
-     * @param('page','分页数','integer')
-     * @param('count','分页值','integer')
-     * @param('start','开始日期','date')
-     * @param('end','结束日期','date')
-     * @return array
+     * @param LogListValidate $logListValidate
+     * @return array|mixed
      * @throws ParameterException
+     * @throws \App\Exceptions\ValidateException
      */
-    public function getLogs(Request $request)
+    public function getLogs(LogListValidate $logListValidate)
     {
-        $start = $request->input('start');
-        $end = $request->input('end');
-        $name = $request->input('name');
-        $page = $request->input('page', 0);
-        $count = $request->input('count', 10);
-
+        $params = $logListValidate->check();
+        $start = $params['start'] ?? null;
+        $end = $params['end'] ?? null;
+        $name = $params['name'] ?? null;
+        $page = $params['page'] ?? 0; //分页数
+        $count = $params['count'] ?? 10; //分页值
         return $this->successPaginate(LogService::getLogs($page, $count, $start, $end, $name));
     }
 
     /**
      * @groupRequired
      * @permission('搜索日志','日志')
-     * @param Request $request
-     * @param('page','分页数','integer')
-     * @param('count','分页值','integer')
-     * @param('start','开始日期','date')
-     * @param('end','结束日期','date')
-     * @return array
+     * @param LogSearchValidate $logSearchValidate
+     * @return array|mixed
      * @throws ParameterException
+     * @throws \App\Exceptions\ValidateException
      */
-    public function getUserLogs(Request $request)
+    public function getUserLogs(LogSearchValidate $logSearchValidate)
     {
-        $start = $request->get('start');
-        $end = $request->get('end');
-        $name = $request->get('name');
-        $keyword = $request->get('keyword');
-        $page = $request->get('page', 0);
-        $count = $request->get('count', 10);
-
+        $params = $logSearchValidate->check();
+        $start = $params['start'] ?? null;
+        $end = $params['end'] ?? null;
+        $name = $params['name'] ?? null;
+        $keyword = $params['keyword'] ?? null;
+        $page = $params['page'] ?? 0; //分页数
+        $count = $params['count'] ?? 10; //分页值
         return $this->successPaginate(LogService::searchLogs($page, $count, $start, $end, $name, $keyword));
     }
 
@@ -60,9 +56,7 @@ class LogController extends BaseController
      * @groupRequired
      * @permission('查询日志记录的用户','日志')
      * @param Request $request
-     * @param('page','分页数','integer')
-     * @param('count','分页值','integer')
-     * @return array
+     * @return array|mixed
      * @throws ParameterException
      */
     public function getUsers(Request $request)

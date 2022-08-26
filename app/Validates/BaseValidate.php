@@ -2,7 +2,6 @@
 
 namespace App\Validates;
 
-use App\Exceptions\ParameterException;
 use App\Exceptions\ValidateException;
 use App\Utils\CodeResponse;
 use Illuminate\Support\Facades\Validator;

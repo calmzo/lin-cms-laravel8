@@ -15,7 +15,7 @@ class LogService
      * @param string|null $start
      * @param string|null $end
      * @param string|null $name
-     * @return array
+     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
      * @throws ParameterException
      */
     public static function getLogs(int $page, int $count, string $start = null, string $end = null, string $name = null)
@@ -28,8 +28,7 @@ class LogService
         if ($start && $end) {
             $query->whereBetween('create_time', [$start, $end]);
         }
-        $res = $query->orderByDesc('create_time')->paginate($count, ['*'], 'page', $page);
-        return $res;
+        return $query->orderByDesc('create_time')->paginate($count, ['*'], 'page', $page);
     }
 
     /**
@@ -39,10 +38,10 @@ class LogService
      * @param string|null $end
      * @param string|null $name
      * @param string|null $keyword
-     * @return array
+     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
      * @throws ParameterException
      */
-    public static function searchLogs(int $page, int $count, string $start = null,
+    public static function searchLogs(int    $page, int $count, string $start = null,
                                       string $end = null, string $name = null, string $keyword = null)
     {
         list($page, $count) = paginate($page, $count);
@@ -65,7 +64,7 @@ class LogService
     /**
      * @param int $page
      * @param int $count
-     * @return array
+     * @return LengthAwarePaginator
      * @throws ParameterException
      */
     public static function getUserNames(int $page, int $count)
