@@ -18,6 +18,7 @@ use Illuminate\Pagination\LengthAwarePaginator;
 use App\Lib\Authenticator\PermissionScan;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 
 class AdminService
 {
@@ -91,19 +92,20 @@ class AdminService
      */
     public static function deleteUser(int $uid): void
     {
-        $user = LinUserModel::get($uid, 'identity');
+        $user = LinUser::query()->find($uid);
         if (!$user) {
             throw new NotFoundException();
         }
 
-        Db::startTrans();
+        DB::beginTransaction();
         try {
             $user->groups()->detach();
-            $user->together('identity')->delete();
-            Db::commit();
-        } catch (Exception $ex) {
+            $user->delete();
+            DB::commit();
+        } catch (\Exception $ex) {
+            Log::error($ex->getMessage());
             DB::rollback();
-            throw new OperationException(['msg' => "删除用户失败"]);
+            throw new OperationException(CodeResponse::OPERATION_EXCEPTION, '删除用户失败');
         }
     }
 
@@ -154,11 +156,9 @@ class AdminService
         }
     }
 
+
     /**
-     * @return array|PDOStatement|string|\think\Collection|Collection
-     * @throws DataNotFoundException
-     * @throws DbException
-     * @throws ModelNotFoundException
+     * @return \Illuminate\Database\Eloquent\Builder[]|\Illuminate\Database\Eloquent\Collection
      * @throws NotFoundException
      */
     public static function getAllGroups()
@@ -172,8 +172,7 @@ class AdminService
 
     /**
      * @param int $id
-     * @return \think\db\Query
-     * @throws DbException
+     * @return \Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Model|object
      * @throws NotFoundException
      */
     public static function getGroup(int $id)
@@ -192,9 +191,6 @@ class AdminService
      * @param string $info
      * @param array $permissionIds
      * @return int
-     * @throws DataNotFoundException
-     * @throws DbException
-     * @throws ModelNotFoundException
      * @throws NotFoundException
      * @throws OperationException
      */
@@ -237,9 +233,6 @@ class AdminService
      * @param string $name
      * @param string $info
      * @return int
-     * @throws DataNotFoundException
-     * @throws DbException
-     * @throws ModelNotFoundException
      * @throws NotFoundException
      */
     public static function updateGroup(int $id, string $name, string $info): int

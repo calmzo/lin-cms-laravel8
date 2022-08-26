@@ -13,6 +13,7 @@ class AdminController extends BaseController
 
 
     /**
+     * 查询所有可分配的权限
      * @adminRequired
      * @permission('查询所有可分配的权限','管理员','hidden')
      * @return array
@@ -58,31 +59,27 @@ class AdminController extends BaseController
      * @adminRequired
      * @permission('删除用户','管理员','hidden')
      * @param int $id
-     * @param('id','用户id','require|integer')
-     * @return Json
-     * @throws NotFoundException
-     * @throws OperationException
+     * @return array|\Illuminate\Http\JsonResponse
+     * @throws \App\Exceptions\NotFoundException
+     * @throws \App\Exceptions\OperationException
      */
     public function deleteUser(int $id)
     {
         AdminService::deleteUser($id);
-        Hook::listen('logger', "删除了用户ID为：{$id}的用户");
-        return writeJson(201, $id, '删除用户成功', 5);
+        Logger::dispatch("删除了用户ID为：{$id}的用户");
+        return $this->success($id, '删除用户成功');
     }
 
     /**
+     * 管理员更新用户信息
      * @adminRequired
      * @permission('管理员更新用户信息','管理员','hidden')
      * @param Request $request
-     * @param('id','用户id','require|integer')
-     * @param('group_ids','分组id','require|array|min:1')
-     * @return Json
-     * @throws NotFoundException
-     * @throws OperationException
-     * @throws ForbiddenException
-     * @throws DataNotFoundException
-     * @throws ModelNotFoundException
-     * @throws DbException
+     * @param $id
+     * @return array|\Illuminate\Http\JsonResponse
+     * @throws \App\Exceptions\ForbiddenException
+     * @throws \App\Exceptions\NotFoundException
+     * @throws \App\Exceptions\OperationException
      */
     public function updateUser(Request $request, $id)
     {
@@ -95,13 +92,11 @@ class AdminController extends BaseController
     }
 
     /**
+     * 查询所有分组
      * @adminRequired
      * @permission('查询所有分组','管理员','hidden')
-     * @return array|PDOStatement|string|\think\Collection|Collection
-     * @throws DataNotFoundException
-     * @throws DbException
-     * @throws ModelNotFoundException
-     * @throws NotFoundException
+     * @return \Illuminate\Database\Eloquent\Builder[]|\Illuminate\Database\Eloquent\Collection
+     * @throws \App\Exceptions\NotFoundException
      */
     public function getGroupAll()
     {
@@ -112,10 +107,8 @@ class AdminController extends BaseController
      * @adminRequired
      * @permission('查询一个权限组及其权限','管理员','hidden')
      * @param int $id
-     * @param('id','分组id','require|integer')
-     * @return Query
-     * @throws DbException
-     * @throws NotFoundException
+     * @return \Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Model|object
+     * @throws \App\Exceptions\NotFoundException
      */
     public function getGroup(int $id)
     {
@@ -126,14 +119,9 @@ class AdminController extends BaseController
      * @adminRequired
      * @permission('新建一个权限组','管理员','hidden')
      * @param Request $request
-     * @param('name','分组名字','require')
-     * @param('permission_ids','权限id','require|array|min:1')
-     * @return Json
-     * @throws DataNotFoundException
-     * @throws DbException
-     * @throws ModelNotFoundException
-     * @throws NotFoundException
-     * @throws OperationException
+     * @return array|\Illuminate\Http\JsonResponse
+     * @throws \App\Exceptions\NotFoundException
+     * @throws \App\Exceptions\OperationException
      */
     public function createGroup(Request $request)
     {
@@ -152,14 +140,8 @@ class AdminController extends BaseController
      * @permission('更新一个权限组','管理员','hidden')
      * @param Request $request
      * @param int $id
-     * @param('id','分组id','require|integer')
-     * @param('info','分组信息','require')
-     * @param('name','分组名字','require')
-     * @return Json
-     * @throws DataNotFoundException
-     * @throws DbException
-     * @throws ModelNotFoundException
-     * @throws NotFoundException
+     * @return array|\Illuminate\Http\JsonResponse
+     * @throws \App\Exceptions\NotFoundException
      */
     public function updateGroup(Request $request, int $id)
     {
@@ -174,13 +156,12 @@ class AdminController extends BaseController
 
     /**
      * @adminRequired
-     * @permission('更新一个权限组','管理员','hidden')
+     * @permission('删除一个权限组','管理员','hidden')
      * @param int $id
-     * @param('id','分组id','require|integer')
-     * @return Json
-     * @throws ForbiddenException
-     * @throws NotFoundException
-     * @throws OperationException
+     * @return array|\Illuminate\Http\JsonResponse
+     * @throws \App\Exceptions\ForbiddenException
+     * @throws \App\Exceptions\NotFoundException
+     * @throws \App\Exceptions\OperationException
      */
     public function deleteGroup(int $id)
     {
@@ -193,12 +174,9 @@ class AdminController extends BaseController
      * @adminRequired
      * @permission('分配多个权限','管理员','hidden')
      * @param Request $request
-     * @param('group_id','分组id','require|integer')
-     * @param('permission_ids','权限id','require|array|min:1')
-     * @return Json
-     * @throws DbException
-     * @throws NotFoundException
-     * @throws OperationException
+     * @return array|\Illuminate\Http\JsonResponse
+     * @throws \App\Exceptions\NotFoundException
+     * @throws \App\Exceptions\OperationException
      */
     public function dispatchPermissions(Request $request)
     {

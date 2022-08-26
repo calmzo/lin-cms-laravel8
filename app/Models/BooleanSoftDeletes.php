@@ -72,9 +72,9 @@ trait BooleanSoftDeletes
 
         $time = $this->freshTimestamp();
 
-        $columns = [$this->getDeletedAtColumn() => 1];
+        $columns = [$this->getDeletedAtColumn() => now()];
 
-        $this->{$this->getDeletedAtColumn()} = 1;
+        $this->{$this->getDeletedAtColumn()} = now();
 
         if ($this->timestamps && ! is_null($this->getUpdatedAtColumn())) {
             $this->{$this->getUpdatedAtColumn()} = $time;
