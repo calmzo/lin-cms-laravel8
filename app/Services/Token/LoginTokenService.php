@@ -3,39 +3,25 @@
 namespace App\Services\Token;
 
 use App\Models\Admin\LinUser;
+use App\Services\Admin\UserService;
 use Illuminate\Support\Facades\Auth;
 use Lcobucci\JWT\Signer\Hmac\Sha256;
 use Lcobucci\JWT\Builder;
 
 class LoginTokenService
 {
-
-//    /**
-//     * @param null $uid
-//     * @return string
-//     * 生成token
-//     */
-//    public static function createToken($uid = null)
-//    {
-//        $signer = new Sha256();//加密规则
-//        $time = time();//当前时间
-//
-//        $token = (new Builder())
-//            ->issuedBy('teacher')//签发人
-//            ->identifiedBy('MarsLei', true) //标题id
-//            ->issuedAt($time)//发出令牌的时间
-//            ->canOnlyBeUsedAfter($time) //生效时间(即时生效)
-//            ->expiresAt($time + 3600) //过期时间
-//            ->with('uid', $uid) //用户id
-//            ->sign($signer, 'my') //签名
-//            ->getToken(); //得到token
-//        return (string)$token;
-//    }
-//
-
-    public static function user(): LinUser
+    public static function user(): array
     {
-        return Auth::guard('cms')->user();
+        $payload = self::payload()->toArray();
+        $user = Auth::guard('cms')->user()->toArray();
+        $user['admin'] = $payload['admin'];
+        $user['permission'] = $payload['permission'];
+        return $user;
+    }
+
+    public static function payload()
+    {
+        return Auth::guard('cms')->getPayload();
     }
 
 
@@ -58,7 +44,10 @@ class LoginTokenService
      */
     public static function getToken($user)
     {
-        $accessToken = Auth::guard('cms')->login($user);
+        $userPermissions = UserService::getPermissions($user->id);
+        $claims['permission'] = $userPermissions['permissions'];
+        $claims['admin'] = $userPermissions['admin'];
+        $accessToken = Auth::guard('cms')->claims($claims)->login($user);
 //        $refreshToken = Auth::guard('cms')->refresh();
         $token = [
             'accessToken' => $accessToken,

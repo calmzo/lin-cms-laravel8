@@ -94,7 +94,9 @@ class LinUser extends BaseModel implements JWTSubject, AuthenticatableContract,
     {
         return [
             'issuer' => env('JWT_ISSUER'),
-            'userId' => $this->getKey()
+            'userId' => $this->getKey(),
+            'permissions' => '',
+            'admin' => '',
         ];
     }
 }

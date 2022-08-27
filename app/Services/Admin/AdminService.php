@@ -4,7 +4,7 @@ namespace App\Services\Admin;
 
 use App\Enums\GroupLevelEnums;
 use App\Enums\MountTypeEnums;
-use App\Exceptions\ForbiddenException;
+use App\Exceptions\Token\ForbiddenException;
 use App\Exceptions\NotFoundException;
 use App\Exceptions\OperationException;
 use App\Models\Admin\LinGroup;

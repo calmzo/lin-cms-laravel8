@@ -5,7 +5,7 @@ namespace App\Services\Admin;
 
 use App\Enums\GroupLevelEnums;
 use App\Enums\MountTypeEnums;
-use App\Exceptions\ForbiddenException;
+use App\Exceptions\Token\ForbiddenException;
 use App\Exceptions\NotFoundException;
 use App\Exceptions\AuthFailedException;
 use App\Exceptions\OperationException;
@@ -169,7 +169,8 @@ class UserService
      */
     public static function changePassword(string $oldPassword, string $newPassword): int
     {
-        $user = LoginTokenService::user();
+        $userId = LoginTokenService::userId();
+        $user = LinUser::query()->find($userId);
         $is_pass = Hash::check($oldPassword, $user->password);
         if (!$is_pass) {
             throw new AuthFailedException('旧密码错误');

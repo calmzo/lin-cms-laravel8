@@ -22,7 +22,7 @@ class UserController extends BaseController
      * @permission('注册','管理员','hidden')
      * @param RegisterFormValidate $registerFormValidate
      * @return array|\Illuminate\Http\JsonResponse
-     * @throws \App\Exceptions\ForbiddenException
+     * @throws \App\Exceptions\Token\ForbiddenException
      * @throws \App\Exceptions\NotFoundException
      * @throws \App\Exceptions\OperationException
      * @throws \App\Exceptions\RepeatException
@@ -48,9 +48,9 @@ class UserController extends BaseController
         $params = $loginFormValidate->check();
         $username = $params['username'];
         $password = $params['password'];
-        $user = UserService::verify($username, $password);
-        $token = LoginTokenService::getToken($user);
-        Logger::dispatch(array('uid' => $user->id, 'username' => $user->username, 'msg' => '登陆成功获取了令牌'));
+        $tokenExtend = UserService::verify($username, $password);
+        $token = LoginTokenService::getToken($tokenExtend);
+        Logger::dispatch(array('uid' => $tokenExtend['id'], 'username' => $tokenExtend['username'], 'msg' => '登陆成功获取了令牌'));
         return [
             'access_token' => $token['accessToken'],
             'refresh_token' => $token['refreshToken'] ?? ''

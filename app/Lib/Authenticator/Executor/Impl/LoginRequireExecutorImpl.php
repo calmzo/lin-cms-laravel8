@@ -1,16 +1,8 @@
 <?php
-/**
- * Created by PhpStorm
- * Author: 沁塵
- * Date: 2020/8/14
- * Time: 11:29 下午
- */
 
-namespace app\lib\authenticator\executor\impl;
+namespace App\Lib\Authenticator\Executor\Impl;
 
-
-use app\api\service\token\LoginToken;
-use app\lib\authenticator\executor\IExecutor;
+use App\Lib\Authenticator\Executor\IExecutor;
 
 class LoginRequireExecutorImpl implements IExecutor
 {

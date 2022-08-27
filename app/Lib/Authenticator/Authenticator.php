@@ -1,20 +1,13 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: 沁塵
- * Date: 2019/2/19
- * Time: 9:54
- */
+namespace App\Lib\Authenticator;
 
-namespace app\lib\authenticator;
-
-use app\api\service\token\LoginToken;
-use app\lib\enum\PermissionLevelEnum;
-use app\lib\exception\token\DeployException;
+use App\Enums\PermissionLevelEnums;
+use App\Exceptions\Token\DeployException;
+use App\Services\Token\LoginTokenService;
 use Exception;
+use Illuminate\Http\Request;
 use ReflectionClass;
 use ReflectionException;
-use think\Request;
 use WangYu\Reflex;
 
 class Authenticator
@@ -25,13 +18,13 @@ class Authenticator
     public function __construct(Request $request)
     {
         // 获取当前请求的控制层
-        $controller = $request->controller();
+        $controller = $request->route()->getActionName();
         // 控制层下有二级目录，需要解析下。如controller/cms/Admin，获取到的是Cms.Admin
-        $controllerPath = explode('.', $controller);
+        $controllerPath = explode('@', $controller);
         // 获取当前请求的方法
-        $action = $request->action();
+        $action =$controllerPath[1];
         // 反射获取当前请求的控制器类
-        $class = new ReflectionClass('app\\api\\controller\\' . strtolower($controllerPath[0]) . '\\' . $controllerPath[1]);
+        $class = new ReflectionClass($controllerPath[0]);
         $this->parsedClass = (new Reflex($class->newInstance()))->setMethod($action);
     }
 
@@ -86,17 +79,18 @@ class Authenticator
     {
         $permissionLevel = null;
 
-        if ($this->parsedClass->isExist(PermissionLevelEnum::LOGIN_REQUIRED)) {
-            $permissionLevel = PermissionLevelEnum::LOGIN_REQUIRED;
-            return $permissionLevel;
-        }
+        //登录验证 jwt登录单独校验
+//        if ($this->parsedClass->isExist(PermissionLevelEnums::LOGIN_REQUIRED)) {
+//            $permissionLevel = PermissionLevelEnums::LOGIN_REQUIRED;
+//            return $permissionLevel;
+//        }
 
-        if ($this->parsedClass->isExist(PermissionLevelEnum::GROUP_REQUIRED)) {
-            $permissionLevel = PermissionLevelEnum::GROUP_REQUIRED;
+        if ($this->parsedClass->isExist(PermissionLevelEnums::GROUP_REQUIRED)) {
+            $permissionLevel = PermissionLevelEnums::GROUP_REQUIRED;
             return $permissionLevel;
         }
-        if ($this->parsedClass->isExist(PermissionLevelEnum::ADMIN_REQUIRED)) {
-            $permissionLevel = PermissionLevelEnum::ADMIN_REQUIRED;
+        if ($this->parsedClass->isExist(PermissionLevelEnums::ADMIN_REQUIRED)) {
+            $permissionLevel = PermissionLevelEnums::ADMIN_REQUIRED;
             return $permissionLevel;
         }
         return '';
@@ -104,7 +98,7 @@ class Authenticator
 
     protected function getUserInfo(): array
     {
-        return LoginToken::getInstance()->getTokenExtend();
+        return LoginTokenService::user();
     }
 
     /**

@@ -17,6 +17,7 @@ class CodeResponse
     const OPERATION_EXCEPTION = [10001, '权限不足，请联系管理员'];
     const FORBIDDEN_EXCEPTION = [10002, '权限不足，请联系管理员'];
     const VALIDATE_EXCEPTION = [10073, '参数错误'];
+    const DEPLOY_EXCEPTION = [50000, '请修改php.ini配置：opcache.save_comments=1或直接注释掉此配置(无效请在 etc/php.d/ext-opcache.ini 文件中修改)'];
 
     const EXCEPTION = [10021, '异常'];
     const NOT_FOUND_EXCEPTION = [10021, '资源不存在'];

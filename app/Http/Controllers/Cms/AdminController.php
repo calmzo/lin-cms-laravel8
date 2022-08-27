@@ -77,7 +77,7 @@ class AdminController extends BaseController
      * @param Request $request
      * @param $id
      * @return array|\Illuminate\Http\JsonResponse
-     * @throws \App\Exceptions\ForbiddenException
+     * @throws \App\Exceptions\Token\ForbiddenException
      * @throws \App\Exceptions\NotFoundException
      * @throws \App\Exceptions\OperationException
      */
@@ -155,7 +155,7 @@ class AdminController extends BaseController
      * @permission('删除一个权限组','管理员','hidden')
      * @param int $id
      * @return array|\Illuminate\Http\JsonResponse
-     * @throws \App\Exceptions\ForbiddenException
+     * @throws \App\Exceptions\Token\ForbiddenException
      * @throws \App\Exceptions\NotFoundException
      * @throws \App\Exceptions\OperationException
      */

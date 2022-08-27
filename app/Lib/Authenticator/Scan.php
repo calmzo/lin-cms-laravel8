@@ -1,6 +1,5 @@
 <?php
 
-
 namespace App\Lib\Authenticator;
 
 use Illuminate\Support\Env;
