@@ -45,8 +45,13 @@ class RouteServiceProvider extends ServiceProvider
 
             Route::prefix('cms')
                 ->middleware('cms')
-                ->namespace($this->namespace.'\\Cms')
+                ->namespace($this->namespace . '\\Cms')
                 ->group(base_path('routes/cms.php'));
+
+            Route::prefix('v1')
+                ->middleware('v1')
+                ->namespace($this->namespace . '\\V1')
+                ->group(base_path('routes/v1.php'));
 
             Route::middleware('web')
                 ->namespace($this->namespace)

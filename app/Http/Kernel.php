@@ -45,7 +45,9 @@ class Kernel extends HttpKernel
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
         ],
         'cms' => [
-//            'auth:cms' => \App\Http\Middleware\AuthCmsJwt::class,
+        ],
+
+        'v1' => [
         ],
     ];
 

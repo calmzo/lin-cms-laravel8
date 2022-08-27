@@ -15,7 +15,8 @@ return [
     |
     */
 
-    'paths' => ['cms/*'],
+//    'paths' => ['cms/*', 'v1/*'],
+    'paths' => ['*'],
 
     'allowed_methods' => ['*'],
 
