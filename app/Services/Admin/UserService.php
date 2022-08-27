@@ -15,11 +15,10 @@ use App\Models\Admin\LinAuth;
 use App\Models\Admin\LinGroup;
 use App\Models\Admin\LinGroupPermission;
 use App\Models\Admin\LinPermission;
-use App\Models\Admin\LinUser;
 use App\Models\Admin\LinUserGroup;
 use App\Services\Token\LoginTokenService;
 use App\Utils\CodeResponse;
-use App\Models\Admin\LinUser as LinUserModel;
+use App\Models\Admin\LinUser;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Database\Eloquent\Model;
@@ -28,20 +27,20 @@ class UserService
 {
     /**
      * @param array $params
-     * @return LinUserModel
+     * @return LinUser
      * @throws ForbiddenException
      * @throws NotFoundException
      * @throws OperationException
      * @throws RepeatException
      */
-    public static function createUser(array $params): LinUserModel
+    public static function createUser(array $params): LinUser
     {
-        $user = LinUserModel::query()->where('username', $params['username'])->first();
+        $user = LinUser::query()->where('username', $params['username'])->first();
         if ($user) {
             throw new RepeatException(CodeResponse::VALIDATE_EXCEPTION, '用户名已存在');
         }
         if (isset($params['email'])) {
-            $user = LinUserModel::query()->where('email', $params['email'])->first();
+            $user = LinUser::query()->where('email', $params['email'])->first();
             if ($user) {
                 throw new RepeatException(CodeResponse::VALIDATE_EXCEPTION, '邮箱地址已存在');
             }
@@ -86,19 +85,6 @@ class UserService
 //            return $this->fail(CodeResponse::UPDATE_DATA_FAILED);
 //        }
         return $user;
-    }
-
-    public static function generateTokenExtend(Model $linUserIdentityModel)
-    {
-        $user = LinUserModel::get($linUserIdentityModel['user_id']);
-        $userPermissions = self::getPermissions($user->getAttr('id'));
-        return [
-            'id' => $user->getAttr('id'),
-            'identifier' => $linUserIdentityModel->getAttr('identifier'),
-            'email' => $user->getAttr('email'),
-            'admin' => $userPermissions['admin'],
-            'permissions' => $userPermissions['permissions'],
-        ];
     }
 
     public static function getPermissions(int $uid): array
@@ -181,10 +167,10 @@ class UserService
 
     /**
      * @param array $params
-     * @return LinUserModel
+     * @return LinUser
      * @throws OperationException
      */
-    private static function registerUser(array $params): LinUserModel
+    private static function registerUser(array $params): LinUser
     {
         DB::beginTransaction();
         try {
@@ -222,7 +208,7 @@ class UserService
      */
     public function getByUsername(string $username)
     {
-        return LinUserModel::query()->where('username', $username)->first();
+        return LinUser::query()->where('username', $username)->first();
     }
 
 
