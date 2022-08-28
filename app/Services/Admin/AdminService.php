@@ -12,7 +12,6 @@ use App\Models\Admin\LinGroupPermission;
 use App\Models\Admin\LinPermission;
 use App\Models\Admin\LinUser;
 use App\Models\Admin\LinUserGroup;
-use app\super\controller\Code;
 use App\Utils\CodeResponse;
 use Illuminate\Pagination\LengthAwarePaginator;
 use App\Lib\Authenticator\PermissionScan;

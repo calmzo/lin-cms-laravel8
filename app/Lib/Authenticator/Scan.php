@@ -16,7 +16,7 @@ class Scan
     public function __construct()
     {
         // 指定控制器层的命名空间
-        $this->controller_namespace = 'App\\Http\\controllers\\';
+        $this->controller_namespace = 'App\\Http\\Controllers\\';
         // 拼接出当前应用模块下的控制器层目录在服务器上的绝对路径
         $this->controller_path = app_path('Http/Controllers');
         // 初始化需权限扫描的命名空间列表
