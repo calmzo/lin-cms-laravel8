@@ -46,7 +46,6 @@ class Authenticator
         if (!$actionPermissionLevel) {
             return true;
         }
-
         // 执行校验并返回校验结果
         return $this->execute($actionPermissionLevel);
 
