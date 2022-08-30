@@ -7,7 +7,7 @@ use App\Lib\Authenticator\Authenticator;
 use Closure;
 use Illuminate\Http\Request;
 
-class Authentication
+class Permission
 {
     /**
      * Handle an incoming request.

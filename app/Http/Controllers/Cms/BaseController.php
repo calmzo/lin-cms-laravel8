@@ -25,7 +25,7 @@ class BaseController extends Controller
         if (!is_null($this->except)) {
             $options['except'] = $this->except;
         }
-        $this->middleware('auth:cms', $options);
+        $this->middleware(['auth:cms', 'permission'], $options);
     }
 
     protected function codeReturn(array $codeResponse, $data = null, $info = '')

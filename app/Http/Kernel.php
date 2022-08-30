@@ -45,11 +45,11 @@ class Kernel extends HttpKernel
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
         ],
         'cms' => [
-            \App\Http\Middleware\Authentication::class
+//            \App\Http\Middleware\Authentication::class
         ],
 
         'v1' => [
-            \App\Http\Middleware\Authentication::class
+//            \App\Http\Middleware\Authentication::class
         ],
     ];
 
@@ -62,6 +62,7 @@ class Kernel extends HttpKernel
      */
     protected $routeMiddleware = [
         'auth' => \App\Http\Middleware\Authenticate::class,
+        'permission' => \App\Http\Middleware\Permission::class,
         'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
         'cache.headers' => \Illuminate\Http\Middleware\SetCacheHeaders::class,
         'can' => \Illuminate\Auth\Middleware\Authorize::class,

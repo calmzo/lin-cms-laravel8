@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 
 class AdminController extends BaseController
 {
-    protected $only = [];
+    protected $except = [];
 
 
     /**
