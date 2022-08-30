@@ -4,16 +4,27 @@ namespace App\Models\Admin;
 
 use App\Models\BaseModel;
 use App\Models\BooleanSoftDeletes;
-use Illuminate\Database\Eloquent\SoftDeletes;
-use think\model\concern\SoftDelete;
+use App\Scopes\LinLogScope;
 
 class LinLog extends BaseModel
 {
     use BooleanSoftDeletes;
+
     protected $fillable = [
         'message', 'user_id', 'username', 'status_code', 'method', 'path', 'permission'
     ];
     protected $hidden = ['update_time', 'delete_time'];
+    public $splitType = 'create_time';
+
+//    /**
+//     * 模型的 "booted" 方法
+//     */
+//    protected static function booted()
+//    {
+//        static::addGlobalScope(new LinLogScope);
+//
+//    }
+
 
     public static function getLogs(int $start, int $count, $params = []): array
     {
@@ -66,24 +77,21 @@ class LinLog extends BaseModel
         }
     }
 
-    public
-    function searchStartAttr($query, $value)
+    public function searchStartAttr($query, $value)
     {
         if ($value) {
             $query->where('create_time', '>= time', $value);
         }
     }
 
-    public
-    function searchEndAttr($query, $value)
+    public function searchEndAttr($query, $value)
     {
         if ($value) {
             $query->where('create_time', '<= time', $value);
         }
     }
 
-    public
-    function searchKeywordAttr($query, $value)
+    public function searchKeywordAttr($query, $value)
     {
         if ($value) {
             $query->whereLike('message', "%{$value}%");
