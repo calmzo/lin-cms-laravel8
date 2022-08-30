@@ -10,7 +10,7 @@ use Illuminate\Http\Request;
 
 class LogController extends BaseController
 {
-    protected $only = [];
+    protected $except = [];
 
 
     /**
