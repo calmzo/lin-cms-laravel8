@@ -4,63 +4,64 @@ namespace App\Services;
 
 use App\Exceptions\NotFoundException;
 use App\Exceptions\OperationException;
-use App\Models\Book;
+use App\Models\Organization;
 use App\Utils\CodeResponse;
 
-class BookService
+class OrganizationService
 {
     /**
-     * @param $bid
+     * @param $id
      * @return \Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Builder[]|\Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Eloquent\Model|null
      */
-    public static function getBook($bid)
+    public static function getOrganization($id)
     {
-        return Book::query()->find($bid);
+        return Organization::query()->find($id);
     }
+
 
     /**
      * @return \Illuminate\Database\Eloquent\Builder[]|\Illuminate\Database\Eloquent\Collection
      */
-    public static function getBooks()
+    public static function getOrganizations()
     {
-        return Book::query()->orderByDesc('create_time')->get();
+        return Organization::query()->get();
     }
 
     /**
      * @param $params
      * @return \Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Model
      */
-    public static function createBook($params)
+    public static function createOrganization($params)
     {
-        return Book::query()->create($params);
+        return Organization::query()->create($params);
     }
 
 
     /**
-     * @param $bid
+     * @param $id
      * @param $params
      * @return bool|int
      * @throws OperationException
      */
-    public static function updateBook($bid, $params)
+    public static function updateOrganization($id, $params)
     {
         try {
-            $book = Book::query()->find($bid);
+            $book = Organization::query()->find($id);
             if (is_null($book)) {
                 throw new NotFoundException();
             }
             return $book->update($params);
         } catch (\Exception $e) {
-            throw new OperationException(CodeResponse::OPERATION_EXCEPTION, '修改图书失败'.$e->getMessage());
+            throw new OperationException(CodeResponse::OPERATION_EXCEPTION, '修改部门失败'.$e->getMessage());
         }
     }
 
     /**
-     * @param $bid
+     * @param $id
      * @return mixed
      */
-    public static function deleteBook($bid)
+    public static function deleteOrganization($id)
     {
-        return Book::query()->where('id', $bid)->delete();
+        return Organization::query()->where('id', $id)->delete();
     }
 }

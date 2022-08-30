@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\V1\BookController;
+use App\Http\Controllers\V1\CategoryController;
+use App\Http\Controllers\V1\OrganizationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -30,5 +32,12 @@ Route::prefix('book')->group(function () {
     Route::delete('/{bid}', [BookController::class, 'deleteBook']);
 });
 
+//组织架构
+Route::prefix('organization')->group(function () {
+    //
+    Route::post('', [OrganizationController::class, 'createOrganization']);
+    Route::get('/{id}', [OrganizationController::class, 'getOrganization']);
+    Route::get('', [OrganizationController::class, 'getOrganizations']);
+});
 
 
