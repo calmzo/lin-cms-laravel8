@@ -94,6 +94,12 @@ class Handler extends ExceptionHandler
                 'code' => $e->getCode(),
                 'message' => $e->getMessage(),
             ];
+        } elseif ($e instanceof BadRequestException) {
+            $status = 200;
+            $response = [
+                'code' => $e->getCode(),
+                'message' => $e->getMessage()
+            ];
         } else {
             $status = 404;
             $response = [

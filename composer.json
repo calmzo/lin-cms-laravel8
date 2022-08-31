@@ -19,7 +19,8 @@
         "tencentcloud/tencentcloud-sdk-php": "^3.0",
         "tymon/jwt-auth": "^1.0",
         "vdb/php-spider": "^0.6.3",
-        "wangyu/reflex-core": "^0.1.1"
+        "wangyu/reflex-core": "^0.1.1",
+        "yansongda/laravel-pay": "^3.1"
     },
     "require-dev": {
         "facade/ignition": "^2.3.6",

@@ -2,8 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\V1\BookController;
-use App\Http\Controllers\V1\CategoryController;
 use App\Http\Controllers\V1\OrganizationController;
+use App\Http\Controllers\V1\TradeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -38,6 +38,13 @@ Route::prefix('organization')->group(function () {
     Route::post('', [OrganizationController::class, 'createOrganization']);
     Route::get('/{id}', [OrganizationController::class, 'getOrganization']);
     Route::get('', [OrganizationController::class, 'getOrganizations']);
+});
+
+
+Route::prefix('trade')->group(function () {
+    //
+    Route::post('h5/create', [TradeController::class, 'createH5Trade']);
+
 });
 
 
