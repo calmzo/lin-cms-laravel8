@@ -5,6 +5,7 @@ use App\Http\Controllers\Cms\UserController;
 use App\Http\Controllers\Cms\AdminController;
 use App\Http\Controllers\Cms\LogController;
 use App\Http\Controllers\Cms\FileController;
+use App\Http\Controllers\Cms\UploadController;
 
 /*
 |--------------------------------------------------------------------------
@@ -70,6 +71,11 @@ Route::prefix('log')->group(function () {
 });
 //上传文件类接口
 Route::post('file', [FileController::class, 'postFile']);
+
+// 日志类接口
+Route::prefix('upload')->group(function () {
+    Route::get('void/sign', [UploadController::class, 'getVoidSign']);
+});
 
 
 
