@@ -5,6 +5,7 @@ namespace App\Lib\Pay;
 use App\Enums\TradeEnums;
 use App\Lib\Pay\Pay as PayService;
 use App\Models\Refund;
+use Illuminate\Support\Facades\Log;
 use Yansongda\Pay\Logger;
 use App\Models\Trade;
 use Yansongda\Supports\Collection;
@@ -12,6 +13,18 @@ use Yansongda\Pay\Pay;
 
 class Alipay extends PayService
 {
+
+    /**
+     * @var \Yansongda\Pay\Gateways\Alipay
+     */
+    protected $gateway;
+
+    public function __construct($gateway = null)
+    {
+        $gateway = $gateway instanceof AlipayGateway ? $gateway : new AlipayGateway();
+
+        $this->gateway = $gateway->getInstance();
+    }
 
     /**
      * 扫码下单
@@ -22,7 +35,7 @@ class Alipay extends PayService
     {
         try {
 
-            $response = Pay::alipay()->scan([
+            $response = $this->gateway->scan([
                 'out_trade_no' => $trade->sn,
                 'total_amount' => $trade->amount,
                 'subject' => $trade->subject,
@@ -52,7 +65,7 @@ class Alipay extends PayService
     {
         try {
 
-            $result = Pay::alipay()->app([
+            $result = $this->gateway->app([
                 'out_trade_no' => $trade->sn,
                 'total_amount' => $trade->amount,
                 'subject' => $trade->subject,
@@ -80,15 +93,14 @@ class Alipay extends PayService
     {
         try {
 
-            $result = Pay::alipay()->wap([
+            $result = $this->gateway->wap([
                 'out_trade_no' => $trade->sn,
                 'total_amount' => $trade->amount,
                 'subject' => $trade->subject,
                 'http_method' => 'GET',
             ]);
-
         } catch (\Exception $e) {
-
+            Log::channel('pay')->error("Alipay Wap Exception:" . $e->getMessage());
             Logger::error('Alipay Wap Exception', [
                 'code' => $e->getCode(),
                 'message' => $e->getMessage(),
@@ -110,7 +122,7 @@ class Alipay extends PayService
     {
         try {
 
-            $result = Pay::alipay()->mini([
+            $result = $this->gateway->mini([
                 'out_trade_no' => $trade->sn,
                 'total_amount' => $trade->amount,
                 'subject' => $trade->subject,
@@ -138,7 +150,7 @@ class Alipay extends PayService
     {
         try {
 
-            $data = Pay::alipay()->verify();
+            $data = $this->gateway->verify();
 
             Logger::debug('Alipay Verify Data', $data->all());
 
@@ -165,7 +177,7 @@ class Alipay extends PayService
         }
 
         if ($trade->status == TradeEnums::STATUS_FINISHED) {
-            return Pay::alipay()->success();
+            return $this->gateway->success();
         }
 
         if ($trade->status != TradeEnums::STATUS_PENDING) {
@@ -178,7 +190,7 @@ class Alipay extends PayService
         $trade = Trade::query()->where('id', $trade->id)->first();
 
         if ($trade->status == TradeEnums::STATUS_FINISHED) {
-            return Pay::alipay()->success();
+            return $this->gateway->success();
         }
 
         return false;
@@ -197,7 +209,7 @@ class Alipay extends PayService
 
             $order = ['out_trade_no' => $tradeNo];
 
-            $result = Pay::alipay()->find($order);
+            $result = $this->gateway->find($order);
 
         } catch (\Exception $e) {
 
@@ -222,7 +234,7 @@ class Alipay extends PayService
     {
         try {
 
-            $response = Pay::alipay()->close(['out_trade_no' => $tradeNo]);
+            $response = $this->gateway->close(['out_trade_no' => $tradeNo]);
 
             $result = $response->code == '10000';
 
@@ -249,7 +261,7 @@ class Alipay extends PayService
     {
         try {
 
-            $response = Pay::alipay()->cancel(['out_trade_no' => $tradeNo]);
+            $response = $this->gateway->cancel(['out_trade_no' => $tradeNo]);
 
             $result = $response->code == '10000';
 
@@ -278,7 +290,7 @@ class Alipay extends PayService
 
             $trade = Trade::query()->where('sn', $refund->trade_id)->first();
 
-            $response = Pay::alipay()->refund([
+            $response = $this->gateway->refund([
                 'out_trade_no' => $trade->sn,
                 'out_request_no' => $refund->sn,
                 'refund_amount' => $refund->amount,

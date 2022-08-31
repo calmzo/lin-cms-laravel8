@@ -34,8 +34,8 @@ class TradeService
             'sn' => $order->sn,
             'user_id' => LoginTokenService::userId(),
         ];
-        $trade = Trade::query()->create($tradeData);
-//        $trade = Trade::query()->first();
+//        $trade = Trade::query()->create($tradeData);
+        $trade = Trade::query()->first();
 
         $redirect = '';
         if ($trade->channel == TradeEnums::CHANNEL_ALIPAY) {
