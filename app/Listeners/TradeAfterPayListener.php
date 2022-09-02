@@ -3,8 +3,10 @@
 namespace App\Listeners;
 
 use App\Enums\OrderEnums;
+use App\Enums\TaskEnums;
 use App\Enums\TradeEnums;
 use App\Models\Order;
+use App\Models\Task;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
@@ -39,16 +41,16 @@ class TradeAfterPayListener
             $order->status = OrderEnums::STATUS_DELIVERING;
             $order->save();
 
-//            $task = new TaskModel();
-//
-//            $itemInfo = [
-//                'order' => ['id' => $order->id]
-//            ];
-//
-//            $task->item_id = $order->id;
-//            $task->item_info = $itemInfo;
-//            $task->item_type = TaskModel::TYPE_DELIVER;
-//            $task->create();
+            //任务
+            $task = new Task();
+            $itemInfo = [
+                'order' => ['id' => $order->id]
+            ];
+
+            $task->item_id = $order->id;
+            $task->item_info = json_encode($itemInfo, JSON_UNESCAPED_SLASHES);
+            $task->item_type = TaskEnums::TYPE_DELIVER;
+            $task->save();
 
             DB::commit();
 
@@ -70,7 +72,7 @@ class TradeAfterPayListener
                     'message' => $e->getMessage(),
                 ]));
 
-            throw new \RuntimeException('事务回滚');
+            throw new \RuntimeException('事务回滚'.$e->getMessage());
         }
     }
 }

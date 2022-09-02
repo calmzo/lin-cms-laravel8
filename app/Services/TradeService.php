@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Enums\ClientEnums;
 use App\Enums\TradeEnums;
+use App\Events\TradeAfterPayEvent;
 use App\Exceptions\BadRequestException;
 use App\Lib\Pay\Wxpay;
 use App\Lib\Pay\Alipay;
@@ -38,7 +39,8 @@ class TradeService
             'user_id' => LoginTokenService::userId(),
         ];
         $trade = Trade::query()->create($tradeData);
-
+        TradeAfterPayEvent::dispatch($trade);
+        die;
         $redirect = '';
         if ($trade->channel == TradeEnums::CHANNEL_ALIPAY) {
             $alipay = new Alipay();
