@@ -3,6 +3,7 @@
 namespace App\Console;
 
 use App\Console\Commands\CloseTradeCommand;
+use App\Console\Commands\DeliverTaskCommand;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -15,6 +16,7 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
         CloseTradeCommand::class,
+        DeliverTaskCommand::class,
         //
     ];
 
@@ -26,8 +28,8 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')->hourly();
-        $schedule->command('close_trade')->everyMinute();
+//        $schedule->command('close_trade')->everyMinute();
+        $schedule->command('deliver_task')->everyMinute();
     }
 
     /**

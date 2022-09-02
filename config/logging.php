@@ -113,6 +113,12 @@ return [
             'level' => 'debug',
             'days' => 14,
         ],
+        'deliver' => [
+            'driver' => 'daily',
+            'path' => storage_path('logs/deliver/deliver.log'),
+            'level' => 'debug',
+            'days' => 14,
+        ],
     ],
 
 ];
