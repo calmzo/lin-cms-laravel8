@@ -106,6 +106,13 @@ return [
             'level' => 'debug',
             'days' => 14,
         ],
+
+        'trade' => [
+            'driver' => 'daily',
+            'path' => storage_path('logs/trade/trade.log'),
+            'level' => 'debug',
+            'days' => 14,
+        ],
     ],
 
 ];
