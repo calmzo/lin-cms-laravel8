@@ -6,13 +6,24 @@ use App\Enums\TradeEnums;
 use App\Models\Refund;
 use App\Models\Trade;
 use App\Lib\Pay\Pay as PayService;
+use Illuminate\Support\Facades\Log;
 use Yansongda\Pay\Logger;
 use Yansongda\Supports\Collection;
-use Yansongda\Pay\Pay;
 
 class Wxpay extends PayService
 {
 
+    /**
+     * @var \Yansongda\Pay\Gateways\Wechat|\Yansongda\Pay\Provider\Wechat
+     */
+    protected $gateway;
+
+    public function __construct($gateway = null)
+    {
+        $gateway = $gateway instanceof WxpayGateway ? $gateway : new WxpayGateway();
+
+        $this->gateway = $gateway->getInstance();
+    }
 
     /**
      * 扫码下单
@@ -24,7 +35,7 @@ class Wxpay extends PayService
     {
         try {
 
-            $response = Pay::alipay()->scan([
+            $response = $this->gateway->scan([
                 'out_trade_no' => $trade->sn,
                 'total_fee' => 100 * $trade->amount,
                 'body' => $trade->subject,
@@ -33,6 +44,7 @@ class Wxpay extends PayService
             $result = $response->code_url ?? false;
 
         } catch (\Exception $e) {
+            Log::channel('pay')->error("Wxpay Scan Error:" . $e->getMessage());
 
             Logger::error('Wxpay Scan Error', [
                 'code' => $e->getCode(),
@@ -48,19 +60,20 @@ class Wxpay extends PayService
     /**
      * app支付
      * @param Trade $trade
-     * @return false|\Psr\Http\Message\ResponseInterface|\Symfony\Component\HttpFoundation\Response
+     * @return false|\Symfony\Component\HttpFoundation\Response|Collection
      */
     public function app(Trade $trade)
     {
         try {
 
-            $result = Pay::alipay()->app([
+            $result = $this->gateway->app([
                 'out_trade_no' => $trade->sn,
                 'total_fee' => 100 * $trade->amount,
                 'body' => $trade->subject,
             ]);
 
         } catch (\Exception $e) {
+            Log::channel('pay')->error("Wxpay App Exception:" . $e->getMessage());
 
             Logger::error('Wxpay App Exception', [
                 'code' => $e->getCode(),
@@ -76,19 +89,20 @@ class Wxpay extends PayService
     /**
      * wap支付
      * @param Trade $trade
-     * @return false|\Psr\Http\Message\ResponseInterface|\Symfony\Component\HttpFoundation\Response
+     * @return false|\Symfony\Component\HttpFoundation\RedirectResponse|Collection
      */
     public function wap(Trade $trade)
     {
         try {
 
-            $result = Pay::alipay()->wap([
+            $result = $this->gateway->wap([
                 'out_trade_no' => $trade->sn,
                 'total_fee' => 100 * $trade->amount,
                 'body' => $trade->subject,
             ]);
 
         } catch (\Exception $e) {
+            Log::channel('pay')->error("Alipay Wap Exception:" . $e->getMessage());
 
             Logger::error('Wxpay Wap Exception', [
                 'code' => $e->getCode(),
@@ -112,7 +126,7 @@ class Wxpay extends PayService
     {
         try {
 
-            $result = Pay::alipay()->mp([
+            $result = $this->gateway->mp([
                 'out_trade_no' => $trade->sn,
                 'total_fee' => 100 * $trade->amount,
                 'body' => $trade->subject,
@@ -120,6 +134,7 @@ class Wxpay extends PayService
             ]);
 
         } catch (\Exception $e) {
+            Log::channel('pay')->error("Wxpay MP Exception:" . $e->getMessage());
 
             Logger::error('Wxpay MP Exception', [
                 'code' => $e->getCode(),
@@ -143,7 +158,7 @@ class Wxpay extends PayService
     {
         try {
 
-            $result = Pay::alipay()->miniapp([
+            $result = $this->gateway->miniapp([
                 'out_trade_no' => $trade->sn,
                 'total_fee' => 100 * $trade->amount,
                 'body' => $trade->subject,
@@ -151,6 +166,7 @@ class Wxpay extends PayService
             ]);
 
         } catch (\Exception $e) {
+            Log::channel('pay')->error("Wxpay Mini Exception:" . $e->getMessage());
 
             Logger::error('Wxpay Mini Exception', [
                 'code' => $e->getCode(),
@@ -166,16 +182,19 @@ class Wxpay extends PayService
     /**
      * 异步通知
      * @return false|\Psr\Http\Message\ResponseInterface|\Symfony\Component\HttpFoundation\Response
+     * @throws \Yansongda\Pay\Exceptions\InvalidArgumentException
      */
     public function notify()
     {
         try {
 
-            $data = Pay::alipay()->verify();
+            $data = $this->gateway->verify();
+            Log::channel('pay')->debug("Wxpay Verify Data:" . $e->getMessage());
 
             Logger::debug('Wxpay Verify Data', $data->all());
 
         } catch (\Exception $e) {
+            Log::channel('pay')->error("Wxpay Verify Error:" . $e->getMessage());
 
             Logger::error('Wxpay Verify Error', [
                 'code' => $e->getCode(),
@@ -203,7 +222,7 @@ class Wxpay extends PayService
         }
 
         if ($trade->status == TradeEnums::STATUS_FINISHED) {
-            return Pay::alipay()->success();
+            return $this->gateway->success();
         }
 
         if ($trade->status != TradeEnums::STATUS_PENDING) {
@@ -213,10 +232,11 @@ class Wxpay extends PayService
         $trade->channel_sn = $data->transaction_id;
 
 //        $this->eventsManager->fire('Trade:afterPay', $this, $trade);
-        $trade = Trade::query()->where('id', $trade->id)->first();
+
+        $trade = Trade::query()->where('id', $data->id)->first();
 
         if ($trade->status == TradeEnums::STATUS_FINISHED) {
-            return Pay::alipay()->success();
+            return $this->gateway->success();
         }
 
         return false;
@@ -235,9 +255,10 @@ class Wxpay extends PayService
 
             $order = ['out_trade_no' => $tradeNo];
 
-            $result = Pay::alipay()->find($order);
+            $result = $this->gateway->find($order);
 
         } catch (\Exception $e) {
+            Log::channel('pay')->error("Alipay Find Order Exception:" . $e->getMessage());
 
             Logger::error('Alipay Find Order Exception', [
                 'code' => $e->getCode(),
@@ -260,11 +281,12 @@ class Wxpay extends PayService
     {
         try {
 
-            $response = Pay::alipay()->close(['out_trade_no' => $tradeNo]);
+            $response = $this->gateway->close(['out_trade_no' => $tradeNo]);
 
             $result = $response->result_code == 'SUCCESS';
 
         } catch (\Exception $e) {
+            Log::channel('pay')->error("Wxpay Close Order Exception:" . $e->getMessage());
 
             Logger::error('Wxpay Close Order Exception', [
                 'code' => $e->getCode(),
@@ -298,9 +320,9 @@ class Wxpay extends PayService
     {
         try {
 
-            $trade = Trade::query()->where('sn', $refund->trade_id)->first();
+            $trade = Trade::query()->where('id', $refund->trade_id)->first();
 
-            $response = Pay::alipay()->refund([
+            $response = $this->gateway->refund([
                 'out_trade_no' => $trade->sn,
                 'out_refund_no' => $refund->sn,
                 'total_fee' => 100 * $trade->amount,
@@ -310,6 +332,7 @@ class Wxpay extends PayService
             $result = $response->result_code == 'SUCCESS';
 
         } catch (\Exception $e) {
+            Log::channel('pay')->error("Wxpay Refund Order Exception:" . $e->getMessage());
 
             Logger::error('Wxpay Refund Order Exception', [
                 'code' => $e->getCode(),

@@ -34,18 +34,20 @@ class TradeService
             'sn' => $order->sn,
             'user_id' => LoginTokenService::userId(),
         ];
-//        $trade = Trade::query()->create($tradeData);
-        $trade = Trade::query()->first();
+        $trade = Trade::query()->create($tradeData);
+//        $trade = Trade::query()->first();
 
         $redirect = '';
         if ($trade->channel == TradeEnums::CHANNEL_ALIPAY) {
             $alipay = new Alipay();
             $response = $alipay->wap($trade);
-            $redirect = $response ? $response->getTargetUrl() : '';
+            $redirect = $response ? $response->getBody()->getContents() : '';
         } elseif ($trade->channel == TradeEnums::CHANNEL_WXPAY) {
             $wxpay = new Wxpay();
             $response = $wxpay->wap($trade);
-            $redirect = $response ? $response->getTargetUrl() : '';
+            dd($response);
+//            $redirect = $response ? $response->getTargetUrl() : '';
+            $redirect = $response ? $response->getBody()->getContents() : '';
         }
         $payment = ['redirect' => $redirect];
         return [

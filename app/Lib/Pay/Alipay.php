@@ -9,7 +9,6 @@ use Illuminate\Support\Facades\Log;
 use Yansongda\Pay\Logger;
 use App\Models\Trade;
 use Yansongda\Supports\Collection;
-use Yansongda\Pay\Pay;
 
 class Alipay extends PayService
 {
@@ -44,6 +43,7 @@ class Alipay extends PayService
             $result = $response->qr_code ?? false;
 
         } catch (\Exception $e) {
+            Log::channel('pay')->error("Alipay Qrcode Exception:" . $e->getMessage());
 
             Logger::error('Alipay Qrcode Exception', [
                 'code' => $e->getCode(),
@@ -72,6 +72,7 @@ class Alipay extends PayService
             ]);
 
         } catch (\Exception $e) {
+            Log::channel('pay')->error("Alipay app Exception:" . $e->getMessage());
 
             Logger::error('Alipay app Exception', [
                 'code' => $e->getCode(),
@@ -130,6 +131,7 @@ class Alipay extends PayService
             ]);
 
         } catch (\Exception $e) {
+            Log::channel('pay')->error("Alipay Mini Exception:" . $e->getMessage());
 
             Logger::error('Alipay Mini Exception', [
                 'code' => $e->getCode(),
@@ -212,6 +214,7 @@ class Alipay extends PayService
             $result = $this->gateway->find($order);
 
         } catch (\Exception $e) {
+            Log::channel('pay')->error("Alipay Find Order Exception:" . $e->getMessage());
 
             Logger::error('Alipay Find Order Exception', [
                 'code' => $e->getCode(),
@@ -239,6 +242,7 @@ class Alipay extends PayService
             $result = $response->code == '10000';
 
         } catch (\Exception $e) {
+            Log::channel('pay')->error("Alipay Close Order Exception:" . $e->getMessage());
 
             Logger::error('Alipay Close Order Exception', [
                 'code' => $e->getCode(),
@@ -266,6 +270,7 @@ class Alipay extends PayService
             $result = $response->code == '10000';
 
         } catch (\Exception $e) {
+            Log::channel('pay')->error("Alipay Cancel Order Exception:" . $e->getMessage());
 
             Logger::error('Alipay Cancel Order Exception', [
                 'code' => $e->getCode(),
@@ -299,6 +304,7 @@ class Alipay extends PayService
             $result = $response->code == '10000';
 
         } catch (\Exception $e) {
+            Log::channel('pay')->error("Alipay Refund Order Exception:" . $e->getMessage());
 
             Logger::error('Alipay Refund Order Exception', [
                 'code' => $e->getCode(),
