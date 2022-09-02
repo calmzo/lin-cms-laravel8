@@ -44,6 +44,8 @@ Route::prefix('organization')->group(function () {
 Route::prefix('trade')->group(function () {
     //
     Route::post('h5/create', [TradeController::class, 'createH5Trade']);
+    Route::post('mini/create', [TradeController::class, 'createMiniTrade']);
+    Route::post('qrcode/create', [TradeController::class, 'createQrcodeTrade']);
 
 });
 

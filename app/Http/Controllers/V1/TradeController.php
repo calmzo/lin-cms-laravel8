@@ -8,15 +8,15 @@ use Illuminate\Http\Request;
 
 class TradeController extends BaseController
 {
-
     public $except = [];
 
-    public function createTrade(Request $request)
+    public function createQrcodeTrade(Request $request)
     {
         $params = $request->all();
         $tradeService = new TradeService();
-        $res = $tradeService->create($params);
+        $res = $tradeService->createQrcodeTrade($params);
         return $this->success($res);
+
     }
 
 
@@ -25,6 +25,14 @@ class TradeController extends BaseController
         $params = $request->all();
         $tradeService = new TradeService();
         $res = $tradeService->createH5Trade($params);
+        return $this->success($res);
+    }
+
+    public function createMiniTrade(Request $request)
+    {
+        $params = $request->all();
+        $tradeService = new TradeService();
+        $res = $tradeService->createMiniTrade($params);
         return $this->success($res);
     }
 }

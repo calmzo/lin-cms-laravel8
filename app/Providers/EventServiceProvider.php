@@ -24,6 +24,9 @@ class EventServiceProvider extends ServiceProvider
         'App\Events\Logger' => [
             'App\Listeners\LoggerNotification',
         ],
+        'App\Events\TradeAfterPayEvent' => [
+            'App\Listeners\TradeAfterPayListener',
+        ],
     ];
 
     /**

@@ -3,6 +3,7 @@
 namespace App\Lib\Pay;
 
 use App\Enums\TradeEnums;
+use App\Events\TradeAfterPayEvent;
 use App\Models\Refund;
 use App\Models\Trade;
 use App\Lib\Pay\Pay as PayService;
@@ -230,8 +231,8 @@ class Wxpay extends PayService
         }
 
         $trade->channel_sn = $data->transaction_id;
-
-//        $this->eventsManager->fire('Trade:afterPay', $this, $trade);
+        //回调后逻辑
+        TradeAfterPayEvent::dispatch($trade);
 
         $trade = Trade::query()->where('id', $data->id)->first();
 

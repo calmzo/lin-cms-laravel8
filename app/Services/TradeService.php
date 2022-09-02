@@ -2,13 +2,16 @@
 
 namespace App\Services;
 
+use App\Enums\ClientEnums;
 use App\Enums\TradeEnums;
+use App\Exceptions\BadRequestException;
 use App\Lib\Pay\Wxpay;
 use App\Lib\Pay\Alipay;
 use App\Services\Token\LoginTokenService;
 use App\Traits\ClientTrait;
 use App\Traits\OrderTrait;
 use App\Traits\TradeTrait;
+use App\Utils\CodeResponse;
 use Illuminate\Support\Facades\DB;
 use App\Models\Trade;
 
@@ -35,7 +38,6 @@ class TradeService
             'user_id' => LoginTokenService::userId(),
         ];
         $trade = Trade::query()->create($tradeData);
-//        $trade = Trade::query()->first();
 
         $redirect = '';
         if ($trade->channel == TradeEnums::CHANNEL_ALIPAY) {
@@ -45,7 +47,6 @@ class TradeService
         } elseif ($trade->channel == TradeEnums::CHANNEL_WXPAY) {
             $wxpay = new Wxpay();
             $response = $wxpay->wap($trade);
-            dd($response);
 //            $redirect = $response ? $response->getTargetUrl() : '';
             $redirect = $response ? $response->getBody()->getContents() : '';
         }
@@ -56,21 +57,59 @@ class TradeService
         ];
     }
 
+    public function createMiniTrade($params)
+    {
+        $orderSn = $params['order_sn'];
+        $channel = $params['channel'];
+        $platform = request()->header('x-platform');
+        $platform = $this->checkMpPlatform($platform);
 
-    public function create($params)
+        $order = $this->checkOrderBySn($orderSn);
+        $this->checkIfAllowPay($order);
+
+        $channel = TradeEnums::CHANNEL_WXPAY;
+
+        if ($platform == ClientEnums::TYPE_MP_ALIPAY) {
+            $channel = TradeEnums::CHANNEL_ALIPAY;
+        } elseif ($platform == ClientEnums::TYPE_MP_WEIXIN) {
+            $channel = TradeEnums::CHANNEL_WXPAY;
+        }
+
+        $tradeData = [
+            'subject' => $order->subject,
+            'amount' => $order->amount,
+            'channel' => $channel,
+            'order_id' => $order->id,
+            'sn' => $order->sn,
+            'user_id' => LoginTokenService::userId(),
+        ];
+        $trade = Trade::query()->create($tradeData);
+        $response = null;
+        if ($channel == TradeEnums::CHANNEL_ALIPAY) {
+            $alipay = new Alipay();
+            $buyerId = '';
+            $response = $alipay->mini($trade, $buyerId);
+        } elseif ($channel == TradeEnums::CHANNEL_WXPAY) {
+            $wxpay = new Wxpay();
+            $openId = '';
+            $response = $wxpay->mini($trade, $openId);
+        }
+
+        return $response;
+    }
+
+
+    public function createQrcodeTrade()
     {
 
 
         DB::beginTransaction();
-        $service = new TradeCreateService();
-
-        $trade = $service->handle();
-
+        $trade = $this->createHandle();
         $qrCode = $this->getQrCode($trade);
 
         if ($trade && $qrCode) {
 
-            $this->db->commit();
+            DB::commit();
 
             return [
                 'sn' => $trade->sn,
@@ -80,9 +119,9 @@ class TradeService
 
         } else {
 
-            DB::rollBack();
+            DB::commit();
 
-            throw new BadRequestException('trade.create_failed');
+            throw new BadRequestException(CodeResponse::NOT_FOUND_EXCEPTION, '支付失败');
         }
     }
 
@@ -102,8 +141,7 @@ class TradeService
     protected function getAlipayQrCode(Trade $trade)
     {
         $service = new Alipay();
-        $text = $service->scan($trade);
-
+        $qrCode = $service->scan($trade);
         return $qrCode;
     }
 

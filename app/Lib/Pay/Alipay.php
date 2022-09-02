@@ -3,6 +3,7 @@
 namespace App\Lib\Pay;
 
 use App\Enums\TradeEnums;
+use App\Events\TradeAfterPayEvent;
 use App\Lib\Pay\Pay as PayService;
 use App\Models\Refund;
 use Illuminate\Support\Facades\Log;
@@ -39,7 +40,6 @@ class Alipay extends PayService
                 'total_amount' => $trade->amount,
                 'subject' => $trade->subject,
             ]);
-
             $result = $response->qr_code ?? false;
 
         } catch (\Exception $e) {
@@ -188,7 +188,7 @@ class Alipay extends PayService
 
         $trade->channel_sn = $data->trade_no;
 
-//        $this->eventsManager->fire('Trade:afterPay', $this, $trade);
+        TradeAfterPayEvent::dispatch($trade);
         $trade = Trade::query()->where('id', $trade->id)->first();
 
         if ($trade->status == TradeEnums::STATUS_FINISHED) {
