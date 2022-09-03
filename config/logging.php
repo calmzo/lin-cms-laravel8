@@ -49,7 +49,7 @@ return [
 
         'daily' => [
             'driver' => 'daily',
-            'path' => storage_path('logs/laravel.log'),
+            'path' => storage_path('logs/daily/laravel.log'),
             'level' => 'debug',
             'days' => 14,
         ],
@@ -116,6 +116,41 @@ return [
         'deliver' => [
             'driver' => 'daily',
             'path' => storage_path('logs/deliver/deliver.log'),
+            'level' => 'debug',
+            'days' => 14,
+        ],
+
+        'refund' => [
+            'driver' => 'daily',
+            'path' => storage_path('logs/refund/refund.log'),
+            'level' => 'debug',
+            'days' => 14,
+        ],
+
+        'sms' => [
+            'driver' => 'daily',
+            'path' => storage_path('logs/sms/sms.log'),
+            'level' => 'debug',
+            'days' => 14,
+        ],
+
+        'dingtalk' => [
+            'driver' => 'daily',
+            'path' => storage_path('logs/dingtalk/dingtalk.log'),
+            'level' => 'debug',
+            'days' => 14,
+        ],
+
+        'mail' => [
+            'driver' => 'daily',
+            'path' => storage_path('logs/mail/mail.log'),
+            'level' => 'debug',
+            'days' => 14,
+        ],
+
+        'wechat' => [
+            'driver' => 'daily',
+            'path' => storage_path('logs/wechat/wechat.log'),
             'level' => 'debug',
             'days' => 14,
         ],
