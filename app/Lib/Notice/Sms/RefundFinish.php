@@ -1,14 +1,8 @@
 <?php
-/**
- * @copyright Copyright (c) 2021 深圳市酷瓜软件有限公司
- * @license https://opensource.org/licenses/GPL-2.0
- * @link https://www.koogua.com
- */
 
-namespace App\Services\Logic\Notice\Sms;
+namespace App\Lib\Notice\Sms;
 
-use App\Models\User as UserModel;
-use App\Repos\Account as AccountRepo;
+use App\Models\Admin\LinUser as UserModel;
 use App\Services\Smser;
 
 class RefundFinish extends Smser
@@ -23,12 +17,10 @@ class RefundFinish extends Smser
      */
     public function handle(UserModel $user, array $params)
     {
-        $accountRepo = new AccountRepo();
 
-        $account = $accountRepo->findById($user->id);
-
-        if (!$account->phone) return null;
-
+//        if (!$account->phone) return null;
+        //todo 账户
+        $phone = 13153187435;
         $templateId = $this->getTemplateId($this->templateCode);
 
         $params = [
@@ -37,7 +29,7 @@ class RefundFinish extends Smser
             $params['refund']['amount'],
         ];
 
-        return $this->send($account->phone, $templateId, $params);
+        return $this->send($phone, $templateId, $params);
     }
 
 }

@@ -1,14 +1,8 @@
 <?php
-/**
- * @copyright Copyright (c) 2021 深圳市酷瓜软件有限公司
- * @license https://opensource.org/licenses/GPL-2.0
- * @link https://www.koogua.com
- */
 
-namespace App\Services\Logic\Notice\Sms;
+namespace App\Lib\Notice\Sms;
 
-use App\Models\User as UserModel;
-use App\Repos\Account as AccountRepo;
+use App\Models\User;
 use App\Services\Smser;
 
 class OrderFinish extends Smser
@@ -17,18 +11,17 @@ class OrderFinish extends Smser
     protected $templateCode = 'order_finish';
 
     /**
-     * @param UserModel $user
+     * @param User $user
      * @param array $params
      * @return bool|null
      */
-    public function handle(UserModel $user, array $params)
+    public function handle(User $user, array $params)
     {
-        $accountRepo = new AccountRepo();
-
-        $account = $accountRepo->findById($user->id);
-
-        if (!$account->phone) return null;
-
+//        //todo 账户表
+//        $accountRepo = new AccountRepo();
+//        $account = $accountRepo->findById($user->id);
+//        if (!$account->phone) return null;
+        $phone = 13153187435;
         $templateId = $this->getTemplateId($this->templateCode);
 
         $params = [
@@ -37,7 +30,7 @@ class OrderFinish extends Smser
             $params['order']['amount'],
         ];
 
-        return $this->send($account->phone, $templateId, $params);
+        return $this->send($phone, $templateId, $params);
     }
 
 }
