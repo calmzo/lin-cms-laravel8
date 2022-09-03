@@ -10,7 +10,7 @@ return [
             // 必填-支付宝分配的 app_id
             'app_id' => '',
             // 必填-应用私钥 字符串或路径
-            'app_secret_cert' => env('app_secret_cert') ?? '',
+            'app_secret_cert' => env('ALIPAY_APP_SECRET_CERT') ?? '',
             // 必填-应用公钥证书 路径
             'app_public_cert_path' => config_path('alipay/appCertPublicKey.crt'),
             // 必填-支付宝公钥证书 路径
