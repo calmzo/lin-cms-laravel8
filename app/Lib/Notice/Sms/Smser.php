@@ -1,13 +1,8 @@
 <?php
-/**
- * @copyright Copyright (c) 2021 深圳市酷瓜软件有限公司
- * @license https://opensource.org/licenses/GPL-2.0
- * @link https://www.koogua.com
- */
 
 namespace App\Services;
 
-use Phalcon\Logger\Adapter\File as FileLogger;
+use Illuminate\Support\Facades\Log;
 use TencentCloud\Common\Credential;
 use TencentCloud\Common\Exception\TencentCloudSDKException;
 use TencentCloud\Common\Profile\ClientProfile;
@@ -25,15 +20,14 @@ abstract class Smser extends Service
     protected $settings;
 
     /**
-     * @var FileLogger
+     * @var mixed|\Psr\Log\LoggerInterface
      */
     protected $logger;
 
     public function __construct()
     {
-        $this->settings = $this->getSettings('sms');
-
-        $this->logger = $this->getLogger('sms');
+        $this->settings = config('sms');
+        $this->logger = Log::channel('sms');
     }
 
     /**
@@ -58,7 +52,7 @@ abstract class Smser extends Service
 
             $httpProfile = new HttpProfile();
 
-            $httpProfile->setEndpoint('sms.tencentcloudapi.com');
+            $httpProfile->setEndpoint($this->settings['endpoint']);
 
             $clientProfile = new ClientProfile();
 
@@ -91,18 +85,16 @@ abstract class Smser extends Service
 
             $result = $sendStatus->getCode() == 'Ok';
 
-            if ($result == false) {
+            if ($result === false) {
                 $this->logger->error('Send Message Failed ' . $response->toJsonString());
             }
 
         } catch (TencentCloudSDKException $e) {
-
-            $this->logger->error('Send Message Exception ' . kg_json_encode([
+            $this->logger->error('Send Message Exception ' . json_encode([
                     'code' => $e->getCode(),
                     'message' => $e->getMessage(),
                     'requestId' => $e->getRequestId(),
                 ]));
-
             $result = false;
         }
 
@@ -122,7 +114,7 @@ abstract class Smser extends Service
 
     protected function getTemplateId($code)
     {
-        $template = json_decode($this->settings['template'], true);
+        $template = $this->settings['template'];
 
         return $template[$code]['id'] ?? null;
     }
