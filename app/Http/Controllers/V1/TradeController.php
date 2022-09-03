@@ -35,4 +35,12 @@ class TradeController extends BaseController
         $res = $tradeService->createMiniTrade($params);
         return $this->success($res);
     }
+
+    public function refund(Request $request, $id)
+    {
+        $params = $request->all();
+        $tradeService = new TradeService();
+        $res = $tradeService->refundTrade($id, $params);
+        return $this->success($res);
+    }
 }

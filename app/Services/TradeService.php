@@ -15,6 +15,7 @@ use App\Traits\TradeTrait;
 use App\Utils\CodeResponse;
 use Illuminate\Support\Facades\DB;
 use App\Models\Trade;
+use App\Models\Refund;
 
 class TradeService
 {
@@ -40,7 +41,6 @@ class TradeService
         ];
         $trade = Trade::query()->create($tradeData);
         TradeAfterPayEvent::dispatch($trade);
-        die;
         $redirect = '';
         if ($trade->channel == TradeEnums::CHANNEL_ALIPAY) {
             $alipay = new Alipay();
@@ -62,7 +62,7 @@ class TradeService
     public function createMiniTrade($params)
     {
         $orderSn = $params['order_sn'];
-        $channel = $params['channel'];
+//        $channel = $params['channel'];
         $platform = request()->header('x-platform');
         $platform = $this->checkMpPlatform($platform);
 
@@ -125,6 +125,27 @@ class TradeService
 
             throw new BadRequestException(CodeResponse::NOT_FOUND_EXCEPTION, '支付失败');
         }
+    }
+
+    public function refundTrade($id, $params)
+    {
+        $applyNote = $params['apply_note'];
+        $refundAmount = $params['refund_amount'];
+        $trade = $this->checkTrade($id);
+        $this->checkIfAllowRefund($trade);
+        $applyNote = sprintf('%s - 操作员（%s）', $applyNote, LoginTokenService::userId());
+
+        $refundData = [
+            'amount' => $refundAmount,
+            'subject' => $trade->subject,
+            'user_id' => $trade->user_id,
+            'order_id' => $trade->order_id,
+            'trade_id' => $trade->id,
+            'apply_note' => $applyNote,
+        ];
+        $refund = Refund::query()->create($refundData);
+
+        return $refund;
     }
 
     protected function getQrCode(Trade $trade)

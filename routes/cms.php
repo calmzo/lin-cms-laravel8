@@ -6,6 +6,7 @@ use App\Http\Controllers\Cms\AdminController;
 use App\Http\Controllers\Cms\LogController;
 use App\Http\Controllers\Cms\FileController;
 use App\Http\Controllers\Cms\UploadController;
+use App\Http\Controllers\Cms\RefundController;
 
 /*
 |--------------------------------------------------------------------------
@@ -75,6 +76,10 @@ Route::post('file', [FileController::class, 'postFile']);
 // 日志类接口
 Route::prefix('upload')->group(function () {
     Route::get('void/sign', [UploadController::class, 'getVoidSign']);
+});
+
+Route::prefix('refund')->group(function () {
+    Route::post('{id}/review', [RefundController::class, 'review']);
 });
 
 
