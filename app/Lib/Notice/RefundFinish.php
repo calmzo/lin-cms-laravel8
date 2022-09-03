@@ -5,18 +5,19 @@
  * @link https://www.koogua.com
  */
 
-namespace App\Services\Logic\Notice;
+namespace App\Lib\Notice;
 
-use App\Models\Refund as RefundModel;
+use App\Enums\TaskEnums;
+use App\Models\Refund;
+use App\Models\Task;
 use App\Models\Task as TaskModel;
 use App\Repos\Refund as RefundRepo;
 use App\Repos\User as UserRepo;
 use App\Repos\WeChatSubscribe as WeChatSubscribeRepo;
-use App\Services\Logic\Notice\Sms\RefundFinish as SmsRefundFinishNotice;
-use App\Services\Logic\Notice\WeChat\RefundFinish as WeChatRefundFinishNotice;
-use App\Services\Logic\Service as LogicService;
+use App\Lib\Notice\Sms\RefundFinish as SmsRefundFinishNotice;
+use App\Lib\Notice\WeChat\RefundFinish as WeChatRefundFinishNotice;
 
-class RefundFinish extends LogicService
+class RefundFinish
 {
 
     public function handleTask(TaskModel $task)
@@ -65,50 +66,20 @@ class RefundFinish extends LogicService
         }
     }
 
-    public function createTask(RefundModel $refund)
+    public function createTask(Refund $refund)
     {
-        $wechatNoticeEnabled = $this->wechatNoticeEnabled();
-        $smsNoticeEnabled = $this->smsNoticeEnabled();
-
-        if (!$wechatNoticeEnabled && !$smsNoticeEnabled) return;
-
-        $task = new TaskModel();
-
+        $task = new Task();
         $itemInfo = [
             'refund' => ['id' => $refund->id],
         ];
 
         $task->item_id = $refund->id;
-        $task->item_info = $itemInfo;
-        $task->item_type = TaskModel::TYPE_NOTICE_REFUND_FINISH;
-        $task->priority = TaskModel::PRIORITY_MIDDLE;
-        $task->status = TaskModel::STATUS_PENDING;
+        $task->item_info = json_encode($itemInfo);
+        $task->item_type = TaskEnums::TYPE_NOTICE_REFUND_FINISH;
+        $task->priority = TaskEnums::PRIORITY_MIDDLE;
+        $task->status = TaskEnums::STATUS_PENDING;
 
-        $task->create();
-    }
-
-    public function wechatNoticeEnabled()
-    {
-        $oa = $this->getSettings('wechat.oa');
-
-        if ($oa['enabled'] == 0) return false;
-
-        $template = json_decode($oa['notice_template'], true);
-
-        $result = $template['refund_finish']['enabled'] ?? 0;
-
-        return $result == 1;
-    }
-
-    public function smsNoticeEnabled()
-    {
-        $sms = $this->getSettings('sms');
-
-        $template = json_decode($sms['template'], true);
-
-        $result = $template['refund_finish']['enabled'] ?? 0;
-
-        return $result == 1;
+        $task->save();
     }
 
 }

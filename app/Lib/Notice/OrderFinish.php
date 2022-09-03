@@ -1,40 +1,30 @@
 <?php
-/**
- * @copyright Copyright (c) 2021 深圳市酷瓜软件有限公司
- * @license https://opensource.org/licenses/GPL-2.0
- * @link https://www.koogua.com
- */
 
-namespace App\Services\Logic\Notice;
+namespace App\Lib\Notice;
 
-use App\Models\Order as OrderModel;
-use App\Models\Task as TaskModel;
-use App\Repos\Order as OrderRepo;
-use App\Repos\User as UserRepo;
-use App\Repos\WeChatSubscribe as WeChatSubscribeRepo;
-use App\Services\Logic\Notice\Sms\OrderFinish as SmsOrderFinishNotice;
-use App\Services\Logic\Notice\WeChat\OrderFinish as WeChatOrderFinishNotice;
-use App\Services\Logic\Service as LogicService;
+use App\Enums\TaskEnums;
+use App\Models\Admin\LinUser;
+use App\Models\Order;
+use App\Models\Task;
+use App\Lib\Notice\Sms\OrderFinish as SmsOrderFinishNotice;
 
-class OrderFinish extends LogicService
+
+class OrderFinish
 {
 
-    public function handleTask(TaskModel $task)
+    public function handleTask(Task $task)
     {
         $wechatNoticeEnabled = $this->wechatNoticeEnabled();
         $smsNoticeEnabled = $this->smsNoticeEnabled();
-
         if (!$wechatNoticeEnabled && !$smsNoticeEnabled) return;
 
         $orderId = $task->item_info['order']['id'];
+        $order = Order::query()->find($orderId);
 
-        $orderRepo = new OrderRepo();
-
-        $order = $orderRepo->findById($orderId);
-
-        $userRepo = new UserRepo();
-
-        $user = $userRepo->findById($order->owner_id);
+//        //todo 用户表
+//        $userRepo = new UserRepo();
+//        $user = $userRepo->findById($order->user_id);
+        $user = LinUser::query()->find($order->user_id);
 
         $params = [
             'user' => [
@@ -50,29 +40,23 @@ class OrderFinish extends LogicService
             ],
         ];
 
-        $subscribeRepo = new WeChatSubscribeRepo();
+        //todo 微信通知
+//        $subscribeRepo = new WeChatSubscribeRepo();
+//        $subscribe = $subscribeRepo->findByUserId($order->owner_id);
+//        $notice = new WeChatOrderFinishNotice();
+//        $notice->handle($subscribe, $params);
 
-        $subscribe = $subscribeRepo->findByUserId($order->owner_id);
-
-        if ($wechatNoticeEnabled && $subscribe) {
-            $notice = new WeChatOrderFinishNotice();
-            $notice->handle($subscribe, $params);
-        }
-
-        if ($smsNoticeEnabled) {
-            $notice = new SmsOrderFinishNotice();
-            $notice->handle($user, $params);
-        }
+        $notice = new SmsOrderFinishNotice();
+        $notice->handle($user, $params);
     }
 
-    public function createTask(OrderModel $order)
+    public function createTask(Order $order)
     {
         $wechatNoticeEnabled = $this->wechatNoticeEnabled();
         $smsNoticeEnabled = $this->smsNoticeEnabled();
-
         if (!$wechatNoticeEnabled && !$smsNoticeEnabled) return;
 
-        $task = new TaskModel();
+        $task = new Task();
 
         $itemInfo = [
             'order' => ['id' => $order->id],
@@ -80,31 +64,32 @@ class OrderFinish extends LogicService
 
         $task->item_id = $order->id;
         $task->item_info = $itemInfo;
-        $task->item_type = TaskModel::TYPE_NOTICE_ORDER_FINISH;
-        $task->priority = TaskModel::PRIORITY_HIGH;
-        $task->status = TaskModel::STATUS_PENDING;
+        $task->item_type = TaskEnums::TYPE_NOTICE_ORDER_FINISH;
+        $task->priority = TaskEnums::PRIORITY_HIGH;
+        $task->status = TaskEnums::STATUS_PENDING;
 
-        $task->create();
+        $task->save();
     }
 
     public function wechatNoticeEnabled()
     {
-        $oa = $this->getSettings('wechat.oa');
+        //微信通知开关
+//        $oa = $this->getSettings('wechat.oa');
+//
+//        if ($oa['enabled'] == 0) return false;
+//
+//        $template = json_decode($oa['notice_template'], true);
+//
+//        $result = $template['order_finish']['enabled'] ?? 0;
 
-        if ($oa['enabled'] == 0) return false;
-
-        $template = json_decode($oa['notice_template'], true);
-
-        $result = $template['order_finish']['enabled'] ?? 0;
-
-        return $result == 1;
+        return 1;
     }
 
     public function smsNoticeEnabled()
     {
-        $sms = $this->getSettings('sms');
+        $sms = config('sms');
 
-        $template = json_decode($sms['template'], true);
+        $template = $sms['template'] ?? [];
 
         $result = $template['order_finish']['enabled'] ?? 0;
 
