@@ -1,19 +1,12 @@
 <?php
-/**
- * @copyright Copyright (c) 2021 深圳市酷瓜软件有限公司
- * @license https://opensource.org/licenses/GPL-2.0
- * @link https://www.koogua.com
- */
 
-namespace App\Services;
+namespace App\Lib\Notice\DingTalk;
 
-use App\Library\Validators\Common as CommonValidator;
-use App\Repos\Account as AccountRepo;
-use App\Repos\Course as CourseRepo;
+use App\Lib\Validators\Common as CommonValidator;
 use GuzzleHttp\Client as HttpClient;
-use Phalcon\Logger\Adapter\File as FileLogger;
+use Illuminate\Support\Facades\Log;
 
-class DingTalkNotice extends Service
+class DingTalkNotice
 {
 
     /**
@@ -22,7 +15,7 @@ class DingTalkNotice extends Service
     protected $settings;
 
     /**
-     * @var FileLogger
+     * @var mixed|\Psr\Log\LoggerInterface
      */
     protected $logger;
 
@@ -33,9 +26,9 @@ class DingTalkNotice extends Service
 
     public function __construct()
     {
-        $this->settings = $this->getSettings('dingtalk.robot');
+        $this->settings = config('dingtalk.robot');
 
-        $this->logger = $this->getLogger('dingtalk');
+        $this->logger = Log::channel('dingtalk');
 
         $this->enabled = $this->settings['enabled'] == 1;
     }
@@ -84,38 +77,6 @@ class DingTalkNotice extends Service
     public function atCustomService($content)
     {
         $atMobiles = $this->parseAtMobiles($this->settings['cs_mobiles']);
-        $atContent = $this->buildAtContent($content, $atMobiles);
-
-        $params = [
-            'msgtype' => 'text',
-            'text' => ['content' => $atContent],
-            'at' => ['atMobiles' => $atMobiles],
-        ];
-
-        return $this->send($params);
-    }
-
-    /**
-     * 给课程讲师发消息
-     *
-     * @param int $courseId
-     * @param string $content
-     * @return bool
-     */
-    public function atCourseTeacher($courseId, $content)
-    {
-        $courseRepo = new CourseRepo();
-
-        $course = $courseRepo->findById($courseId);
-
-        $accountRepo = new AccountRepo();
-
-        $account = $accountRepo->findById($course->teacher_id);
-
-        if (empty($account->phone)) return false;
-
-        $atMobiles = [$account->phone];
-
         $atContent = $this->buildAtContent($content, $atMobiles);
 
         $params = [
