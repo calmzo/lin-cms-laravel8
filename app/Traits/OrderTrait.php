@@ -36,4 +36,23 @@ trait OrderTrait
         }
     }
 
+
+    public function findUserLastPendingOrder($userId, $itemId, $itemType)
+    {
+        $status = OrderEnums::STATUS_PENDING;
+
+        return $this->findUserLastStatusOrder($userId, $itemId, $itemType, $status);
+    }
+
+    public function findUserLastStatusOrder($userId, $itemId, $itemType, $status)
+    {
+        return Order::query()
+            ->where('user_id', $userId)
+            ->where('item_id', $itemId)
+            ->where('item_type', $itemType)
+            ->where('status', $status)
+            ->orderByDesc('id')
+            ->first();
+    }
+
 }
