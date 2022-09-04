@@ -16,6 +16,7 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
+        Commands\RepositoryMakeCommand::class,
         CloseTradeCommand::class,
         DeliverTaskCommand::class,
         RefundTaskCommand::class,
