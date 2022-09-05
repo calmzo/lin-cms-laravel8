@@ -38,14 +38,14 @@ class EventServiceProvider extends ServiceProvider
     {
         //
     }
-//
-//    /**
-//     * 被注册的订阅者类
-//     *
-//     * @var array
-//     */
-//    protected $subscribe = [
-//        'App\Listeners\UserDailyCounterListener',
-//    ];
+
+    /**
+     * 被注册的订阅者类
+     *
+     * @var array
+     */
+    protected $subscribe = [
+        'App\Listeners\UserDailyCounterListener',
+    ];
 
 }
