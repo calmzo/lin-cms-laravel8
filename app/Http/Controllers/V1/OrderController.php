@@ -21,9 +21,10 @@ class OrderController extends BaseController
 
     public function confirmOrder(Request $request)
     {
-        $params = $request->all();
+        $itemId = $request->input('item_id', 0);
+        $itemType = $request->input('item_type', 1);
         $orderService = new OrderService();
-        $res = $orderService->confirmOrder($params);
+        $res = $orderService->confirmOrder($itemId, $itemType);
         return $this->success($res);
     }
 

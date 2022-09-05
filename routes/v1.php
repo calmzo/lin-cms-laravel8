@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\V1\BookController;
 use App\Http\Controllers\V1\OrganizationController;
 use App\Http\Controllers\V1\TradeController;
+use App\Http\Controllers\V1\OrderController;
 
 /*
 |--------------------------------------------------------------------------
@@ -50,4 +51,10 @@ Route::prefix('trade')->group(function () {
 
 });
 
+Route::prefix('order')->group(function () {
+    //
+    Route::post('create', [OrderController::class, 'createOrder']);
+    Route::post('confirm', [OrderController::class, 'confirmOrder']);
+
+});
 
