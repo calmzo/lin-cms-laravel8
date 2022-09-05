@@ -18,9 +18,9 @@ trait UserLimitTrait
     }
 
 
-    public function checkDailyOrderLimit($userId)
+    public function checkDailyOrderLimit($user)
     {
-        $count = $this->counter->hGet($userId, 'order_count');
+        $count = $this->counter->hGet($user->id, 'order_count');
 
         if ($count > 50) {
             throw new BadRequestException(CodeResponse::NOT_FOUND_EXCEPTION, 'user_limit.reach_daily_order_limit');
