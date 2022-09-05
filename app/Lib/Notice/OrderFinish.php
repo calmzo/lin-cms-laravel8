@@ -7,6 +7,7 @@ use App\Models\Admin\LinUser;
 use App\Models\Order;
 use App\Models\Task;
 use App\Lib\Notice\Sms\OrderFinish as SmsOrderFinishNotice;
+use App\Models\Users\User;
 
 
 class OrderFinish
@@ -16,15 +17,14 @@ class OrderFinish
     {
         $wechatNoticeEnabled = $this->wechatNoticeEnabled();
         $smsNoticeEnabled = $this->smsNoticeEnabled();
-        if (!$wechatNoticeEnabled && !$smsNoticeEnabled) return;
+        if (!$wechatNoticeEnabled && !$smsNoticeEnabled) {
+            return;
+        }
 
         $orderId = $task->item_info['order']['id'];
         $order = Order::query()->find($orderId);
 
-//        //todo 用户表
-//        $userRepo = new UserRepo();
-//        $user = $userRepo->findById($order->user_id);
-        $user = LinUser::query()->find($order->user_id);
+        $user = User::query()->find($order->user_id);
 
         $params = [
             'user' => [
@@ -54,7 +54,9 @@ class OrderFinish
     {
         $wechatNoticeEnabled = $this->wechatNoticeEnabled();
         $smsNoticeEnabled = $this->smsNoticeEnabled();
-        if (!$wechatNoticeEnabled && !$smsNoticeEnabled) return;
+        if (!$wechatNoticeEnabled && !$smsNoticeEnabled) {
+            return;
+        }
 
         $task = new Task();
 
@@ -63,7 +65,7 @@ class OrderFinish
         ];
 
         $task->item_id = $order->id;
-        $task->item_info = $itemInfo;
+        $task->item_info = json_encode($itemInfo);
         $task->item_type = TaskEnums::TYPE_NOTICE_ORDER_FINISH;
         $task->priority = TaskEnums::PRIORITY_HIGH;
         $task->status = TaskEnums::STATUS_PENDING;
@@ -88,7 +90,6 @@ class OrderFinish
     public function smsNoticeEnabled()
     {
         $sms = config('sms');
-
         $template = $sms['template'] ?? [];
 
         $result = $template['order_finish']['enabled'] ?? 0;

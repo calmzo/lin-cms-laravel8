@@ -2,6 +2,7 @@
 
 namespace App\Lib\Notice\Sms;
 
+use App\Models\Account;
 use App\Models\User;
 use App\Services\Smser;
 
@@ -17,11 +18,10 @@ class OrderFinish extends Smser
      */
     public function handle(User $user, array $params)
     {
-//        //todo 账户表
-//        $accountRepo = new AccountRepo();
-//        $account = $accountRepo->findById($user->id);
-//        if (!$account->phone) return null;
-        $phone = 13153187435;
+        $account = Account::query()->find($user->id);
+        if (!$account->phone) {
+            return null;
+        }
         $templateId = $this->getTemplateId($this->templateCode);
 
         $params = [
@@ -30,7 +30,7 @@ class OrderFinish extends Smser
             $params['order']['amount'],
         ];
 
-        return $this->send($phone, $templateId, $params);
+        return $this->send($account->phone, $templateId, $params);
     }
 
 }
