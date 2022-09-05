@@ -13,6 +13,7 @@
         "fideloper/proxy": "^4.2",
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^7.0.1",
+        "hisorange/browser-detect": "^4.5",
         "laravel/framework": "^8.0",
         "laravel/tinker": "^2.0",
         "owner888/phpspider": "^2.1",
