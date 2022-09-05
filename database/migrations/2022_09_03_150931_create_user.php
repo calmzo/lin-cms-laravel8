@@ -22,6 +22,7 @@ class CreateUser extends Migration
             $table->string('area', 30)->default('')->comment('地区');
             $table->integer('gender')->default(3)->comment('性别');
             $table->integer('vip')->default(0)->comment('会员标识');
+            $table->integer('course_count')->default(0)->comment('课程数');
             $table->integer('locked')->default(0)->comment('锁定表示');
             $table->timestamp('create_time');
             $table->timestamp('update_time');
