@@ -154,6 +154,13 @@ return [
             'level' => 'debug',
             'days' => 14,
         ],
+
+        'point' => [
+            'driver' => 'daily',
+            'path' => storage_path('logs/point/point.log'),
+            'level' => 'debug',
+            'days' => 14,
+        ],
     ],
 
 ];
