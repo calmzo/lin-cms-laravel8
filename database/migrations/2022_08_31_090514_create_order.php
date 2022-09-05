@@ -15,8 +15,8 @@ class CreateOrder extends Migration
     {
         Schema::create('order', function (Blueprint $table) {
             $table->id();
-            $table->string('sn', 32)->comment('订单编号');
-            $table->string('subject', 100)->comment('订单标题');
+            $table->string('sn', 32)->default('')->comment('订单编号');
+            $table->string('subject', 100)->default('')->comment('订单标题');
             $table->decimal('amount', 10)->default('0.00')->comment('订单金额');
             $table->integer('user_id')->default(0)->comment('用户id');
             $table->integer('item_id')->default(0)->comment('条目id');
