@@ -4,11 +4,18 @@ namespace App\Console\Commands;
 
 use App\Enums\OrderEnums;
 use App\Enums\TaskEnums;
+use App\Models\Course;
 use App\Models\Task;
 use App\Models\Order;
+use App\Models\User;
+use App\Models\Vip;
+use App\Services\Logic\Deliver\CourseDeliver;
+use App\Services\Logic\Deliver\VipDeliver;
+use App\Services\Logic\Point\History\OrderConsumeService;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use App\Lib\Notice\OrderFinish as OrderFinishNotice;
 
 class DeliverTaskCommand extends Command
 {
@@ -50,12 +57,8 @@ class DeliverTaskCommand extends Command
         if ($tasks->count() == 0) return;
 
         echo '------ start deliver task ------' . PHP_EOL;
-        $order = new Order();
-        $taskIds = $tasks->pluck('id');
-        $orders = Order::query()->whereIn('id', $taskIds)->get()->keyBy('id');
-
         foreach ($tasks as $task) {
-            $order = $orders[$task->item_id] ?? null;
+            $order = Order::query()->find($task->item_id);
 
             try {
 
@@ -63,15 +66,11 @@ class DeliverTaskCommand extends Command
 
                 switch ($order->item_type) {
                     case OrderEnums::ITEM_COURSE:
-                        //todo 发货流程...
-//                        $this->handleCourseOrder($order);
+                        $this->handleCourseOrder($order);
                         break;
-//                    case OrderEnums::ITEM_PACKAGE:
-//                        $this->handlePackageOrder($order);
-//                        break;
-//                    case OrderEnums::ITEM_VIP:
-//                        $this->handleVipOrder($order);
-//                        break;
+                    case OrderEnums::ITEM_VIP:
+                        $this->handleVipOrder($order);
+                        break;
                     default:
                         $this->noMatchedHandler($order);
                         break;
@@ -96,7 +95,7 @@ class DeliverTaskCommand extends Command
                     $task->status = TaskEnums::STATUS_FAILED;
                 }
                 $task->save();
-                Log::channel('deliver')->error('Deliver Task Exception ' . kg_json_encode([
+                Log::channel('deliver')->error('Deliver Task Exception ' . json_encode([
                         'file' => $e->getFile(),
                         'line' => $e->getLine(),
                         'message' => $e->getMessage(),
@@ -105,7 +104,9 @@ class DeliverTaskCommand extends Command
             }
 
             if ($task->status == TaskEnums::STATUS_FINISHED) {
+                //加积分
                 $this->handleOrderConsumePoint($order);
+                //通知任务
                 $this->handleOrderFinishNotice($order);
             } elseif ($task->status == TaskEnums::STATUS_FAILED) {
                 $this->handleOrderRefund($order);
@@ -116,9 +117,72 @@ class DeliverTaskCommand extends Command
     }
 
 
+    protected function handleCourseOrder(Order $order)
+    {
+
+        $course = Course::query()->find($order->item_id);
+
+        $user = User::query()->find($order->user_id);
+        $service = new CourseDeliver();
+
+        $service->handle($course, $user);
+    }
+
+    protected function handleVipOrder(Order $order)
+    {
+
+        $vip = Vip::query()->find($order->item_id);
+
+        $user = User::query()->find($order->user_id);
+
+        $service = new VipDeliver();
+
+        $service->handle($vip, $user);
+
+        /**
+         * 先下单购买课程，发现会员有优惠，于是购买会员，再回头购买课程
+         * 自动关闭未支付订单，让用户可以使用会员价再次下单
+         */
+        $this->closePendingOrders($user->id);
+    }
+
+    /**
+     * 关闭未支付订单
+     * @param $userId
+     */
+    protected function closePendingOrders($userId)
+    {
+        $itemTypes = [
+            OrderEnums::ITEM_COURSE,
+            OrderEnums::ITEM_PACKAGE,
+        ];
+
+        $status = OrderEnums::STATUS_PENDING;
+
+        Order::query()
+            ->where('user_id', $userId)
+            ->where('status', $status)
+            ->whereIn('item_type', $itemTypes)
+            ->update(['status' => OrderEnums::STATUS_CLOSED]);
+    }
+
+
     protected function noMatchedHandler(Order $order)
     {
         throw new \RuntimeException("No Matched Handler For Order: {$order->id}");
+    }
+
+    protected function handleOrderConsumePoint(Order $order)
+    {
+        $service = new OrderConsumeService();
+        $service->handle($order);
+    }
+
+    protected function handleOrderFinishNotice(Order $order)
+    {
+        $notice = new OrderFinishNotice();
+
+        $notice->createTask($order);
     }
 
     /**

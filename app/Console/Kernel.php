@@ -32,8 +32,8 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
 //        $schedule->command('close_trade')->everyMinute();
-//        $schedule->command('deliver_task')->everyMinute();
-        $schedule->command('refund_task')->everyMinute();
+        $schedule->command('deliver_task')->everyMinute();
+//        $schedule->command('refund_task')->everyMinute();
     }
 
     /**
