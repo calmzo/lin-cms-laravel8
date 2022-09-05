@@ -21,7 +21,7 @@ class CreateOrder extends Migration
             $table->integer('user_id')->default(0)->comment('用户id');
             $table->integer('item_id')->default(0)->comment('条目id');
             $table->integer('item_type')->default(0)->comment('条目类型');
-            $table->string('item_info', 3000)->default(0)->comment('条目内容');
+            $table->string('item_info', 3000)->default('')->comment('条目内容');
             $table->integer('client_type')->default(1)->comment('终端类型');
             $table->string('client_ip', 64)->default('')->comment('终端IP');
             $table->integer('status')->default(1)->comment('状态类型');
