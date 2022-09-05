@@ -40,7 +40,6 @@ class TradeService
             'user_id' => LoginTokenService::userId(),
         ];
         $trade = Trade::query()->create($tradeData);
-        TradeAfterPayEvent::dispatch($trade);
         $redirect = '';
         if ($trade->channel == TradeEnums::CHANNEL_ALIPAY) {
             $alipay = new Alipay();

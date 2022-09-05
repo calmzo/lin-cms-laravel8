@@ -65,8 +65,7 @@ class TradeAfterPayListener
         } catch (\Exception $e) {
 
             DB::rollBack();
-
-            Log::error('After Pay Event Error ' . json_encode([
+            Log::channel('trade')->error('After Pay Event Error ' . json_encode([
                     'file' => $e->getFile(),
                     'line' => $e->getLine(),
                     'message' => $e->getMessage(),
