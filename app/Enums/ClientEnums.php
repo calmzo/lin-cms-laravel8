@@ -22,7 +22,7 @@ class ClientEnums
 
     public static function types($type = null)
     {
-        return [
+        $list =  [
             self::TYPE_PC => 'PC',
             self::TYPE_H5 => 'H5',
             self::TYPE_APP => 'APP',
