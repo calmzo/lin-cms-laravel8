@@ -2,7 +2,7 @@
 
 namespace App\Lib\Notice\WeChat;
 
-use App\Models\WeChatSubscribe as WeChatSubscribeModel;
+use App\Models\WechatSubscribe;
 use App\Services\WeChatNotice;
 
 class RefundFinish extends WeChatNotice
@@ -11,11 +11,11 @@ class RefundFinish extends WeChatNotice
     protected $templateCode = 'refund_finish';
 
     /**
-     * @param WeChatSubscribeModel $subscribe
+     * @param WechatSubscribe $subscribe
      * @param array $params
      * @return bool
      */
-    public function handle(WeChatSubscribeModel $subscribe, array $params)
+    public function handle(WeChatSubscribe $subscribe, array $params)
     {
         $first = '退款已处理完成！';
         $remark = '感谢您的支持，有疑问请联系客服哦！';

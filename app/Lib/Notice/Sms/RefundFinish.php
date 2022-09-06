@@ -2,7 +2,8 @@
 
 namespace App\Lib\Notice\Sms;
 
-use App\Models\Admin\LinUser as UserModel;
+use App\Models\Account;
+use App\Models\User;
 use App\Services\Smser;
 
 class RefundFinish extends Smser
@@ -11,16 +12,15 @@ class RefundFinish extends Smser
     protected $templateCode = 'refund_finish';
 
     /**
-     * @param UserModel $user
+     * @param User $user
      * @param array $params
      * @return bool|null
      */
-    public function handle(UserModel $user, array $params)
+    public function handle(User $user, array $params)
     {
 
-//        if (!$account->phone) return null;
-        //todo 账户
-        $phone = 13153187435;
+        $account = Account::query()->where('user_id', $user->id)->first();
+        if (!$account->phone) return null;
         $templateId = $this->getTemplateId($this->templateCode);
 
         $params = [
@@ -29,7 +29,7 @@ class RefundFinish extends Smser
             $params['refund']['amount'],
         ];
 
-        return $this->send($phone, $templateId, $params);
+        return $this->send($account->phone, $templateId, $params);
     }
 
 }

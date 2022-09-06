@@ -1,41 +1,29 @@
 <?php
-/**
- * @copyright Copyright (c) 2021 深圳市酷瓜软件有限公司
- * @license https://opensource.org/licenses/GPL-2.0
- * @link https://www.koogua.com
- */
 
 namespace App\Lib\Notice;
 
 use App\Enums\TaskEnums;
 use App\Models\Refund;
 use App\Models\Task;
-use App\Models\Task as TaskModel;
-use App\Repos\Refund as RefundRepo;
-use App\Repos\User as UserRepo;
-use App\Repos\WeChatSubscribe as WeChatSubscribeRepo;
+use App\Models\User;
+use App\Models\WechatSubscribe;
 use App\Lib\Notice\Sms\RefundFinish as SmsRefundFinishNotice;
 use App\Lib\Notice\WeChat\RefundFinish as WeChatRefundFinishNotice;
 
 class RefundFinish
 {
 
-    public function handleTask(TaskModel $task)
+    public function handleTask(Task $task)
     {
         $wechatNoticeEnabled = $this->wechatNoticeEnabled();
         $smsNoticeEnabled = $this->smsNoticeEnabled();
 
         if (!$wechatNoticeEnabled && !$smsNoticeEnabled) return;
-
         $refundId = $task->item_info['refund']['id'];
 
-        $refundRepo = new RefundRepo();
+        $refund = Refund::query()->find($refundId);
 
-        $refund = $refundRepo->findById($refundId);
-
-        $userRepo = new UserRepo();
-
-        $user = $userRepo->findById($refund->owner_id);
+        $user = User::query()->find($refund->owner_id);
 
         $params = [
             'user' => [
@@ -51,9 +39,7 @@ class RefundFinish
             ],
         ];
 
-        $subscribeRepo = new WeChatSubscribeRepo();
-
-        $subscribe = $subscribeRepo->findByUserId($refund->owner_id);
+        $subscribe = WechatSubscribe::query()->where('user_id', $refund->owner_id)->first();
 
         if ($wechatNoticeEnabled && $subscribe) {
             $notice = new WeChatRefundFinishNotice();
@@ -80,6 +66,30 @@ class RefundFinish
         $task->status = TaskEnums::STATUS_PENDING;
 
         $task->save();
+    }
+
+    public function wechatNoticeEnabled()
+    {
+        $oa = config('wechat.oa');
+
+        if ($oa['enabled'] == 0) return false;
+
+        $template = json_decode($oa['notice_template'], true);
+
+        $result = $template['refund_finish']['enabled'] ?? 0;
+
+        return $result == 1;
+    }
+
+    public function smsNoticeEnabled()
+    {
+        $sms = config('sms');
+
+        $template = json_decode($sms['template'], true);
+
+        $result = $template['refund_finish']['enabled'] ?? 0;
+
+        return $result == 1;
     }
 
 }
