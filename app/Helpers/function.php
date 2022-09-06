@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Pagination\LengthAwarePaginator;
-use App\Exceptions\ParameterException;
+use Larva\Ip2Region\Ip2Region;
 
 /**
  * 权限数组格式化函数
@@ -199,5 +199,22 @@ function getTree($data, $parent_id = 0)
         }
     }
     return $tree;
+}
+
+/**
+ * ip to region
+ *
+ * @param $ip
+ * @param string $dbFile
+ * @return array
+ */
+function kg_ip2region($ip)
+{
+
+    $ip2region = Ip2Region::find($ip);
+
+    list($country, $area, $province, $city, $isp) = explode('|', $ip2region['region']);
+
+    return compact('country', 'area', 'province', 'city', 'isp');
 }
 
