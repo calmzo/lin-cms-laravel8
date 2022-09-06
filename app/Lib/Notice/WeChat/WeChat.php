@@ -20,7 +20,7 @@ class WeChat
 
     public function getOfficialAccount()
     {
-        $settings = $this->getSettings('wechat.oa');
+        $settings = config('wechat.oa');
 
         $config = [
             'app_id' => $settings['app_id'],
@@ -35,9 +35,7 @@ class WeChat
 
     protected function getLogOptions()
     {
-        $config = $this->getConfig();
-
-        $default = $config->get('env') == ENV_DEV ? 'dev' : 'prod';
+        $default = app()->isProduction() ? 'prod' : 'dev';
 
         return [
             'default' => $default,

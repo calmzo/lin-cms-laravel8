@@ -20,7 +20,7 @@ abstract class WeChatNotice
 
     public function __construct()
     {
-        $this->settings = $this->getSettings('wechat.oa');
+        $this->settings = config('wechat.oa');
 
         $this->logger = Log::channel('wechat');
     }
@@ -57,21 +57,21 @@ abstract class WeChatNotice
 
         try {
 
-            $this->logger->debug('Send Template Message Request ' . kg_json_encode($content));
+            $this->logger->debug('Send Template Message Request ' . json_encode($content, JSON_UNESCAPED_SLASHES));
 
             $response = $app->template_message->send($content);
 
-            $this->logger->debug('Send Template Message Response ' . kg_json_encode($response));
+            $this->logger->debug('Send Template Message Response ' . json_encode($response, JSON_UNESCAPED_SLASHES));
 
             $result = $response['errcode'] == 0;
 
             if ($result == false) {
-                $this->logger->error('Send Template Message Failed ' . kg_json_encode($response));
+                $this->logger->error('Send Template Message Failed ' . json_encode($response, JSON_UNESCAPED_SLASHES));
             }
 
         } catch (\Exception $e) {
 
-            $this->logger->error('Send Template Message Exception ' . kg_json_encode([
+            $this->logger->error('Send Template Message Exception ' . json_encode([
                     'code' => $e->getCode(),
                     'message' => $e->getMessage(),
                 ]));
