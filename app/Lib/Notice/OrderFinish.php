@@ -3,11 +3,12 @@
 namespace App\Lib\Notice;
 
 use App\Enums\TaskEnums;
-use App\Models\Admin\LinUser;
 use App\Models\Order;
 use App\Models\Task;
 use App\Lib\Notice\Sms\OrderFinish as SmsOrderFinishNotice;
 use App\Models\Users\User;
+use App\Models\WechatSubscribe;
+use App\Lib\Notice\WeChat\OrderFinish as WeChatOrderFinishNotice;
 
 
 class OrderFinish
@@ -40,11 +41,9 @@ class OrderFinish
             ],
         ];
 
-        //todo 微信通知
-//        $subscribeRepo = new WeChatSubscribeRepo();
-//        $subscribe = $subscribeRepo->findByUserId($order->owner_id);
-//        $notice = new WeChatOrderFinishNotice();
-//        $notice->handle($subscribe, $params);
+        $subscribe = WechatSubscribe::query()->where('user_id', $order->user_id)->first();
+        $notice = new WeChatOrderFinishNotice();
+        $notice->handle($subscribe, $params);
 
         $notice = new SmsOrderFinishNotice();
         $notice->handle($user, $params);
@@ -76,15 +75,15 @@ class OrderFinish
     public function wechatNoticeEnabled()
     {
         //微信通知开关
-//        $oa = $this->getSettings('wechat.oa');
-//
-//        if ($oa['enabled'] == 0) return false;
-//
-//        $template = json_decode($oa['notice_template'], true);
-//
-//        $result = $template['order_finish']['enabled'] ?? 0;
+        $oa = config('wechat.oa');
 
-        return 1;
+        if ($oa['enabled'] == 0) return false;
+
+        $template = json_decode($oa['notice_template'], true);
+
+        $result = $template['order_finish']['enabled'] ?? 0;
+
+        return $result;
     }
 
     public function smsNoticeEnabled()
