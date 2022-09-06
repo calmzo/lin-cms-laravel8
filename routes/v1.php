@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\TestController;
 use App\Http\Controllers\V1\BookController;
 use App\Http\Controllers\V1\OrganizationController;
 use App\Http\Controllers\V1\TradeController;
@@ -16,7 +17,11 @@ use App\Http\Controllers\V1\OrderController;
 | contains the "web" middleware group. Now create something great!
 |
 */
+Route::prefix('test')->group(function () {
+    Route::get('test', [TestController::class, 'test']);
+    Route::get('test-login', [TestController::class, 'testLogin']);
 
+});
 // 图书相关接口分组
 Route::prefix('book')->group(function () {
     // 查询所有图书

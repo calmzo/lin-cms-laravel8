@@ -2,16 +2,27 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Cms\BaseController;
 
-use phpspider\core\phpspider;
-use VDB\Spider\Spider;
-
-class TestController extends Controller
+class TestController extends BaseController
 {
 
-    public function index()
+    protected $only = ['testLogin'];
+
+    public function test()
     {
-        return 2222;
+        $ip = '115.236.35.202';
+        $res = kg_ip2region($ip);
+
+
+        return $res;
+    }
+
+
+    public function testLogin()
+    {
+        $res = true;
+        return $res;
     }
 
 }
