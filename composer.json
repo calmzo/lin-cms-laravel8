@@ -16,11 +16,13 @@
         "hisorange/browser-detect": "^4.5",
         "laravel/framework": "^8.0",
         "laravel/tinker": "^2.0",
+        "larva/laravel-ip2region": "^1.0",
         "owner888/phpspider": "^2.1",
         "symfony/psr-http-message-bridge": "^2.1",
         "tencentcloud/tencentcloud-sdk-php": "^3.0",
         "tymon/jwt-auth": "^1.0",
         "vdb/php-spider": "^0.6.3",
+        "w7corp/easywechat": "^5.30",
         "wangyu/reflex-core": "^0.1.1",
         "yansongda/laravel-pay": "^3.1"
     },
@@ -34,7 +36,10 @@
     "config": {
         "optimize-autoloader": true,
         "preferred-install": "dist",
-        "sort-packages": true
+        "sort-packages": true,
+        "allow-plugins": {
+            "easywechat-composer/easywechat-composer": true
+        }
     },
     "extra": {
         "laravel": {
