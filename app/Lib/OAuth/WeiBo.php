@@ -3,7 +3,6 @@
 namespace App\Lib\OAuth;
 
 use App\Enums\ConnectEnums;
-use App\Services\OAuth;
 
 class WeiBo extends OAuth
 {

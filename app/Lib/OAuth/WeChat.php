@@ -2,7 +2,6 @@
 namespace App\Lib\OAuth;
 
 use App\Enums\ConnectEnums;
-use App\Services\OAuth;
 
 class WeChat extends OAuth
 {
