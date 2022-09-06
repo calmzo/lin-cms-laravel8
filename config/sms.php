@@ -16,13 +16,11 @@ return [
             'id' => 222222,
             'enabled' => 1
         ],
-        'live_begin' => [
-            'id' => 122222,
-            'enabled' => 1
+        //咨询回复模板
+        'consult_reply' => [
+            'enabled' => 1,
+            'id' => 1234
         ],
-        'goods_deliver' => [
-            'id' => 333333,
-            'enabled' => 1
-        ]
+
     ]
 ];
