@@ -27,6 +27,9 @@ class EventServiceProvider extends ServiceProvider
         'App\Events\TradeAfterPayEvent' => [
             'App\Listeners\TradeAfterPayListener',
         ],
+        'App\Events\NoticeTaskEvent' => [
+            'App\Listeners\NoticeTaskListener',
+        ],
     ];
 
     /**
