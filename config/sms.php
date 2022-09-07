@@ -6,8 +6,13 @@ return [
     //腾讯云短信
     'app_id' => env('SMS_TENCENT_APP_ID') ?? '',
     'signature' => env('SMS_TENCENT_SIGNATURE') ?? '',
+    'region' => env('SMS_TENCENT_REGION') ?? '',
     'endpoint' => env('SMS_TENCENT_ENDPOINT') ?? '', //请求接入点域名
     'template' => [
+        'verify' => [
+            'id' => 111111,
+            'enabled' => 1
+        ],
         'order_finish' => [
             'id' => 111111,
             'enabled' => 1

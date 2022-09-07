@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services;
+namespace App\Lib\Notice\Sms;
 
 use Illuminate\Support\Facades\Log;
 use TencentCloud\Common\Credential;
@@ -11,7 +11,7 @@ use TencentCloud\Sms\V20210111\Models\SendSmsRequest;
 use TencentCloud\Sms\V20210111\Models\SendStatus;
 use TencentCloud\Sms\V20210111\SmsClient;
 
-abstract class Smser extends Service
+abstract class Smser
 {
 
     /**
@@ -40,16 +40,14 @@ abstract class Smser extends Service
      */
     public function send($phoneNumber, $templateId, $params)
     {
-        $secret = $this->getSettings('secret');
+        $secret = config('captcha.secret');
 
         $region = $this->settings['region'] ?: 'ap-guangzhou';
 
         $templateParams = $this->formatTemplateParams($params);
 
         try {
-
             $credential = new Credential($secret['secret_id'], $secret['secret_key']);
-
             $httpProfile = new HttpProfile();
 
             $httpProfile->setEndpoint($this->settings['endpoint']);
