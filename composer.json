@@ -12,7 +12,7 @@
         "barryvdh/laravel-cors": "^3.0",
         "fideloper/proxy": "^4.2",
         "fruitcake/laravel-cors": "^2.0",
-        "guzzlehttp/guzzle": "^7.0.1",
+        "guzzlehttp/guzzle": "^7.5",
         "hisorange/browser-detect": "^4.5",
         "laravel/framework": "^8.0",
         "laravel/tinker": "^2.0",
