@@ -2,7 +2,6 @@
 
 namespace App\Services\Logic\Verify;
 
-use App\Services\CaptchaService;
 use App\Lib\Notice\Sms\Verify;
 
 class SmsCodeService
