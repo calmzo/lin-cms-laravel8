@@ -19,8 +19,6 @@ class LinUser extends BaseModel implements JWTSubject, AuthenticatableContract,
     use HasFactory, Notifiable, Authenticatable, Authorizable, BooleanSoftDeletes;
 
 
-//    protected $table = 'lin_user';
-
     /**
      * The attributes that are mass assignable.
      *
