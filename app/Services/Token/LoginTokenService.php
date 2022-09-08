@@ -55,4 +55,9 @@ class LoginTokenService
         ];
         return $token;
     }
+
+    public static function logout()
+    {
+        return Auth::guard('admin')->logout();
+    }
 }
