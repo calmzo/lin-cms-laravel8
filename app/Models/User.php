@@ -10,15 +10,23 @@ use Illuminate\Foundation\Auth\Access\Authorizable;
 use Illuminate\Notifications\Notifiable;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 
-class User extends BaseModel implements JWTSubject, AuthenticatableContract,
-    AuthorizableContract
+
+class User extends BaseModel implements JWTSubject, AuthenticatableContract, AuthorizableContract
 {
     use HasFactory, Notifiable, Authenticatable, Authorizable, BooleanSoftDeletes;
 
     public $fillable = [
-        ''
+        'id',
+        'name',
+        'avatar',
+        'title',
+        'about',
+        'area',
+        'gender',
+        'vip',
+        'locked',
+        'course_count'
     ];
-
     public function getJWTIdentifier()
     {
         return $this->getKey();
@@ -29,7 +37,6 @@ class User extends BaseModel implements JWTSubject, AuthenticatableContract,
         return [
             'issuer' => env('JWT_ISSUER'),
             'userId' => $this->getKey(),
-            'permissions' => '',
-            'admin' => '',
-        ];    }
+        ];
+    }
 }
