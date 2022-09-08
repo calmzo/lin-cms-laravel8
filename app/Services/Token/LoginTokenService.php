@@ -12,7 +12,7 @@ class LoginTokenService
 {
     public static function user(): array
     {
-        $user = Auth::guard('cms')->user()->toArray();
+        $user = Auth::guard('admin')->user()->toArray();
         $payload = self::payload();
         $user['admin'] = $payload['admin'];
         $user['permissions'] = $payload['permissions'];
@@ -21,7 +21,7 @@ class LoginTokenService
 
     public static function payload(): array
     {
-        return Auth::guard('cms')->getPayload()->toArray();
+        return Auth::guard('admin')->getPayload()->toArray();
     }
 
 
@@ -35,7 +35,7 @@ class LoginTokenService
      */
     public static function userId()
     {
-        return Auth::guard('cms')->user()->getAuthIdentifier();
+        return Auth::guard('admin')->user()->getAuthIdentifier();
     }
 
     /**
@@ -47,7 +47,7 @@ class LoginTokenService
         $userPermissions = UserService::getPermissions($user->id);
         $claims['permissions'] = $userPermissions['permissions'];
         $claims['admin'] = $userPermissions['admin'];
-        $accessToken = Auth::guard('cms')->claims($claims)->login($user);
+        $accessToken = Auth::guard('admin')->claims($claims)->login($user);
 //        $refreshToken = Auth::guard('cms')->refresh();
         $token = [
             'accessToken' => $accessToken,
