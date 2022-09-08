@@ -3,7 +3,7 @@
 namespace App\Services\Logic\Verify;
 
 use App\Lib\Notice\Mail\Verify as MailVerifyService;
-use App\Lib\Validators\Verify as VerifyValidator;
+use App\Lib\Validators\VerifyValidator;
 
 class MailCodeService
 {
