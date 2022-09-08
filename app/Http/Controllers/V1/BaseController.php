@@ -14,7 +14,7 @@ class BaseController extends Controller
     protected $except;
 
     /**
-     * WxController constructor.
+     * BaseController constructor.
      */
     public function __construct()
     {
@@ -25,7 +25,7 @@ class BaseController extends Controller
         if (!is_null($this->except)) {
             $options['except'] = $this->except;
         }
-//        $this->middleware(['auth:v1'], $options);
+        $this->middleware(['auth:api'], $options);
     }
 
     protected function codeReturn(array $codeResponse, $data = null, $info = '')
