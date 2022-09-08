@@ -2,12 +2,11 @@
 
 namespace App\Lib\Validators;
 
-use App\Enums\ClientEnums;
 use App\Exceptions\BadRequestException;
 use App\Exceptions\Token\ForbiddenException;
 use App\Traits\ClientTrait;
 use App\Models\User;
-use App\Models\Account as AccountModel;
+use App\Models\Account;
 use App\Utils\CodeResponse;
 use Illuminate\Support\Facades\Hash;
 
@@ -20,11 +19,11 @@ class AccountValidator
     {
         $account = null;
         if (CommonValidator::email($name)) {
-            $account = AccountModel::query()->where('email', $name)->first();
+            $account = Account::query()->where('email', $name)->first();
         } elseif (CommonValidator::phone($name)) {
-            $account = AccountModel::query()->where('phone', $name)->first();
+            $account = Account::query()->where('phone', $name)->first();
         } elseif (CommonValidator::intNumber($name)) {
-            $account = AccountModel::query()->where('id', $name)->first();
+            $account = Account::query()->where('id', $name)->first();
         }
 
         if (!$account) {
@@ -99,7 +98,7 @@ class AccountValidator
 
     public function checkIfPhoneTaken($phone)
     {
-        $account = AccountModel::query()->where('phone', $phone)->first();
+        $account = Account::query()->where('phone', $phone)->first();
 
         if ($account) {
             throw new BadRequestException(CodeResponse::NOT_FOUND_EXCEPTION, 'account.phone_taken');
@@ -108,7 +107,7 @@ class AccountValidator
 
     public function checkIfEmailTaken($email)
     {
-        $account = AccountModel::query()->where('email', $email)->first();
+        $account = Account::query()->where('email', $email)->first();
 
         if ($account) {
             throw new BadRequestException(CodeResponse::NOT_FOUND_EXCEPTION, 'account.email_taken');
@@ -134,11 +133,10 @@ class AccountValidator
 
         $account = $this->checkAccount($name);
 
-//        $hash = Hash::make($password);
-//
-//        if ($hash != $account->password) {
-//            throw new BadRequestException(CodeResponse::NOT_FOUND_EXCEPTION, 'account.login_pwd_incorrect');
-//        }
+        $hash = Hash::make($password);
+        if ($hash != $account->password) {
+            throw new BadRequestException(CodeResponse::NOT_FOUND_EXCEPTION, 'account.login_pwd_incorrect');
+        }
 
         return User::query()->find($account->id);
     }
