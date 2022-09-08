@@ -2,7 +2,7 @@
 
 namespace App\Services;
 
-class VerifyService extends Service
+class VerifyService extends BaseService
 {
 
     protected $cache;
