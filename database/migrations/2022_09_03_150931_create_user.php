@@ -14,7 +14,7 @@ class CreateUser extends Migration
     public function up()
     {
         Schema::create('user', function (Blueprint $table) {
-            $table->id();
+            $table->integer('id')->primary()->default(0)->comment('主键编号');
             $table->string('name', 30)->default('')->comment('名称');
             $table->string('avatar', 100)->default('')->comment('头像');
             $table->string('title', 30)->default('')->comment('头衔');
@@ -24,6 +24,7 @@ class CreateUser extends Migration
             $table->integer('vip')->default(0)->comment('会员标识');
             $table->integer('course_count')->default(0)->comment('课程数');
             $table->integer('locked')->default(0)->comment('锁定表示');
+            $table->timestamp('lock_expiry_time')->nullable()->comment('锁定期限');
             $table->timestamp('create_time');
             $table->timestamp('update_time');
             $table->softDeletes('delete_time');
