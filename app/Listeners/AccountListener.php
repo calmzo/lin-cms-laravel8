@@ -18,7 +18,10 @@ class AccountListener
         //
     }
 
-
+    /**
+     * 注册加积分
+     * @param $event
+     */
     public function handleRegisterPoint($event)
     {
         $service = new AccountRegister();
@@ -26,6 +29,7 @@ class AccountListener
         $service->handle($event->user);
     }
 
+    //登录通知
     public function handleLoginNotice($event)
     {
 
@@ -34,6 +38,12 @@ class AccountListener
         $service->createTask($event->user);
     }
 
+
+    //todo 退出登录
+    public function handleLogoutNotice($event)
+    {
+
+    }
 
 
     /**
@@ -52,6 +62,11 @@ class AccountListener
         $events->listen(
             'App\Events\AccountLoginEvent',
             [AccountListener::class, 'handleLoginNotice']
+        );
+
+        $events->listen(
+            'App\Events\AccountLogoutEvent',
+            [AccountListener::class, 'handleLogoutNotice']
         );
     }
 }
