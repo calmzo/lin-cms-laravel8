@@ -2,7 +2,7 @@
 
 namespace App\Lib\Validators;
 
-class Common
+class CommonValidator
 {
 
     public static function in($needle, $haystack)
