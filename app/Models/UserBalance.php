@@ -7,4 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class UserBalance extends BaseModel
 {
     use BooleanSoftDeletes, HasFactory;
+    public $fillable = [
+        'user_id'
+    ];
 }
