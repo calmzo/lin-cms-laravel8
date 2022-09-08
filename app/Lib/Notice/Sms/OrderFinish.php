@@ -4,7 +4,6 @@ namespace App\Lib\Notice\Sms;
 
 use App\Models\Account;
 use App\Models\User;
-use App\Services\Smser;
 
 class OrderFinish extends Smser
 {
