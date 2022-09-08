@@ -6,12 +6,14 @@ use Illuminate\Support\Facades\Auth;
 
 class AccountLoginTokenService
 {
-    public static function user(): array
+
+
+    public static function user()
     {
         return Auth::guard('api')->user();
     }
 
-    public static function payload(): array
+    public static function payload()
     {
         return Auth::guard('api')->getPayload();
     }
@@ -37,4 +39,10 @@ class AccountLoginTokenService
     {
         return Auth::guard('api')->login($user);
     }
+
+    public static function logout()
+    {
+        Auth::guard('api')->logout();
+    }
+
 }
