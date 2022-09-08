@@ -3,11 +3,10 @@
 namespace App\Lib\Validators;
 
 use App\Exceptions\BadRequestException;
-use App\Lib\Validators\Common as CommonValidator;
 use App\Services\VerifyService;
 use App\Utils\CodeResponse;
 
-class Verify
+class VerifyValidator
 {
 
     public function checkPhone($phone)
