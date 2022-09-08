@@ -6,6 +6,9 @@ use App\Http\Controllers\V1\BookController;
 use App\Http\Controllers\V1\OrganizationController;
 use App\Http\Controllers\V1\TradeController;
 use App\Http\Controllers\V1\OrderController;
+use App\Http\Controllers\V1\ConnectController;
+use App\Http\Controllers\V1\AccountController;
+use App\Http\Controllers\V1\VerifyController;
 
 /*
 |--------------------------------------------------------------------------
@@ -63,3 +66,40 @@ Route::prefix('order')->group(function () {
 
 });
 
+
+Route::prefix('account')->group(function () {
+    //
+    Route::post('register', [AccountController::class, 'register']);
+    Route::post('password/login', [AccountController::class, 'loginByPassword']);
+    Route::post('verify/login', [AccountController::class, 'loginByVerify']);
+    Route::get('logout', [AccountController::class, 'logout']);
+    Route::post('password/reset', [AccountController::class, 'resetPassword']);
+    Route::post('phone/update', [AccountController::class, 'updatePhone']);
+    Route::post('email/update', [AccountController::class, 'updateEmail']);
+    Route::post('password/update', [AccountController::class, 'updatePassword']);
+
+
+});
+
+
+Route::prefix('connect')->group(function () {
+    //
+    Route::get('qq', [ConnectController::class, 'qqLogin']);
+    Route::get('weixin', [ConnectController::class, 'weixinLogin']);
+    Route::get('weiboLogin', [ConnectController::class, 'weiboLogin']);
+
+    Route::get('bind/login', [ConnectController::class, 'bindLogin']);
+    Route::get('bind/register', [ConnectController::class, 'bindRegister']);
+    Route::get('weiboLogin', [ConnectController::class, 'weiboLogin']);
+
+});
+
+
+
+Route::prefix('verify')->group(function () {
+    //
+    Route::post('sms/code', [VerifyController::class, 'smsCode']);
+    Route::post('mail/code', [VerifyController::class, 'mailCode']);
+
+
+});
