@@ -6,5 +6,12 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Account extends BaseModel
 {
-    use BooleanSoftDeletes, HasFactory;
+    use HasFactory, BooleanSoftDeletes;
+
+    public $fillable = [
+        'name',
+        'email',
+        'phone',
+        'password',
+    ];
 }
