@@ -8,4 +8,11 @@ return [
         'enabled' => 1,
         'rate' => 0.1
     ],
+    'event_rule' => [
+        'account_register' => [
+            'enabled' => 1,
+            'point' => 100
+
+        ]
+    ],
 ];
