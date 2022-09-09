@@ -3,8 +3,6 @@
 namespace App\Services\Logic\Account;
 
 use App\Models\Account;
-use App\Repos\Account as AccountRepo;
-use App\Services\Logic\Service as LogicService;
 use App\Services\Token\AccountLoginTokenService;
 use App\Lib\Validators\AccountValidator;
 use App\Lib\Validators\VerifyValidator;
@@ -22,8 +20,7 @@ class PhoneUpdateService
 
         $accountValidator = new AccountValidator();
 
-        $phone = $accountValidator->checkPhone($params['phone']);
-
+        $phone = $accountValidator->checkPhone($phone);
         if ($phone != $account->phone) {
             $accountValidator->checkIfPhoneTaken($phone);
         }
