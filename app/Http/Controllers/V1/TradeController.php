@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\V1;
 
-use App\Http\Controllers\Cms\BaseController;
 use App\Services\TradeService;
 use Illuminate\Http\Request;
 

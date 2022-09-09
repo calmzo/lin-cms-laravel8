@@ -11,7 +11,7 @@ use Illuminate\Http\Request;
 
 class AccountController extends BaseController
 {
-    public $only = ['logout'];
+    public $except = ['register', 'loginByPassword', 'loginByVerify'];
 
     /**
      * 注册
@@ -69,7 +69,7 @@ class AccountController extends BaseController
 
 
     /**
-     * 修改密码
+     * 重置密码
      * @param Request $request
      * @return array|\Illuminate\Http\JsonResponse
      */

@@ -2,14 +2,13 @@
 
 namespace App\Http\Controllers\V1;
 
-use App\Services\AccountService;
 use App\Services\Logic\Verify\MailCodeService;
 use App\Services\Logic\Verify\SmsCodeService;
 use Illuminate\Http\Request;
 
 class VerifyController extends BaseController
 {
-
+    public $only = [];
 
     public function smsCode(Request $request)
     {
@@ -28,7 +27,6 @@ class VerifyController extends BaseController
 
         return $this->success();
     }
-
 
 
 }
