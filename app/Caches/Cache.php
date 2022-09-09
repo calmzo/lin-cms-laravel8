@@ -32,7 +32,6 @@ abstract class Cache
     public function get($id = null)
     {
         $key = $this->getKey($id);
-
         $lifetime = $this->getLifetime();
         return $this->cache->remember($key, $lifetime, function () use ($id){
             return $this->getContent($id);
