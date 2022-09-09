@@ -81,17 +81,17 @@ class AccountValidator
 
     public function checkOriginPassword(Account $account, $password)
     {
-        $hash = Hash::make($password);
+        $is_pass = Hash::check($password, $account->password);
 
-        if ($hash != $account->password) {
+        if (!$is_pass) {
             throw new BadRequestException(CodeResponse::NOT_FOUND_EXCEPTION, 'account.origin_pwd_incorrect');
         }
     }
 
     public function checkLoginPassword(Account $account, $password)
     {
-        $hash = Hash::make($password);
-        if ($hash != $account->password) {
+        $is_pass = Hash::check($password, $account->password);
+        if (!$is_pass) {
             throw new BadRequestException(CodeResponse::NOT_FOUND_EXCEPTION, 'account.login_pwd_incorrect');
         }
     }
@@ -132,9 +132,9 @@ class AccountValidator
         $this->checkLoginName($name);
 
         $account = $this->checkAccount($name);
+        $is_pass = Hash::check($password, $account->password);
 
-        $hash = Hash::make($password);
-        if ($hash != $account->password) {
+        if (!$is_pass) {
             throw new BadRequestException(CodeResponse::NOT_FOUND_EXCEPTION, 'account.login_pwd_incorrect');
         }
 
