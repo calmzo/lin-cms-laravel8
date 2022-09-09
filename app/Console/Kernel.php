@@ -2,6 +2,7 @@
 
 namespace App\Console;
 
+use App\Console\Commands\CleanLogTaskCommand;
 use App\Console\Commands\CloseTradeCommand;
 use App\Console\Commands\DeliverTaskCommand;
 use App\Console\Commands\RefundTaskCommand;
@@ -20,6 +21,7 @@ class Kernel extends ConsoleKernel
         CloseTradeCommand::class,
         DeliverTaskCommand::class,
         RefundTaskCommand::class,
+        CleanLogTaskCommand::class,
         //
     ];
 
@@ -32,8 +34,9 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
 //        $schedule->command('close_trade')->everyMinute();
-        $schedule->command('deliver_task')->everyMinute();
+//        $schedule->command('deliver_task')->everyMinute();
 //        $schedule->command('refund_task')->everyMinute();
+        $schedule->command('command:clean_log_task')->monthly();
     }
 
     /**
