@@ -16,6 +16,7 @@ use App\Services\Logic\Notice\PointGoodsDeliver as PointGoodsDeliverNotice;
 use App\Lib\Notice\RefundFinish as RefundFinishNotice;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Support\Facades\Log;
 
 class NoticeTaskListener
 {
@@ -79,7 +80,7 @@ class NoticeTaskListener
 
                 $task->status = TaskEnums::STATUS_FINISHED;
 
-                $task->update();
+                $task->save();
 
             } catch (\Exception $e) {
 
@@ -90,9 +91,9 @@ class NoticeTaskListener
                     $task->status = TaskEnums::STATUS_FAILED;
                 }
 
-                $task->update();
+                $task->save();
 
-                $logger = $this->getLogger('notice');
+                $logger = Log::channel('notice');
 
                 $logger->error('Notice Process Exception ' . kg_json_encode([
                         'file' => $e->getFile(),
