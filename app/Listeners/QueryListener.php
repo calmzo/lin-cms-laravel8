@@ -43,7 +43,7 @@ class QueryListener
                 $log = vsprintf($sql, $event->bindings);
                 $log = str_replace("''", "'", $log);
                 $log = $log . '  [ RunTime:' . $event->time . 'ms ] ';
-                (new Logger('sql'))->pushHandler(new RotatingFileHandler(storage_path('logs/sql/sql_' . php_sapi_name() . '.log')))->info($log);
+                (new Logger('sql'))->pushHandler(new RotatingFileHandler(storage_path('logs/sql/sql-' . php_sapi_name() . '.log')))->info($log);
             }
         } catch (Exception $exception) {
 
