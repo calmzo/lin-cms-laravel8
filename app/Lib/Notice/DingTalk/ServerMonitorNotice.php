@@ -4,7 +4,6 @@ namespace App\Lib\Notice\DingTalk;
 
 use App\Enums\TaskEnums;
 use App\Models\Task as Task;
-use TencentCloud\Antiddos\V20200309\Models\DDoSAIRelation;
 
 class ServerMonitorNotice extends DingTalkNotice
 {
@@ -14,9 +13,8 @@ class ServerMonitorNotice extends DingTalkNotice
         if (!$this->enabled) return;
 
         $notice = new DingTalkNotice();
-
-        $content = $task->item_info['content'];
-
+        $item_info = json_decode($task->item_info, true);
+        $content = $item_info['content'] ?? '';
         $notice->atTechSupport($content);
     }
 
