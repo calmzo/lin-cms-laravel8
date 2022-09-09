@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Cms\BaseController;
+use Illuminate\Support\Facades\Artisan;
 
 class TestController extends BaseController
 {
@@ -11,9 +12,9 @@ class TestController extends BaseController
 
     public function test()
     {
-        $ip = '115.236.35.202';
-        $res = kg_ip2region($ip);
-
+//        $ip = '115.236.35.202';
+//        $res = kg_ip2region($ip);
+        $res = Artisan::call('command:unlock_user_task');
 
         return $res;
     }
