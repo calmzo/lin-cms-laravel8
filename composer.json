@@ -19,6 +19,7 @@
         "larva/laravel-ip2region": "^1.0",
         "owner888/phpspider": "^2.1",
         "symfony/psr-http-message-bridge": "^2.1",
+        "taxusorg/xunsearch-laravel": "^3.0",
         "tencentcloud/tencentcloud-sdk-php": "^3.0",
         "tymon/jwt-auth": "^1.0",
         "vdb/php-spider": "^0.6.3",

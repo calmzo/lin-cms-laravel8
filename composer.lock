@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "643ba238a0d2064827d256b62114eeb1",
+    "content-hash": "dd89f3a4fd0ec030155f85db0969938c",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -1683,6 +1683,76 @@
             "time": "2022-06-20T21:43:11+00:00"
         },
         {
+            "name": "hightman/xunsearch",
+            "version": "1.4.16",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/hightman/xs-sdk-php.git",
+                "reference": "ba32e0d6810ce45bbbe0b771efbc3f87e0e3b1f3"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/hightman/xs-sdk-php/zipball/ba32e0d6810ce45bbbe0b771efbc3f87e0e3b1f3",
+                "reference": "ba32e0d6810ce45bbbe0b771efbc3f87e0e3b1f3",
+                "shasum": "",
+                "mirrors": [
+                    {
+                        "url": "https://mirrors.aliyun.com/composer/dists/%package%/%reference%.%type%",
+                        "preferred": true
+                    }
+                ]
+            },
+            "require": {
+                "ext-mbstring": "*",
+                "lib-pcre": "*",
+                "php": ">=5.3.0"
+            },
+            "bin": [
+                "util/xs"
+            ],
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.4.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "hightman\\xunsearch\\": "wrapper/yii2-ext/"
+                },
+                "classmap": [
+                    "lib/",
+                    "wrapper/yii-ext/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "authors": [
+                {
+                    "name": "hightman",
+                    "email": "hightman@twomice.net",
+                    "role": "Founder and project leader"
+                }
+            ],
+            "description": "xunsearch php sdk, include yii, yii2 supports",
+            "homepage": "http://www.xunsearch.com/",
+            "keywords": [
+                "search engine",
+                "xunsearch",
+                "yii",
+                "yii2"
+            ],
+            "support": {
+                "forum": "http://bbs.xunsearch.com/",
+                "guide": "http://www.xunsearch.com/doc/php",
+                "issues": "https://github.com/hightman/xunsearch/issues?q=is%3Aopen",
+                "source": "https://github.com/hightman/xunsearch/"
+            },
+            "time": "2022-03-08T11:07:09+00:00"
+        },
+        {
             "name": "hisorange/browser-detect",
             "version": "4.5.2",
             "source": {
@@ -1999,6 +2069,81 @@
                 "source": "https://github.com/laravel/framework"
             },
             "time": "2022-07-26T13:30:00+00:00"
+        },
+        {
+            "name": "laravel/scout",
+            "version": "v8.6.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/laravel/scout.git",
+                "reference": "7fb1c860a2fd904f0e084a7cc3641eb1448ba278"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/laravel/scout/zipball/7fb1c860a2fd904f0e084a7cc3641eb1448ba278",
+                "reference": "7fb1c860a2fd904f0e084a7cc3641eb1448ba278",
+                "shasum": "",
+                "mirrors": [
+                    {
+                        "url": "https://mirrors.aliyun.com/composer/dists/%package%/%reference%.%type%",
+                        "preferred": true
+                    }
+                ]
+            },
+            "require": {
+                "illuminate/bus": "^6.0|^7.0|^8.0",
+                "illuminate/contracts": "^6.0|^7.0|^8.0",
+                "illuminate/database": "^6.0|^7.0|^8.0",
+                "illuminate/http": "^6.0|^7.0|^8.0",
+                "illuminate/pagination": "^6.0|^7.0|^8.0",
+                "illuminate/queue": "^6.0|^7.0|^8.0",
+                "illuminate/support": "^6.0|^7.0|^8.0",
+                "php": "^7.2|^8.0"
+            },
+            "require-dev": {
+                "mockery/mockery": "^1.0",
+                "phpunit/phpunit": "^8.0|^9.3"
+            },
+            "suggest": {
+                "algolia/algoliasearch-client-php": "Required to use the Algolia engine (^2.2)."
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "8.x-dev"
+                },
+                "laravel": {
+                    "providers": [
+                        "Laravel\\Scout\\ScoutServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Laravel\\Scout\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Taylor Otwell",
+                    "email": "taylor@laravel.com"
+                }
+            ],
+            "description": "Laravel Scout provides a driver based solution to searching your Eloquent models.",
+            "keywords": [
+                "algolia",
+                "laravel",
+                "search"
+            ],
+            "support": {
+                "issues": "https://github.com/laravel/scout/issues",
+                "source": "https://github.com/laravel/scout"
+            },
+            "time": "2021-04-06T14:35:41+00:00"
         },
         {
             "name": "laravel/serializable-closure",
@@ -7920,6 +8065,74 @@
                 }
             ],
             "time": "2022-05-27T12:56:18+00:00"
+        },
+        {
+            "name": "taxusorg/xunsearch-laravel",
+            "version": "v3.0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/taxusorg/xunsearch-laravel.git",
+                "reference": "7370cecffedc3cbad90bc6b323f7e744f5f082e7"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/taxusorg/xunsearch-laravel/zipball/7370cecffedc3cbad90bc6b323f7e744f5f082e7",
+                "reference": "7370cecffedc3cbad90bc6b323f7e744f5f082e7",
+                "shasum": "",
+                "mirrors": [
+                    {
+                        "url": "https://mirrors.aliyun.com/composer/dists/%package%/%reference%.%type%",
+                        "preferred": true
+                    }
+                ]
+            },
+            "require": {
+                "hightman/xunsearch": "^1.4",
+                "laravel/scout": "^6.0|^7.0|^8.0",
+                "php": ">=7.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^7.0",
+                "vlucas/phpdotenv": "^2.5"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Taxusorg\\XunSearchLaravel\\XunSearchServiceProvider"
+                    ]
+                },
+                "branch-alias": {
+                    "dev-master": "v3.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Taxusorg\\XunSearchLaravel\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Taxusorg",
+                    "email": "taxus@taxus.org"
+                }
+            ],
+            "description": "Laravel XunSearch engine.",
+            "keywords": [
+                "Laravel Scout engine",
+                "XunSearch Engine",
+                "laravel",
+                "xunsearch"
+            ],
+            "support": {
+                "issues": "https://github.com/taxusorg/xunsearch-laravel/issues",
+                "source": "https://github.com/taxusorg/xunsearch-laravel/tree/v3.0.2"
+            },
+            "time": "2021-08-12T07:54:06+00:00"
         },
         {
             "name": "tencentcloud/tencentcloud-sdk-php",
