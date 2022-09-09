@@ -21,6 +21,6 @@
         </style>
     </head>
     <body class="antialiased">
-        {{$viewData['content']}}}
+        {{$viewData['content']}}
     </body>
 </html>

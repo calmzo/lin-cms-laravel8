@@ -28,7 +28,7 @@ class Verify
             $viewData = [
                 'content' => $content
             ];
-            Mail::to($email)->send(new VerifyShipped($viewData));
+            $result = Mail::to($email)->send(new VerifyShipped($viewData));
 
         } catch (\Exception $e) {
             Log::channel('mail')->error('Send Verify Mail Exception ' . json_encode([
