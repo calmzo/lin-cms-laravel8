@@ -4,7 +4,7 @@ namespace App\Services\Logic\Account;
 
 use App\Library\Utils\Password as PasswordUtil;
 use App\Lib\Validators\AccountValidator;
-use App\Validators\Verify as VerifyValidator;
+use App\Lib\Validators\VerifyValidator;
 use Illuminate\Support\Facades\Hash;
 
 class PasswordResetService
