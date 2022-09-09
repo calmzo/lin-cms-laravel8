@@ -27,7 +27,6 @@ class DingTalkNotice
     public function __construct()
     {
         $this->settings = config('dingtalk.robot');
-
         $this->logger = Log::channel('dingtalk');
 
         $this->enabled = $this->settings['enabled'] == 1;
@@ -64,7 +63,6 @@ class DingTalkNotice
             'text' => ['content' => $atContent],
             'at' => ['atMobiles' => $atMobiles],
         ];
-
         return $this->send($params);
     }
 
@@ -78,7 +76,6 @@ class DingTalkNotice
     {
         $atMobiles = $this->parseAtMobiles($this->settings['cs_mobiles']);
         $atContent = $this->buildAtContent($content, $atMobiles);
-
         $params = [
             'msgtype' => 'text',
             'text' => ['content' => $atContent],
@@ -160,7 +157,6 @@ class DingTalkNotice
         $mobiles = str_replace(['，', '｜', '|'], ',', $mobiles);
 
         $mobiles = explode(',', $mobiles);
-
         $result = [];
 
         foreach ($mobiles as $mobile) {
