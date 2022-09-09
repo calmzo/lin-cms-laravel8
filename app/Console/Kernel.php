@@ -6,6 +6,7 @@ use App\Console\Commands\CleanLogTaskCommand;
 use App\Console\Commands\CloseOrderTaskCommand;
 use App\Console\Commands\CloseTradeCommand;
 use App\Console\Commands\DeliverTaskCommand;
+use App\Console\Commands\NoticeTaskCommand;
 use App\Console\Commands\RefundTaskCommand;
 use App\Console\Commands\ServerMonitorTaskCommand;
 use Illuminate\Console\Scheduling\Schedule;
@@ -26,6 +27,7 @@ class Kernel extends ConsoleKernel
         CleanLogTaskCommand::class,
         CloseOrderTaskCommand::class,
         ServerMonitorTaskCommand::class,
+        NoticeTaskCommand::class,
         //
     ];
 
@@ -42,7 +44,8 @@ class Kernel extends ConsoleKernel
 //        $schedule->command('refund_task')->everyMinute();
 //        $schedule->command('command:clean_log_task')->monthly();
 //        $schedule->command('command:close_order')->daily();
-        $schedule->command('command:server_monitor_task')->daily();
+//        $schedule->command('command:server_monitor_task')->daily();
+        $schedule->command('command:notice_task')->daily();
     }
 
     /**
