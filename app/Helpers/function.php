@@ -218,3 +218,94 @@ function kg_ip2region($ip)
     return compact('country', 'area', 'province', 'city', 'isp');
 }
 
+
+/**
+ * Get the root path.
+ *
+ * @param string $path
+ * @return string
+ */
+function root_path($path = '')
+{
+    return dirname(__DIR__) . trim_path($path);
+}
+
+
+/**
+ * Get the bootstrap path.
+ *
+ * @param string $path
+ * @return string
+ */
+function bootstrap_path($path = '')
+{
+    return root_path('bootstrap') . trim_path($path);
+}
+
+/**
+ * Get the vendor path.
+ *
+ * @param string $path
+ * @return string
+ */
+function vendor_path($path = '')
+{
+    return root_path('vendor') . trim_path($path);
+}
+
+/**
+ * Get the static path.
+ *
+ * @param string $path
+ * @return string
+ */
+function static_path($path = '')
+{
+    return public_path('static') . trim_path($path);
+}
+
+/**
+ * Get the cache path.
+ *
+ * @param string $path
+ * @return string
+ */
+function cache_path($path = '')
+{
+    return storage_path('cache') . trim_path($path);
+}
+
+/**
+ * Get the log path.
+ *
+ * @param string $path
+ * @return string
+ */
+function log_path($path = '')
+{
+    return storage_path('logs') . trim_path($path);
+}
+
+/**
+ * Get the tmp path.
+ *
+ * @param string $path
+ * @return string
+ */
+function tmp_path($path = '')
+{
+    return storage_path('tmp') . trim_path($path);
+}
+
+/**
+ * Trim path slash
+ *
+ * @param string $path
+ * @return string
+ */
+function trim_path($path)
+{
+    $path = trim($path, '/');
+
+    return $path ? "/{$path}" : '';
+}
