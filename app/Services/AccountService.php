@@ -68,7 +68,7 @@ class AccountService
          */
         if (isset($params['phone'])) {
             $params['account'] = $params['phone'];
-        } elseif (isset($post['email'])) {
+        } elseif (isset($params['email'])) {
             $params['account'] = $params['email'];
         }
 
