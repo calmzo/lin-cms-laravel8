@@ -3,9 +3,11 @@
 namespace App\Console;
 
 use App\Console\Commands\CleanLogTaskCommand;
+use App\Console\Commands\CloseOrderTaskCommand;
 use App\Console\Commands\CloseTradeCommand;
 use App\Console\Commands\DeliverTaskCommand;
 use App\Console\Commands\RefundTaskCommand;
+use App\Console\Commands\ServerMonitorTaskCommand;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -22,6 +24,8 @@ class Kernel extends ConsoleKernel
         DeliverTaskCommand::class,
         RefundTaskCommand::class,
         CleanLogTaskCommand::class,
+        CloseOrderTaskCommand::class,
+        ServerMonitorTaskCommand::class,
         //
     ];
 
@@ -36,7 +40,9 @@ class Kernel extends ConsoleKernel
 //        $schedule->command('close_trade')->everyMinute();
 //        $schedule->command('deliver_task')->everyMinute();
 //        $schedule->command('refund_task')->everyMinute();
-        $schedule->command('command:clean_log_task')->monthly();
+//        $schedule->command('command:clean_log_task')->monthly();
+//        $schedule->command('command:close_order')->daily();
+        $schedule->command('command:server_monitor_task')->daily();
     }
 
     /**
