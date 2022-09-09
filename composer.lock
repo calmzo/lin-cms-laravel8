@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "dd89f3a4fd0ec030155f85db0969938c",
+    "content-hash": "6acf768b504f0f6948d03f56faa399c9",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -8960,6 +8960,43 @@
                 "source": "https://github.com/webmozarts/assert/tree/1.11.0"
             },
             "time": "2022-06-03T18:03:27+00:00"
+        },
+        {
+            "name": "workerman/gatewayclient",
+            "version": "v3.0.14",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/walkor/GatewayClient.git",
+                "reference": "4362468d68251015b2b385c310252afb4d6648ed"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/walkor/GatewayClient/zipball/4362468d68251015b2b385c310252afb4d6648ed",
+                "reference": "4362468d68251015b2b385c310252afb4d6648ed",
+                "shasum": "",
+                "mirrors": [
+                    {
+                        "url": "https://mirrors.aliyun.com/composer/dists/%package%/%reference%.%type%",
+                        "preferred": true
+                    }
+                ]
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "GatewayClient\\": "./"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "homepage": "http://www.workerman.net",
+            "support": {
+                "issues": "https://github.com/walkor/GatewayClient/issues",
+                "source": "https://github.com/walkor/GatewayClient/tree/v3.0.14"
+            },
+            "time": "2021-11-29T07:03:50+00:00"
         },
         {
             "name": "yansongda/laravel-pay",

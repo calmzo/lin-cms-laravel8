@@ -25,6 +25,7 @@
         "vdb/php-spider": "^0.6.3",
         "w7corp/easywechat": "^5.30",
         "wangyu/reflex-core": "^0.1.1",
+        "workerman/gatewayclient": "^3.0",
         "yansongda/laravel-pay": "^3.1"
     },
     "require-dev": {
