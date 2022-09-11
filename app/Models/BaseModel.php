@@ -17,7 +17,7 @@ class BaseModel extends Model
     public const DELETED_AT = 'delete_time';
 
     protected $hidden = [
-       'create_time',  'update_time', 'delete_time'
+        'create_time', 'update_time', 'delete_time'
     ];
     /**
      * 表名约定
@@ -48,21 +48,6 @@ class BaseModel extends Model
     {
         return new static();
     }
-
-    /**
-     * 转驼峰
-     * @return array
-     */
-//    public function toArray()
-//    {
-//        $items = parent::toArray();
-//        $keys = array_keys($items);
-//        $keys = array_map(function ($item) {
-//            return lcfirst(Str::studly($item));
-//        }, $keys);
-//        $values = array_values($items);
-//        return array_combine($keys, $values);
-//    }
 
     public function serializeDate(DateTimeInterface $date)
     {
