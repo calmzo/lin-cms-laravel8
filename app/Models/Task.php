@@ -37,6 +37,5 @@ class Task extends BaseModel
             $value = json_decode($value, true);
         }
         return $value;
-
     }
 }
