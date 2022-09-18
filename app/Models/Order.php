@@ -78,4 +78,9 @@ class Order extends BaseModel
 
         self::getOrderSn();
     }
+
+    public function orderStatus()
+    {
+        return $this->belongsTo(OrderStatus::class, 'id', 'order_id');
+    }
 }
