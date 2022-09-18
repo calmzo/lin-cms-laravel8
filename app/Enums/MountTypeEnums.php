@@ -2,7 +2,9 @@
 
 namespace App\Enums;
 
-class MountTypeEnums
+use BenSampo\Enum\Enum;
+
+final class MountTypeEnums extends Enum
 {
     const MOUNT = 1; // 挂载
     const UNMOUNT = 0;

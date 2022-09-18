@@ -2,7 +2,9 @@
 
 namespace App\Enums;
 
-class PointHistoryEnums
+use BenSampo\Enum\Enum;
+
+final class PointHistoryEnums extends Enum
 {
     const ERROR_STR = '未知';
 
@@ -25,7 +27,6 @@ class PointHistoryEnums
     const EVENT_QUESTION_LIKED = 14; // 提问被点赞
     const EVENT_ANSWER_LIKED = 15; // 回答被点赞
     const EVENT_ANSWER_ACCEPTED = 16; // 回答被采纳
-
 
 
 }

@@ -2,7 +2,10 @@
 
 namespace App\Enums;
 
-class TradeEnums
+use BenSampo\Enum\Enum;
+
+
+final class TradeEnums extends Enum
 {
     const ERROR_STR = '未知';
 
@@ -22,7 +25,7 @@ class TradeEnums
 
     public static function channelTypes($type = null)
     {
-        $list =  [
+        $list = [
             self::CHANNEL_ALIPAY => '支付宝',
             self::CHANNEL_WXPAY => '微信',
         ];

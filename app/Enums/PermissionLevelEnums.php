@@ -2,7 +2,9 @@
 
 namespace App\Enums;
 
-class PermissionLevelEnums
+use BenSampo\Enum\Enum;
+
+final class PermissionLevelEnums extends Enum
 {
     const LOGIN_REQUIRED = 'loginRequired';
 

@@ -2,7 +2,9 @@
 
 namespace App\Enums;
 
-class ClientEnums
+use BenSampo\Enum\Enum;
+
+final class ClientEnums extends Enum
 {
     const ERROR_STR = '未知';
 
@@ -22,7 +24,7 @@ class ClientEnums
 
     public static function types($type = null)
     {
-        $list =  [
+        $list = [
             self::TYPE_PC => 'PC',
             self::TYPE_H5 => 'H5',
             self::TYPE_APP => 'APP',

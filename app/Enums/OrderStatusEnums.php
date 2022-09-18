@@ -4,7 +4,7 @@ namespace App\Enums;
 
 use BenSampo\Enum\Enum;
 
-final class OrderEnums extends Enum
+final class OrderStatusEnums extends Enum
 {
     /**
      * 条目类型

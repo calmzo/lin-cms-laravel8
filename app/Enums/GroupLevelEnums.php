@@ -2,7 +2,9 @@
 
 namespace App\Enums;
 
-class GroupLevelEnums
+use BenSampo\Enum\Enum;
+
+final class GroupLevelEnums extends Enum
 {
     const NONE = '';
     const ROOT = 1;

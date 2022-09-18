@@ -2,7 +2,9 @@
 
 namespace App\Enums;
 
-class CourseUserEnums
+use BenSampo\Enum\Enum;
+
+final class CourseUserEnums extends Enum
 {
     const ERROR_STR = '未知';
 
@@ -21,7 +23,6 @@ class CourseUserEnums
     const SOURCE_IMPORT = 4; // 导入
     const SOURCE_POINT_REDEEM = 5; // 积分兑换
     const SOURCE_LUCKY_REDEEM = 6; // 抽奖兑换
-
 
 
 }
