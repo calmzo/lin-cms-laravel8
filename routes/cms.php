@@ -7,6 +7,8 @@ use App\Http\Controllers\Cms\LogController;
 use App\Http\Controllers\Cms\FileController;
 use App\Http\Controllers\Cms\UploadController;
 use App\Http\Controllers\Cms\RefundController;
+use App\Http\Controllers\Cms\IndexController;
+use App\Http\Controllers\Cms\CourseController;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,6 +20,11 @@ use App\Http\Controllers\Cms\RefundController;
 | contains the "web" middleware group. Now create something great!
 |
 */
+
+
+Route::prefix('index')->group(function () {
+    Route::get('main', [IndexController::class, 'main']);
+});
 
 // 账户相关接口分组
 Route::prefix('user')->group(function () {
@@ -80,6 +87,14 @@ Route::prefix('upload')->group(function () {
 
 Route::prefix('refund')->group(function () {
     Route::post('{id}/review', [RefundController::class, 'review']);
+});
+
+Route::prefix('course')->group(function () {
+    Route::get('category', [CourseController::class, 'category']);
+    Route::get('search', [CourseController::class, 'search']);
+    Route::get('', [CourseController::class, 'list']);
+    Route::post('', [CourseController::class, 'create']);
+    Route::get('add', [CourseController::class, 'add']);
 });
 
 
