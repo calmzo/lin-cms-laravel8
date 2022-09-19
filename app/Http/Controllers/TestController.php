@@ -2,7 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\OrderEnums;
+use App\Enums\ReviewEnums;
+use App\Enums\TaskEnums;
 use App\Http\Controllers\Cms\BaseController;
+use App\Models\Order;
+use App\Models\Task;
 use Illuminate\Support\Facades\Artisan;
 
 class TestController extends BaseController
@@ -12,9 +17,8 @@ class TestController extends BaseController
 
     public function test()
     {
-//        $ip = '115.236.35.202';
-//        $res = kg_ip2region($ip);
-        $res = Artisan::call('command:unlock_user_task');
+
+        $res = ReviewEnums::getValues();
 
         return $res;
     }
