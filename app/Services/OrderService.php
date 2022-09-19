@@ -8,7 +8,7 @@ use App\Models\Course;
 use App\Models\User;
 use App\Models\Order;
 use App\Models\Vip;
-use App\Services\Token\LoginTokenService;
+use App\Services\Token\AccountLoginTokenService;
 use App\Traits\ClientTrait;
 use App\Traits\OrderTrait;
 use App\Traits\UserLimitTrait;
@@ -25,7 +25,7 @@ class OrderService
 
     public function creatOrder($params)
     {
-        $userId = LoginTokenService::userId();
+        $userId = AccountLoginTokenService::userId();
         $user = User::query()->find($userId);
         IncrOrderCountEvent::dispatch($user);
         $this->checkDailyOrderLimit($user);
@@ -62,7 +62,7 @@ class OrderService
 
     public function confirmOrder($itemId, $itemType)
     {
-        $userId = LoginTokenService::userId();
+        $userId = AccountLoginTokenService::userId();
         $user = User::query()->find($userId);
 
         $result = [];
@@ -102,23 +102,21 @@ class OrderService
         $itemInfo = [];
 
         $itemInfo['course'] = $this->handleCourseInfo($course);
-        $order = new Order();
 
-        $order->user_id = $user->id;
-        $order->item_id = $course->id;
-        $order->sn = $this->getOrderSn();
-        $order->item_type = OrderEnums::ITEM_COURSE;
-        $order->item_info = json_encode($itemInfo, JSON_UNESCAPED_SLASHES);
-        $order->client_type = $this->getClientType();
-        $order->client_ip = $this->getClientIp();
-        $order->subject = "课程 - {$course->title}";
-        $order->amount = $this->amount;
-//        $order->promotion_id = $this->promotion_id;
-//        $order->promotion_type = $this->promotion_type;
-//        $order->promotion_info = $this->promotion_info;
-
-        $order->save();
-
+        $data = [
+            'user_id' => $user->id,
+            'item_id' => $course->id,
+            'item_type' => OrderEnums::ITEM_COURSE,
+            'item_info' => $itemInfo,
+            'client_type' => $this->getClientType(),
+            'client_ip' => $this->getClientIp(),
+            'subject' => "课程 - {$course->title}",
+            'amount' => $this->amount,
+//            'promotion_id' => $this->amount,
+//            'promotion_type' => $this->amount,
+//            'promotion_info' => $this->amount,
+        ];
+        $order = Order::query()->create($data);
         return $order;
     }
 
@@ -156,24 +154,20 @@ class OrderService
                 'expiry_time' => $expiryTime,
             ]
         ];
-
-        $order = new Order();
-
-        $order->user_id = $user->id;
-        $order->sn = $this->getOrderSn();
-        $order->item_id = $vip->id;
-        $order->item_type = OrderEnums::ITEM_VIP;
-        $order->item_info = json_encode($itemInfo, JSON_UNESCAPED_SLASHES);
-        $order->client_type = $this->getClientType();
-        $order->client_ip = $this->getClientIp();
-        $order->subject = "会员 - 会员服务（{$vip->title}）";
-        $order->amount = $this->amount;
-//        $order->promotion_id = $this->promotion_id;
-//        $order->promotion_type = $this->promotion_type;
-//        $order->promotion_info = $this->promotion_info;
-
-        $order->save();
-
+        $data = [
+            'user_id' => $user->id,
+            'item_id' => $vip->id,
+            'item_type' => OrderEnums::ITEM_VIP,
+            'item_info' => $itemInfo,
+            'client_type' => $this->getClientType(),
+            'client_ip' => $this->getClientIp(),
+            'subject' => "会员 - 会员服务（{$vip->title}）",
+            'amount' => $this->amount,
+//            'promotion_id' => $this->amount,
+//            'promotion_type' => $this->amount,
+//            'promotion_info' => $this->amount,
+        ];
+        $order = Order::query()->create($data);
         return $order;
     }
 
