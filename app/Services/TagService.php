@@ -57,4 +57,14 @@ class TagService
         $res = $query->orderByDesc('create_time')->paginate($count, ['*'], 'page', $page);
         return $res;
     }
+
+
+    public static function createTag(array $params): Tag
+    {
+        $data = [
+            'name' => $params['name'] ?? ''
+        ];
+        $tag = Tag::query()->create($data);
+        return $tag;
+    }
 }

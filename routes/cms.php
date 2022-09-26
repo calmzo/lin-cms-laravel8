@@ -101,6 +101,13 @@ Route::prefix('course')->group(function () {
 Route::prefix('tag')->group(function () {
     Route::get('', [TagController::class, 'getTags']);
     Route::get('search', [TagController::class, 'searchTags']);
+    Route::post('', [TagController::class, 'createTag']);
+});
+
+Route::prefix('article')->group(function () {
+    Route::get('', [TagController::class, 'getTags']);
+    Route::get('search', [TagController::class, 'searchTags']);
+    Route::post('', [TagController::class, 'createTag']);
 });
 
 
