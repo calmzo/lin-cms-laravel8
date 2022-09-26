@@ -9,6 +9,7 @@ use App\Http\Controllers\Cms\UploadController;
 use App\Http\Controllers\Cms\RefundController;
 use App\Http\Controllers\Cms\IndexController;
 use App\Http\Controllers\Cms\CourseController;
+use App\Http\Controllers\Cms\TagController;
 
 /*
 |--------------------------------------------------------------------------
@@ -95,6 +96,11 @@ Route::prefix('course')->group(function () {
     Route::get('', [CourseController::class, 'list']);
     Route::post('', [CourseController::class, 'create']);
     Route::get('add', [CourseController::class, 'add']);
+});
+
+Route::prefix('tag')->group(function () {
+    Route::get('', [TagController::class, 'getTags']);
+    Route::get('search', [TagController::class, 'searchTags']);
 });
 
 
