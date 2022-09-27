@@ -109,7 +109,7 @@ Route::prefix('verify')->group(function () {
 Route::prefix('article')->group(function () {
     //
     Route::post('create', [ArticleController::class, 'createArticle']);
-    Route::post('mail/code', [VerifyController::class, 'mailCode']);
+    Route::get('categories', [ArticleController::class, 'categories']);
 
 
 });
