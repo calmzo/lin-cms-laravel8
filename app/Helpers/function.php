@@ -309,3 +309,54 @@ function trim_path($path)
 
     return $path ? "/{$path}" : '';
 }
+
+/**
+ * 解析内容中上传首图
+ *
+ * @param string $content
+ * @return string
+ */
+function kg_parse_first_content_image($content)
+{
+    $result = '';
+
+    $matched = preg_match('/src="(.*?)\/img\/content\/(.*?)"/', $content, $matches);
+
+    if ($matched) {
+        $url = sprintf('%s/img/content/%s', trim($matches[1]), trim($matches[2]));
+        $result = kg_cos_img_style_trim($url);
+    }
+
+    return $result;
+}
+
+
+/**
+ * 解析内容摘要
+ *
+ * @param string $content
+ * @param int $length
+ * @return string
+ */
+function kg_parse_summary($content, $length = 100)
+{
+    $content = trim(strip_tags($content));
+
+    return kg_substr($content, 0, $length);
+}
+
+/**
+ * 字符截取
+ *
+ * @param string $str
+ * @param int $start
+ * @param int $length
+ * @param string $suffix
+ * @return string
+ */
+function kg_substr($str, $start, $length, $suffix = '...')
+{
+    $result = mb_substr($str, $start, $length, 'utf-8');
+
+    return $str == $result ? $str : $result . $suffix;
+}
