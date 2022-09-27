@@ -2,9 +2,7 @@
 
 namespace App\Enums;
 
-use BenSampo\Enum\Enum;
-
-final class PointGiftRedeemEnums extends Enum
+class PointGiftRedeemEnums extends BaseEnums
 {
     /**
      * 状态类型

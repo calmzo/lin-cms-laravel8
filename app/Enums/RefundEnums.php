@@ -2,9 +2,7 @@
 
 namespace App\Enums;
 
-use BenSampo\Enum\Enum;
-
-final class RefundEnums extends Enum
+class RefundEnums extends BaseEnums
 {
     const ERROR_STR = '未知';
 

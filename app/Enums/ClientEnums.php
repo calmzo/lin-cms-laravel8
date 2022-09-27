@@ -2,9 +2,7 @@
 
 namespace App\Enums;
 
-use BenSampo\Enum\Enum;
-
-final class ClientEnums extends Enum
+class ClientEnums extends BaseEnums
 {
     const ERROR_STR = '未知';
 
@@ -22,7 +20,7 @@ final class ClientEnums extends Enum
     const TYPE_MP_QQ = 9;
     const TYPE_MP_360 = 10;
 
-    public static function types($type = null)
+    public static function types($key = null)
     {
         $list = [
             self::TYPE_PC => 'PC',
@@ -36,7 +34,7 @@ final class ClientEnums extends Enum
             self::TYPE_MP_QQ => 'MP-QQ',
             self::TYPE_MP_360 => 'MP-360',
         ];
-        return is_null($type) ? $list : ($list[$type] ?? self::ERROR_STR);
+        return self::getDesc($list, $key);
     }
 
 

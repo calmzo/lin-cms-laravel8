@@ -2,9 +2,7 @@
 
 namespace App\Enums;
 
-use BenSampo\Enum\Enum;
-
-final class AnswerEnums extends Enum
+class AnswerEnums extends BaseEnums
 {
     /**
      * 发布状态

@@ -2,10 +2,7 @@
 
 namespace App\Enums;
 
-use BenSampo\Enum\Enum;
-
-
-final class TradeEnums extends Enum
+class TradeEnums extends BaseEnums
 {
     const ERROR_STR = '未知';
 
@@ -23,13 +20,13 @@ final class TradeEnums extends Enum
     const STATUS_CLOSED = 3; // 已关闭
     const STATUS_REFUNDED = 4; // 已退款
 
-    public static function channelTypes($type = null)
+    public static function channelTypes($key = null)
     {
         $list = [
             self::CHANNEL_ALIPAY => '支付宝',
             self::CHANNEL_WXPAY => '微信',
         ];
-        return is_null($type) ? $list : ($list[$type] ?? self::ERROR_STR);
+        return self::getDesc($list, $key);
 
     }
 

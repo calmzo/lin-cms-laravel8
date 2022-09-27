@@ -2,9 +2,7 @@
 
 namespace App\Enums;
 
-use BenSampo\Enum\Enum;
-
-final class CourseEnums extends Enum
+class CourseEnums extends BaseEnums
 {
     const ERROR_STR = '未知';
 
@@ -25,7 +23,7 @@ final class CourseEnums extends Enum
     const LEVEL_SENIOR = 4; // 高级
 
 
-    public static function modelTypes($type = null)
+    public static function modelTypes($key = null)
     {
         $list = [
             self::MODEL_VOD => '点播',
@@ -33,10 +31,10 @@ final class CourseEnums extends Enum
             self::MODEL_READ => '图文',
             self::MODEL_OFFLINE => '面授',
         ];
-        return is_null($type) ? $list : ($list[$type] ?? self::ERROR_STR);
+        return self::getDesc($list, $key);
     }
 
-    public static function levelTypes($type = null)
+    public static function levelTypes($key = null)
     {
         $list = [
             self::LEVEL_ENTRY => '入门',
@@ -44,6 +42,6 @@ final class CourseEnums extends Enum
             self::LEVEL_MEDIUM => '中级',
             self::LEVEL_SENIOR => '高级',
         ];
-        return is_null($type) ? $list : ($list[$type] ?? self::ERROR_STR);
+        return self::getDesc($list, $key);
     }
 }

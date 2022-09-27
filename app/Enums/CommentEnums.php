@@ -2,9 +2,7 @@
 
 namespace App\Enums;
 
-use BenSampo\Enum\Enum;
-
-final class CommentEnums extends Enum
+class CommentEnums extends BaseEnums
 {
     /**
      * 条目类型

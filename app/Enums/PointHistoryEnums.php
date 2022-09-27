@@ -2,9 +2,7 @@
 
 namespace App\Enums;
 
-use BenSampo\Enum\Enum;
-
-final class PointHistoryEnums extends Enum
+class PointHistoryEnums extends BaseEnums
 {
     const ERROR_STR = '未知';
 

@@ -2,9 +2,7 @@
 
 namespace App\Enums;
 
-use BenSampo\Enum\Enum;
-
-final class ConnectEnums extends Enum
+class ConnectEnums extends BaseEnums
 {
     const ERROR_STR = '未知';
 

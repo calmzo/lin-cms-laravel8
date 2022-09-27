@@ -2,9 +2,7 @@
 
 namespace App\Enums;
 
-use BenSampo\Enum\Enum;
-
-final class ConsultEnums extends Enum
+class ConsultEnums extends BaseEnums
 {
     /**
      * 发布状态

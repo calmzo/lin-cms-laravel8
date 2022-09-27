@@ -2,9 +2,7 @@
 
 namespace App\Enums;
 
-use BenSampo\Enum\Enum;
-
-final class CategoryEnums extends Enum
+class CategoryEnums extends BaseEnums
 {
     /**
      * 类型

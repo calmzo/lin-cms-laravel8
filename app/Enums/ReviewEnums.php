@@ -2,9 +2,7 @@
 
 namespace App\Enums;
 
-use BenSampo\Enum\Enum;
-
-final class ReviewEnums extends Enum
+class ReviewEnums extends BaseEnums
 {
     /**
      * 发布状态

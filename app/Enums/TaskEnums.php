@@ -2,9 +2,7 @@
 
 namespace App\Enums;
 
-use BenSampo\Enum\Enum;
-
-final class TaskEnums extends Enum
+class TaskEnums extends BaseEnums
 {
     const ERROR_STR = '未知';
 
