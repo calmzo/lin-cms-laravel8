@@ -32,6 +32,15 @@ class UserDailyCounterListener
 
 
     /**
+     * 处理article事件
+     */
+    public function incrArticleCount($event)
+    {
+        $this->counter->hIncrBy($event->user->id, 'article_count');
+    }
+
+
+    /**
      * 为事件订阅者注册监听器
      *
      * @param  \Illuminate\Events\Dispatcher  $events
@@ -47,6 +56,11 @@ class UserDailyCounterListener
         $events->listen(
             'App\Events\IncrReviewCountEvent',
             [UserDailyCounterListener::class, 'incrReviewCount']
+        );
+
+        $events->listen(
+            'App\Events\IncrArticleCountEvent',
+            [UserDailyCounterListener::class, 'incrArticleCount']
         );
     }
 }
