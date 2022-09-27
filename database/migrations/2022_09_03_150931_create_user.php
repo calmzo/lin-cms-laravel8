@@ -23,6 +23,14 @@ class CreateUser extends Migration
             $table->integer('gender')->default(3)->comment('性别');
             $table->integer('vip')->default(0)->comment('会员标识');
             $table->integer('course_count')->default(0)->comment('课程数');
+            $table->integer('article_count')->default(0)->comment('文章数量');
+            $table->integer('question_count')->default(0)->comment('提问数');
+            $table->integer('answer_count')->default(0)->comment('回答数');
+            $table->integer('comment_count')->default(0)->comment('评论数');
+            $table->integer('favorite_count')->default(0)->comment('收藏数');
+            $table->integer('report_count')->default(0)->comment('举报数');
+            $table->timestamp('vip_expiry_time')->nullable()->comment('会员期限');
+            $table->timestamp('active_time')->nullable()->comment('活跃时间');
             $table->integer('locked')->default(0)->comment('锁定表示');
             $table->timestamp('lock_expiry_time')->nullable()->comment('锁定期限');
             $table->timestamp('create_time');
