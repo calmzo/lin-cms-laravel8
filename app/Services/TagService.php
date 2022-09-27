@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\ArticleTag;
 use App\Models\Tag;
 
 class TagService
@@ -38,7 +39,7 @@ class TagService
      * @param string|null $keyword
      * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
      */
-    public static function searchTags(int    $page, int $count, string $start = null,
+    public function searchTags(int    $page, int $count, string $start = null,
                                       string $end = null, string $name = null, string $keyword = null)
     {
         list($page, $count) = paginate($page, $count);
@@ -59,12 +60,31 @@ class TagService
     }
 
 
-    public static function createTag(array $params): Tag
+    public function createTag(array $params): Tag
     {
         $data = [
             'name' => $params['name'] ?? ''
         ];
         $tag = Tag::query()->create($data);
         return $tag;
+    }
+
+
+    public function countArticles($tagId)
+    {
+        return ArticleTag::query()->where('tag_id', $tagId)->count();
+    }
+
+    /**
+     * 根据ids获取标签列表
+     * @param $ids
+     * @param string $columns
+     * @return \Illuminate\Database\Eloquent\Builder[]|\Illuminate\Database\Eloquent\Collection
+     */
+    public function findByIds($ids, $columns = '*')
+    {
+        return Tag::query()
+            ->whereIn('id', $ids)
+            ->get($columns);
     }
 }
