@@ -6,9 +6,21 @@ use App\Validates\BaseValidate;
 
 class UpdateUserFormValidate extends BaseValidate
 {
-    protected $rule = [
-        'username' => 'between:2,10',
-        'email' => 'email',
-        'nickname' => 'between:2,10',
-    ];
+
+    //验证规则
+    protected function rule()
+    {
+        return [
+            'username' => 'between:2,10',
+            'email' => 'email',
+            'nickname' => 'between:2,10',
+        ];
+    }
+
+
+    //自定义验证信息
+    protected function message()
+    {
+        return [];
+    }
 }

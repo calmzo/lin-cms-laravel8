@@ -14,15 +14,23 @@ class BaseValidate {
 
     /**
      * 当前验证规则
-     * @var array
+     * @return array
      */
-    protected $rule = [];
+    protected function rules()
+    {
+        return [];
+    }
+
 
     /**
      * 验证提示信息
-     * @var array
+     * @return array
      */
-    protected $message = [];
+    protected function message()
+    {
+        return [];
+    }
+
 
     /**
      * 验证场景定义
@@ -50,6 +58,7 @@ class BaseValidate {
 
 
     protected $request;
+
     public function __construct(Request $request)
     {
         $this->request = $request;
@@ -92,13 +101,13 @@ class BaseValidate {
      */
     public function validate($data, $rules = [], $message = [],$scene = '')
     {
-        $this->error =[];
+
         if (empty($rules)) {
             //读取验证规则
-            $rules = $this->rule;
+            $rules = $this->rule();
         }
         if (empty($message)) {
-            $message = $this->message;
+            $message = $this->message();
         }
 
         //读取场景

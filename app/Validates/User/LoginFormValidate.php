@@ -10,20 +10,23 @@ use App\Validates\BaseValidate;
 class LoginFormValidate extends BaseValidate {
 
     //验证规则
-    protected $rule =[
-        'username' => 'required',
-        'password' => 'required',
+    protected function rule()
+    {
+        return [
+            'username' => 'required',
+            'password' => 'required',
+        ];
+    }
 
-    ];
 
     //自定义验证信息
-    protected $message = [
-
-        'username.required' => '用户名不能为空',
-        'password.required' => '密码不能为空',
-
-
-    ];
+    protected function message()
+    {
+        return [
+            'username.required' => '用户名不能为空',
+            'password.required' => '密码不能为空',
+        ];
+    }
 
     //自定义场景
     protected $scene = [
