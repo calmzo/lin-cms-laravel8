@@ -110,6 +110,8 @@ Route::prefix('article')->group(function () {
     //
     Route::post('create', [ArticleController::class, 'createArticle']);
     Route::get('categories', [ArticleController::class, 'categories']);
+    Route::get('', [ArticleController::class, 'getArticles']);
+    Route::get('{id}', [ArticleController::class, 'getArticle']);
 
 
 });

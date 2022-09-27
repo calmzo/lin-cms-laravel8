@@ -3,8 +3,12 @@
 namespace App\Services;
 
 use App\Enums\ArticleEnums;
+use App\Exceptions\Forbidden;
+use App\Exceptions\NotFoundException;
+use App\Lib\Validators\ArticleValidator;
 use App\Models\Article;
 use App\Services\Logic\Article\ArticleCreateService;
+use App\Services\Logic\Article\ArticleInfoService;
 
 class ArticleService
 {
@@ -47,7 +51,7 @@ class ArticleService
      * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
      */
     public function searchArticles(int    $page, int $count, string $start = null,
-                                      string $end = null, string $name = null, string $keyword = null)
+                                   string $end = null, string $name = null, string $keyword = null)
     {
         list($page, $count) = paginate($page, $count);
         $query = Article::query();
@@ -79,6 +83,28 @@ class ArticleService
 //            $location = $this->url->get(['for' => 'home.uc.articles']);
 //            $msg = '创建文章成功，管理员审核后对外可见';
 //        }
+        return $article;
+    }
+
+    public function getArticle($id)
+    {
+        $service = new ArticleInfoService();
+
+        $article = $service->handle($id);
+        if (!is_null($article['deleted'])) {
+            throw new NotFoundException();
+        }
+
+        $approved = $article['published'] == ArticleEnums::PUBLISH_APPROVED;
+        $owned = $article['me']['owned'] == 1;
+        $private = $article['private'] == 1;
+        if (!$approved && !$owned) {
+            throw new NotFoundException();
+        }
+
+        if ($private && !$owned) {
+            throw new Forbidden();
+        }
         return $article;
     }
 }

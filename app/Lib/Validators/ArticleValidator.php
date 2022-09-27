@@ -5,6 +5,7 @@ namespace App\Lib\Validators;
 use App\Caches\Article as ArticleCache;
 use App\Caches\MaxArticleIdCache;
 use App\Exceptions\BadRequestException;
+use App\Models\Article;
 use App\Utils\CodeResponse;
 
 class ArticleValidator
@@ -34,12 +35,10 @@ class ArticleValidator
     {
         $this->checkId($id);
 
-        $articleRepo = new ArticleRepo();
-
-        $article = $articleRepo->findById($id);
+        $article = Article::query()->find($id);
 
         if (!$article) {
-            throw new BadRequestException('article.not_found');
+            throw new BadRequestException(CodeResponse::NOT_FOUND_EXCEPTION, 'article.not_found');
         }
 
         return $article;
