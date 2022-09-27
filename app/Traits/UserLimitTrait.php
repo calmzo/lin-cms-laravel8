@@ -4,7 +4,6 @@ namespace App\Traits;
 
 use App\Caches\UserDailyCounter;
 use App\Exceptions\BadRequestException;
-use App\User;
 use App\Utils\CodeResponse;
 
 trait UserLimitTrait
@@ -27,6 +26,17 @@ trait UserLimitTrait
         }
     }
 
+
+    public function checkDailyArticleLimit($user)
+    {
+        $count = $this->counter->hGet($user->id, 'article_count');
+
+        $limit = $user->vip ? 10 : 5;
+
+        if ($count > $limit) {
+            throw new BadRequestException(CodeResponse::NOT_FOUND_EXCEPTION, 'user_limit.reach_daily_article_limit');
+        }
+    }
 
 
 }
