@@ -56,4 +56,22 @@ class PointHistoryService
         }
     }
 
+    public function findEventHistory($eventId, $eventType)
+    {
+        return PointHistory::query()->where('event_id', $eventId)->where('event_type', $eventType)->first();
+
+    }
+
+
+    /**
+     * @param int $userId
+     * @param int $eventType
+     * @param string $date
+     * @return int
+     */
+    public function sumUserDailyEventPoints($userId, $eventType, $date)
+    {
+        return PointHistory::query()->where('user_id', $userId)->where('event_type', $eventType)->where('create_time', '>', $date)->sum('event_point');
+    }
+
 }
