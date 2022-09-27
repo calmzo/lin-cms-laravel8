@@ -2,9 +2,7 @@
 
 namespace App\Enums;
 
-use BenSampo\Enum\Enum;
-
-final class ArticleEnums extends Enum
+class ArticleEnums extends BaseEnums
 {
     /**
      * 来源类型
@@ -20,5 +18,19 @@ final class ArticleEnums extends Enum
     const PUBLISH_APPROVED = 2; // 已发布
     const PUBLISH_REJECTED = 3; // 未通过
 
+
+    /**
+     * @param null $key
+     * @return array|mixed|string
+     */
+    public static function sourceTypes($key = null)
+    {
+        $list = [
+            self::SOURCE_ORIGIN => '原创',
+            self::SOURCE_REPRINT => '转载',
+            self::SOURCE_TRANSLATE => '翻译',
+        ];
+        return self::getDesc($list, $key);
+    }
 
 }
