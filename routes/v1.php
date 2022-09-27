@@ -9,6 +9,7 @@ use App\Http\Controllers\V1\OrderController;
 use App\Http\Controllers\V1\ConnectController;
 use App\Http\Controllers\V1\AccountController;
 use App\Http\Controllers\V1\VerifyController;
+use App\Http\Controllers\V1\ArticleController;
 
 /*
 |--------------------------------------------------------------------------
@@ -99,6 +100,15 @@ Route::prefix('connect')->group(function () {
 Route::prefix('verify')->group(function () {
     //
     Route::post('sms/code', [VerifyController::class, 'smsCode']);
+    Route::post('mail/code', [VerifyController::class, 'mailCode']);
+
+
+});
+
+
+Route::prefix('article')->group(function () {
+    //
+    Route::post('create', [ArticleController::class, 'createArticle']);
     Route::post('mail/code', [VerifyController::class, 'mailCode']);
 
 

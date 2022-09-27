@@ -10,6 +10,7 @@ use App\Http\Controllers\Cms\RefundController;
 use App\Http\Controllers\Cms\IndexController;
 use App\Http\Controllers\Cms\CourseController;
 use App\Http\Controllers\Cms\TagController;
+use App\Http\Controllers\Cms\ArticleController;
 
 /*
 |--------------------------------------------------------------------------
@@ -105,9 +106,9 @@ Route::prefix('tag')->group(function () {
 });
 
 Route::prefix('article')->group(function () {
-    Route::get('', [TagController::class, 'getTags']);
-    Route::get('search', [TagController::class, 'searchTags']);
-    Route::post('', [TagController::class, 'createTag']);
+    Route::get('', [ArticleController::class, 'getArticles']);
+    Route::get('search', [ArticleController::class, 'searchArticles']);
+    Route::post('', [ArticleController::class, 'createArticle']);
 });
 
 
