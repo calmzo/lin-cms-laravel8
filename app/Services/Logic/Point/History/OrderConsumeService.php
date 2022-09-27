@@ -31,7 +31,8 @@ class OrderConsumeService extends PointHistoryService
         $eventId = $order->id;
         $eventType = PointHistoryEnums::EVENT_ORDER_CONSUME;
         $eventPoint = $ruleRate * $order->amount;
-        $history = $this->findEventHistory($eventId, $eventType);
+        $pointHistoryService = new PointHistoryService();
+        $history = $pointHistoryService->findEventHistory($eventId, $eventType);
         if ($history) return;
 
         $user = User::query()->find($order->user_id);
@@ -53,11 +54,5 @@ class OrderConsumeService extends PointHistoryService
         $history->event_info = json_encode($eventInfo);
 
         $this->handlePointHistory($history);
-    }
-
-
-    public function findEventHistory($eventId, $eventType)
-    {
-        return PointHistory::query()->where('event_id', $eventId)->where('event_type', $eventType)->first();
     }
 }
