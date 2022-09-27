@@ -23,11 +23,18 @@ class ArticleListener
      */
     public function afterCreate($event)
     {
-        $service = new AccountRegister();
 
-        $service->handle($event->user);
     }
 
+
+    /**
+     * 查看
+     * @param $event
+     */
+    public function afterView($event)
+    {
+
+    }
 
 
     /**
@@ -41,6 +48,11 @@ class ArticleListener
         $events->listen(
             'App\Events\ArticleAfterCreateEvent',
             [AccountListener::class, 'afterCreate']
+        );
+
+        $events->listen(
+            'App\Events\ArticleAfterViewEvent',
+            [AccountListener::class, 'afterView']
         );
 
     }
