@@ -3,6 +3,7 @@
 namespace App\Traits;
 
 use App\Enums\ArticleEnums;
+use App\Services\Token\AccountLoginTokenService;
 use App\Utils\Word;
 use App\Models\Article;
 use App\Models\ArticleTag;
@@ -10,10 +11,45 @@ use App\Models\Tag;
 use App\Models\User;
 use App\Services\ArticleTagService;
 use App\Services\TagService;
+use App\Lib\Validators\ArticleValidator;
+
 trait ArticleDataTrait
 {
 
     use ClientTrait;
+
+    protected function handleParamsData($params)
+    {
+        $data = [];
+
+        $data['title'] = $params['title'] ?? '';
+        $data['content'] = $params['content'] ?? '';
+        $data['source_type'] = $params['source_type'] ?? '';
+        $data['source_url'] = $params['source_url'] ?? '';
+        $data['closed'] = $params['closed'] ?? '';
+        $data['private'] = $params['private'] ?? '';
+        $data['client_type'] = $this->getClientType();
+        $data['client_ip'] = $this->getClientIp();
+
+        $validator = new ArticleValidator();
+
+        if (isset($params['category_id'])) {
+            $category = $validator->checkCategory($params['category_id']);
+            $data['category_id'] = $category->id;
+        }
+        if (isset($params['source_type'])) {
+            if ($params['source_type'] != ArticleEnums::SOURCE_ORIGIN) {
+                $data['source_url'] = $validator->checkSourceUrl($params['source_url']);
+            }
+        }
+        $user = AccountLoginTokenService::user();
+        $data['published'] = $this->getPublishStatus($user);
+        $data['user_id'] = $user['id'];
+        $data['closed'] = $params['closed'];
+        $data['private'] = $params['private'];
+        return $data;
+    }
+
 
     protected function getPublishStatus(User $user)
     {

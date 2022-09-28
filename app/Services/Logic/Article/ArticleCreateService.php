@@ -22,28 +22,8 @@ class ArticleCreateService
     public function handle($params)
     {
         $user = AccountLoginTokenService::user();
-        $validator = new ArticleValidator();
         $this->checkDailyArticleLimit($user);
-
-        $data['title'] = $params['title'] ?? '';
-        $data['content'] = $params['content'] ?? '';
-        $data['source_type'] = $params['source_type'] ?? '';
-        $data['source_url'] = $params['source_url'] ?? '';
-        $data['closed'] = $params['closed'] ?? '';
-        $data['private'] = $params['private'] ?? '';
-        if (isset($params['category_id'])) {
-            $category = $validator->checkCategory($params['category_id']);
-            $data['category_id'] = $category->id;
-        }
-        if (isset($params['source_type'])) {
-            if ($params['source_type'] != ArticleEnums::SOURCE_ORIGIN) {
-                $data['source_url'] = $validator->checkSourceUrl($params['source_url']);
-            }
-        }
-        $data['client_type'] = $this->getClientType();
-        $data['client_ip'] = $this->getClientIp();
-        $data['published'] = $this->getPublishStatus($user);
-        $data['user_id'] = $user['id'];
+        $data = $this->handleParamsData($params);
 
         $article = Article::query()->create($data);
 
