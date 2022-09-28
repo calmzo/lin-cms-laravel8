@@ -8,7 +8,4 @@ class CourseUser extends BaseModel
 {
     use BooleanSoftDeletes, HasFactory;
 
-    public $fillable = [
-
-    ];
 }
