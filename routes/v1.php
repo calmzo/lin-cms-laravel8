@@ -10,6 +10,7 @@ use App\Http\Controllers\V1\ConnectController;
 use App\Http\Controllers\V1\AccountController;
 use App\Http\Controllers\V1\VerifyController;
 use App\Http\Controllers\V1\ArticleController;
+use App\Http\Controllers\V1\ReportController;
 
 /*
 |--------------------------------------------------------------------------
@@ -119,6 +120,14 @@ Route::prefix('article')->group(function () {
     Route::post('private/{id}', [ArticleController::class, 'privateArticle']);
     Route::post('favorite/{id}', [ArticleController::class, 'favoriteArticle']);
     Route::post('like/{id}', [ArticleController::class, 'likeArticle']);
+
+
+});
+
+
+Route::prefix('report')->group(function () {
+    //
+    Route::post('', [ReportController::class, 'createReport']);
 
 
 });
