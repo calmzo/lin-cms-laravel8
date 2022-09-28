@@ -54,7 +54,7 @@ class ArticleValidator extends BaseValidator
         $maxId = $maxIdCache->get();
 
         if ($id < 1 || $id > $maxId) {
-            throw new BadRequestException('article.not_found');
+            throw new BadRequestException(CodeResponse::NOT_FOUND_EXCEPTION, 'article.not_found');
         }
     }
 
