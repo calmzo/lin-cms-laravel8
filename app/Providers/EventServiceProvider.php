@@ -49,7 +49,8 @@ class EventServiceProvider extends ServiceProvider
      */
     protected $subscribe = [
         'App\Listeners\UserDailyCounterListener',
-        'App\Listeners\AccountListener'
+        'App\Listeners\AccountListener',
+        'App\Listeners\ArticleListener'
     ];
 
 }
