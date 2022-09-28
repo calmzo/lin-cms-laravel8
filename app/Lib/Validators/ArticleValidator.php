@@ -8,7 +8,7 @@ use App\Exceptions\BadRequestException;
 use App\Models\Article;
 use App\Utils\CodeResponse;
 
-class ArticleValidator
+class ArticleValidator extends BaseValidator
 {
 
     /**

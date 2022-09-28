@@ -8,7 +8,7 @@ use App\Exceptions\BadRequestException;
 use App\Models\Category;
 use App\Utils\CodeResponse;
 
-class CategoryValidator
+class CategoryValidator extends BaseValidator
 {
 
     /**

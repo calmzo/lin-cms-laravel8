@@ -2,7 +2,7 @@
 
 namespace App\Lib\Validators;
 
-class CommonValidator
+class CommonValidator extends BaseValidator
 {
 
     public static function in($needle, $haystack)

@@ -6,7 +6,7 @@ use App\Exceptions\BadRequestException;
 use App\Services\VerifyService;
 use App\Utils\CodeResponse;
 
-class VerifyValidator
+class VerifyValidator extends BaseValidator
 {
 
     public function checkPhone($phone)

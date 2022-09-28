@@ -10,7 +10,7 @@ use App\Models\Account;
 use App\Utils\CodeResponse;
 use Illuminate\Support\Facades\Hash;
 
-class AccountValidator
+class AccountValidator extends BaseValidator
 {
 
     use ClientTrait;
