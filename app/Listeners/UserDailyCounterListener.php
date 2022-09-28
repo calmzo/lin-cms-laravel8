@@ -18,7 +18,8 @@ class UserDailyCounterListener
     /**
      * 用户订单数量
      */
-    public function incrOrderCount($event) {
+    public function incrOrderCount($event)
+    {
         $this->counter->hIncrBy($event->user->id, 'order_count');
     }
 
@@ -49,11 +50,16 @@ class UserDailyCounterListener
         $this->counter->hIncrBy($event->user->id, 'article_like_count');
     }
 
+    public function incrReportCount($event)
+    {
+        $this->counter->hIncrBy($event->user->id, 'report_count');
+    }
+
 
     /**
      * 为事件订阅者注册监听器
      *
-     * @param  \Illuminate\Events\Dispatcher  $events
+     * @param \Illuminate\Events\Dispatcher $events
      * @return void
      */
     public function subscribe($events)
@@ -76,6 +82,11 @@ class UserDailyCounterListener
         $events->listen(
             'App\Events\IncrArticleLikeCountEvent',
             [UserDailyCounterListener::class, 'incrArticleLikeCount']
+        );
+
+        $events->listen(
+            'App\Events\IncrReportCountEvent',
+            [UserDailyCounterListener::class, 'incrReportCount']
         );
     }
 }
