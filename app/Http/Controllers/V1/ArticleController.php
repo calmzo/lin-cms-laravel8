@@ -33,6 +33,13 @@ class ArticleController extends BaseController
         return $this->success([], '更新文章成功');
     }
 
+    public function deleteArticle($id)
+    {
+        $articleService = new ArticleService();
+        $article = $articleService->deleteArticle($id);
+        return $this->success([], '删除文章成功');
+    }
+
     /**
      * 分类列表
      * @param Request $request

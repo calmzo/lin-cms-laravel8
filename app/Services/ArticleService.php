@@ -9,6 +9,7 @@ use App\Exceptions\OperationException;
 use App\Models\Article;
 use App\Services\Logic\Article\ArticleCloseService;
 use App\Services\Logic\Article\ArticleCreateService;
+use App\Services\Logic\Article\ArticleDeleteService;
 use App\Services\Logic\Article\ArticleFavoriteService;
 use App\Services\Logic\Article\ArticleInfoService;
 use App\Services\Logic\Article\ArticleLikeService;
@@ -94,16 +95,28 @@ class ArticleService
 
 
     /**
-     * @param $bid
+     * @param $id
      * @param $params
      * @return bool|int
      * @throws OperationException
      */
-    public static function updateArticle($id, $params)
+    public function updateArticle($id, $params)
     {
         $articleUpdateService = new ArticleUpdateService();
         $article = $articleUpdateService->handle($id, $params);
         return $article;
+
+    }
+
+    /**
+     * @param $id
+     * @return mixed
+     */
+    public function deleteArticle($id)
+    {
+        $service = new ArticleDeleteService();
+        $res = $service->handle($id);
+        return $res;
 
     }
 

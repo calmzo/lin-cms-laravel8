@@ -110,6 +110,7 @@ Route::prefix('article')->group(function () {
     //
     Route::post('', [ArticleController::class, 'createArticle']);
     Route::put('{id}', [ArticleController::class, 'updateArticle']);
+    Route::delete('{id}', [ArticleController::class, 'deleteArticle']);
     Route::get('categories', [ArticleController::class, 'categories']);
     Route::get('', [ArticleController::class, 'getArticles']);
     Route::get('add', [ArticleController::class, 'getEnums']);
