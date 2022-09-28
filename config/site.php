@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 return [
+    'status' => 'closed',
     'title' => 'Calm的网站',
     'keywords' => 'Calm的网站',
     'description' => 'Calm的网站',
