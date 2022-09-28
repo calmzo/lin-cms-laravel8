@@ -20,6 +20,9 @@ class CreateArticleFavorite extends Migration
             $table->timestamp('create_time');
             $table->timestamp('update_time');
             $table->softDeletes('delete_time');
+            $table->index('article_id');
+            $table->index('user_id');
+
         });
     }
 

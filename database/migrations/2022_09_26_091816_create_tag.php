@@ -28,6 +28,8 @@ class CreateTag extends Migration
             $table->timestamp('create_time');
             $table->timestamp('update_time');
             $table->softDeletes('delete_time');
+            $table->index('name');
+
         });
     }
 

@@ -24,6 +24,9 @@ class CreateNotification extends Migration
             $table->timestamp('create_time');
             $table->timestamp('update_time');
             $table->softDeletes('delete_time');
+            $table->index('sender_id');
+            $table->index('receiver_id');
+
         });
     }
 
