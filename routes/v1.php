@@ -108,10 +108,16 @@ Route::prefix('verify')->group(function () {
 
 Route::prefix('article')->group(function () {
     //
-    Route::post('create', [ArticleController::class, 'createArticle']);
+    Route::post('', [ArticleController::class, 'createArticle']);
+    Route::put('{id}', [ArticleController::class, 'updateArticle']);
     Route::get('categories', [ArticleController::class, 'categories']);
     Route::get('', [ArticleController::class, 'getArticles']);
+    Route::get('add', [ArticleController::class, 'getEnums']);
     Route::get('{id}', [ArticleController::class, 'getArticle']);
+    Route::post('close/{id}', [ArticleController::class, 'closeArticle']);
+    Route::post('private/{id}', [ArticleController::class, 'privateArticle']);
+    Route::post('favorite/{id}', [ArticleController::class, 'favoriteArticle']);
+    Route::post('like/{id}', [ArticleController::class, 'likeArticle']);
 
 
 });

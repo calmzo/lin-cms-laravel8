@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Enums\ArticleEnums;
 use App\Exceptions\Forbidden;
 use App\Exceptions\NotFoundException;
+use App\Exceptions\OperationException;
 use App\Models\Article;
 use App\Services\Logic\Article\ArticleCloseService;
 use App\Services\Logic\Article\ArticleCreateService;
@@ -12,6 +13,7 @@ use App\Services\Logic\Article\ArticleFavoriteService;
 use App\Services\Logic\Article\ArticleInfoService;
 use App\Services\Logic\Article\ArticleLikeService;
 use App\Services\Logic\Article\ArticlePrivateService;
+use App\Services\Logic\Article\ArticleUpdateService;
 use App\Services\Logic\Article\XmTagListService;
 
 class ArticleService
@@ -88,6 +90,21 @@ class ArticleService
 //            $msg = '创建文章成功，管理员审核后对外可见';
 //        }
         return $article;
+    }
+
+
+    /**
+     * @param $bid
+     * @param $params
+     * @return bool|int
+     * @throws OperationException
+     */
+    public static function updateArticle($id, $params)
+    {
+        $articleUpdateService = new ArticleUpdateService();
+        $article = $articleUpdateService->handle($id, $params);
+        return $article;
+
     }
 
     public function getArticle($id)
