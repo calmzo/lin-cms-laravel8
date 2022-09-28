@@ -49,4 +49,16 @@ trait UserLimitTrait
     }
 
 
+    public function checkDailyArticleLikeLimit($user)
+    {
+        $count = $this->counter->hGet($user->id, 'article_like_count');
+
+        $limit = $user->vip ? 100 : 50;
+
+        if ($count > $limit) {
+            throw new BadRequestException(CodeResponse::NOT_FOUND_EXCEPTION, 'user_limit.reach_daily_like_limit');
+        }
+    }
+
+
 }
