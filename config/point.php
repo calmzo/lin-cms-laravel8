@@ -12,7 +12,13 @@ return [
         'account_register' => [
             'enabled' => 1,
             'point' => 100
+        ],
+        'article_liked' => [
+            'enabled' => 1,
+            'point' => 100,
+            'limit' => 1
+        ],
 
-        ]
+
     ],
 ];
