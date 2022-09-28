@@ -176,6 +176,14 @@ return [
             'level' => 'debug',
             'days' => 14,
         ],
+
+
+        'report' => [
+            'driver' => 'daily',
+            'path' => storage_path('logs/report/report.log'),
+            'level' => 'debug',
+            'days' => 14,
+        ],
     ],
 
 ];
