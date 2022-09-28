@@ -55,10 +55,55 @@ class ArticleController extends BaseController
         return $this->success($list);
     }
 
+    /**
+     * 文章详情
+     * @param $id
+     * @return array|\Illuminate\Http\JsonResponse
+     * @throws \App\Exceptions\Forbidden
+     * @throws \App\Exceptions\NotFoundException
+     */
     public function getArticle($id)
     {
         $articleService = new ArticleService();
         $result = $articleService->getArticle($id);
-        return $result;
+        return $this->success($result);
+    }
+
+    /**
+     * 评论开启关闭
+     * @param $id
+     * @return array|\Illuminate\Http\JsonResponse
+     */
+    public function closeArticle($id)
+    {
+        $articleService = new ArticleService();
+        $result = $articleService->closeArticle($id);
+        return $this->success($result);
+    }
+
+
+    /**
+     * 仅我可见开启关闭
+     * @param $id
+     * @return array|\Illuminate\Http\JsonResponse
+     */
+    public function privateArticle($id)
+    {
+        $articleService = new ArticleService();
+        $result = $articleService->privateArticle($id);
+        return $this->success($result);
+    }
+
+
+    /**
+     * 收藏
+     * @param $id
+     * @return array|\Illuminate\Http\JsonResponse
+     */
+    public function favoriteArticle($id)
+    {
+        $articleService = new ArticleService();
+        $result = $articleService->favoriteArticle($id);
+        return $this->success($result);
     }
 }

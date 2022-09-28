@@ -7,8 +7,11 @@ use App\Exceptions\Forbidden;
 use App\Exceptions\NotFoundException;
 use App\Lib\Validators\ArticleValidator;
 use App\Models\Article;
+use App\Services\Logic\Article\ArticleCloseService;
 use App\Services\Logic\Article\ArticleCreateService;
+use App\Services\Logic\Article\ArticleFavoriteService;
 use App\Services\Logic\Article\ArticleInfoService;
+use App\Services\Logic\Article\ArticlePrivateService;
 
 class ArticleService
 {
@@ -106,5 +109,38 @@ class ArticleService
             throw new Forbidden();
         }
         return $article;
+    }
+
+    public function closeArticle($id)
+    {
+        $service = new ArticleCloseService();
+
+        $article = $service->handle($id);
+
+        $msg = $article->closed == 1 ? '关闭评论成功' : '开启评论成功';
+
+        return $msg;
+    }
+
+    public function privateArticle($id)
+    {
+        $service = new ArticlePrivateService();
+
+        $article = $service->handle($id);
+
+        $msg = $article->private == 1 ? '开启仅我可见成功' : '关闭仅我可见成功';
+
+        return $msg;
+    }
+
+    public function favoriteArticle($id)
+    {
+        $service = new ArticleFavoriteService();
+
+        $article = $service->handle($id);
+
+        $msg = $article['action'] == 'do' ? '收藏成功' : '取消收藏成功';
+
+        return $msg;
     }
 }
