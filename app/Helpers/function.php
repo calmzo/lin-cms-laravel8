@@ -360,3 +360,18 @@ function kg_substr($str, $start, $length, $suffix = '...')
 
     return $str == $result ? $str : $result . $suffix;
 }
+
+/**
+ * 返回数组中指定的一列
+ *
+ * @param array $rows
+ * @param mixed $columnKey
+ * @param mixed $indexKey
+ * @return array
+ */
+function kg_array_column($rows, $columnKey, $indexKey = null)
+{
+    $result = array_column($rows, $columnKey, $indexKey);
+
+    return array_unique($result);
+}
