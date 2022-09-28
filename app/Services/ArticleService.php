@@ -5,12 +5,12 @@ namespace App\Services;
 use App\Enums\ArticleEnums;
 use App\Exceptions\Forbidden;
 use App\Exceptions\NotFoundException;
-use App\Lib\Validators\ArticleValidator;
 use App\Models\Article;
 use App\Services\Logic\Article\ArticleCloseService;
 use App\Services\Logic\Article\ArticleCreateService;
 use App\Services\Logic\Article\ArticleFavoriteService;
 use App\Services\Logic\Article\ArticleInfoService;
+use App\Services\Logic\Article\ArticleLikeService;
 use App\Services\Logic\Article\ArticlePrivateService;
 
 class ArticleService
@@ -140,6 +140,17 @@ class ArticleService
         $article = $service->handle($id);
 
         $msg = $article['action'] == 'do' ? '收藏成功' : '取消收藏成功';
+
+        return $msg;
+    }
+
+    public function likeArticle($id)
+    {
+        $service = new ArticleLikeService();
+
+        $data = $service->handle($id);
+
+        $msg = $data['action'] == 'do' ? '点赞成功' : '取消点赞成功';
 
         return $msg;
     }

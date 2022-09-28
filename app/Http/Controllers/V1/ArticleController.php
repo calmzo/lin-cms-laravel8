@@ -106,4 +106,11 @@ class ArticleController extends BaseController
         $result = $articleService->favoriteArticle($id);
         return $this->success($result);
     }
+
+    public function likeArticle($id)
+    {
+        $articleService = new ArticleService();
+        $result = $articleService->likeArticle($id);
+        return $this->success($result);
+    }
 }
