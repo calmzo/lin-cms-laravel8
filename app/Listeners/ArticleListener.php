@@ -27,6 +27,11 @@ class ArticleListener
         Log::channel('article')->info('监听发布文章事件');
     }
 
+    public function afterUpdate($event)
+    {
+        Log::channel('article')->info('监听修改文章事件');
+    }
+
 
     /**
      * 查看
@@ -69,6 +74,11 @@ class ArticleListener
         $events->listen(
             'App\Events\ArticleAfterCreateEvent',
             [ArticleListener::class, 'afterCreate']
+        );
+
+        $events->listen(
+            'App\Events\ArticleAfterUpdateEvent',
+            [ArticleListener::class, 'afterUpdate']
         );
 
         $events->listen(
