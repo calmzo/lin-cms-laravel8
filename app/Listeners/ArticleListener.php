@@ -47,6 +47,16 @@ class ArticleListener
         Log::channel('article')->info('监听取消收藏文章事件');
     }
 
+    public function afterLike($event)
+    {
+        Log::channel('article')->info('监听点赞文章事件');
+    }
+
+    public function afterUndoLike($event)
+    {
+        Log::channel('article')->info('监听取消点赞文章事件');
+    }
+
 
     /**
      * 为事件订阅者注册监听器
@@ -74,6 +84,16 @@ class ArticleListener
         $events->listen(
             'App\Events\ArticleAfterUndoFavoriteEvent',
             [ArticleListener::class, 'afterUndoFavorite']
+        );
+
+        $events->listen(
+            'App\Events\ArticleAfterLikeEvent',
+            [ArticleListener::class, 'afterLike']
+        );
+
+        $events->listen(
+            'App\Events\ArticleAfterUndoLikeEvent',
+            [ArticleListener::class, 'afterUndoLike']
         );
 
     }
