@@ -12,6 +12,7 @@ use App\Services\Logic\Article\ArticleFavoriteService;
 use App\Services\Logic\Article\ArticleInfoService;
 use App\Services\Logic\Article\ArticleLikeService;
 use App\Services\Logic\Article\ArticlePrivateService;
+use App\Services\Logic\Article\XmTagListService;
 
 class ArticleService
 {
@@ -111,6 +112,18 @@ class ArticleService
         return $article;
     }
 
+
+    public function getEnums()
+    {
+        $sourceTypes = ArticleEnums::sourceTypes();
+        $xmTags = $this->getXmTags(0);
+        $data = [
+            'sourceTypes' => $sourceTypes,
+            'xmTags' => $xmTags,
+        ];
+        return $data;
+    }
+
     public function closeArticle($id)
     {
         $service = new ArticleCloseService();
@@ -153,5 +166,12 @@ class ArticleService
         $msg = $data['action'] == 'do' ? '点赞成功' : '取消点赞成功';
 
         return $msg;
+    }
+
+    public function getXmTags($id)
+    {
+        $service = new XmTagListService();
+
+        return $service->handle($id);
     }
 }

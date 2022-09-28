@@ -69,6 +69,18 @@ class ArticleController extends BaseController
         return $this->success($result);
     }
 
+
+    /**
+     * 添加枚举列表
+     * @return array|\Illuminate\Http\JsonResponse
+     */
+    public function getEnums()
+    {
+        $articleService = new ArticleService();
+        $result = $articleService->getEnums();
+        return $this->success($result);
+    }
+
     /**
      * 评论开启关闭
      * @param $id
