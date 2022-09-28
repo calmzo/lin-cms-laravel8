@@ -4,6 +4,7 @@ namespace App\Lib\Validators;
 
 use App\Caches\Article as ArticleCache;
 use App\Caches\MaxArticleIdCache;
+use App\Enums\ArticleEnums;
 use App\Exceptions\BadRequestException;
 use App\Models\Article;
 use App\Utils\CodeResponse;
@@ -159,12 +160,12 @@ class ArticleValidator extends BaseValidator
         }
     }
 
-    public function checkIfAllowEdit(ArticleModel $article)
+    public function checkIfAllowEdit(Article $article)
     {
-        $approved = $article->published == ArticleModel::PUBLISH_APPROVED;
+        $approved = $article->published == ArticleEnums::PUBLISH_APPROVED;
 
         if ($approved) {
-            throw new BadRequestException('article.edit_not_allowed');
+            throw new BadRequestException(CodeResponse::NOT_FOUND_EXCEPTION, 'article.edit_not_allowed');
         }
     }
 
