@@ -32,6 +32,11 @@ class ArticleListener
         Log::channel('article')->info('监听修改文章事件');
     }
 
+    public function afterDelete($event)
+    {
+        Log::channel('article')->info('监听删除文章事件');
+    }
+
 
     /**
      * 查看
@@ -79,6 +84,11 @@ class ArticleListener
         $events->listen(
             'App\Events\ArticleAfterUpdateEvent',
             [ArticleListener::class, 'afterUpdate']
+        );
+
+        $events->listen(
+            'App\Events\ArticleAfterDeleteEvent',
+            [ArticleListener::class, 'afterDelete']
         );
 
         $events->listen(
