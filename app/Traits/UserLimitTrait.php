@@ -4,6 +4,7 @@ namespace App\Traits;
 
 use App\Caches\UserDailyCounter;
 use App\Exceptions\BadRequestException;
+use App\Models\User;
 use App\Utils\CodeResponse;
 
 trait UserLimitTrait
@@ -35,6 +36,15 @@ trait UserLimitTrait
 
         if ($count > $limit) {
             throw new BadRequestException(CodeResponse::NOT_FOUND_EXCEPTION, 'user_limit.reach_daily_article_limit');
+        }
+    }
+
+    public function checkFavoriteLimit($user)
+    {
+        $limit = $user->vip ? 1000 : 500;
+
+        if ($user->favorite_count > $limit) {
+            throw new BadRequestException(CodeResponse::NOT_FOUND_EXCEPTION, 'user_limit.reach_favorite_limit');
         }
     }
 
