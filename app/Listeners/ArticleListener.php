@@ -3,6 +3,7 @@
 namespace App\Listeners;
 
 use App\Services\Logic\Point\History\AccountRegister;
+use Illuminate\Support\Facades\Log;
 
 class ArticleListener
 {
@@ -23,7 +24,7 @@ class ArticleListener
      */
     public function afterCreate($event)
     {
-
+        Log::channel('article')->info('监听发布文章事件');
     }
 
 
@@ -33,7 +34,17 @@ class ArticleListener
      */
     public function afterView($event)
     {
+        Log::channel('article')->info('监听查看文章事件');
+    }
 
+    public function afterFavorite($event)
+    {
+        Log::channel('article')->info('监听收藏文章事件');
+    }
+
+    public function afterUndoFavorite($event)
+    {
+        Log::channel('article')->info('监听取消收藏文章事件');
     }
 
 
@@ -47,12 +58,22 @@ class ArticleListener
     {
         $events->listen(
             'App\Events\ArticleAfterCreateEvent',
-            [AccountListener::class, 'afterCreate']
+            [ArticleListener::class, 'afterCreate']
         );
 
         $events->listen(
             'App\Events\ArticleAfterViewEvent',
-            [AccountListener::class, 'afterView']
+            [ArticleListener::class, 'afterView']
+        );
+
+        $events->listen(
+            'App\Events\ArticleAfterFavoriteEvent',
+            [ArticleListener::class, 'afterFavorite']
+        );
+
+        $events->listen(
+            'App\Events\ArticleAfterUndoFavoriteEvent',
+            [ArticleListener::class, 'afterUndoFavorite']
         );
 
     }
