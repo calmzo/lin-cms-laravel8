@@ -11,6 +11,7 @@ use App\Http\Controllers\Cms\IndexController;
 use App\Http\Controllers\Cms\CourseController;
 use App\Http\Controllers\Cms\TagController;
 use App\Http\Controllers\Cms\ArticleController;
+use App\Http\Controllers\Cms\ReportController;
 
 /*
 |--------------------------------------------------------------------------
@@ -109,6 +110,10 @@ Route::prefix('article')->group(function () {
     Route::get('', [ArticleController::class, 'getArticles']);
     Route::get('search', [ArticleController::class, 'searchArticles']);
     Route::post('', [ArticleController::class, 'createArticle']);
+});
+
+Route::prefix('report')->group(function () {
+    Route::get('articles', [ReportController::class, 'getArticles']);
 });
 
 
