@@ -16,4 +16,15 @@ class ReportService
     }
 
 
+    public function getQuestions($params)
+    {
+        $page = $params['page'] ?? 0;
+        $limit = $params['count'] ?? 15;
+
+        $questionService = new QuestionService();
+        return $questionService->paginate($params, 'reported', $page, $limit);
+    }
+
+
+
 }

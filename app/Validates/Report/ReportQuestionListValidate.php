@@ -4,7 +4,7 @@ namespace App\Validates\Report;
 
 use App\Validates\BaseValidate;
 
-class ReportArticleListValidate extends BaseValidate
+class ReportQuestionListValidate extends BaseValidate
 {
 
     protected function rule()
@@ -18,11 +18,11 @@ class ReportArticleListValidate extends BaseValidate
             'id' => 'integer',
             'category_id' => 'integer',
             'user_id' => 'integer',
-            'source_type' => 'integer',
-            'title' => '',
-            'private' => '',
-            'published' => '',
+            'anonymous' => '',
             'closed' => '',
+            'solved' => '',
+            'published' => '',
+
         ];
     }
 

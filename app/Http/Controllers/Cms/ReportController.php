@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Cms;
 
 use App\Services\Admin\ReportService;
 use App\Validates\Report\ReportArticleListValidate;
+use App\Validates\Report\ReportQuestionListValidate;
 
 class ReportController extends BaseController
 {
@@ -21,6 +22,14 @@ class ReportController extends BaseController
         $params = $articleListValidate->check();
         $reportService = new ReportService();
         $list = $reportService->getArticles($params);
+        return $this->successPaginate($list);
+    }
+
+    public function getQuestions(ReportQuestionListValidate $reportQuestionListValidate)
+    {
+        $params = $reportQuestionListValidate->check();
+        $reportService = new ReportService();
+        $list = $reportService->getQuestions($params);
         return $this->successPaginate($list);
     }
 
