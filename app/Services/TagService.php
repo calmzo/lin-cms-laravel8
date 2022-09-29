@@ -18,7 +18,7 @@ class TagService
      */
     public function getTags($page, $count, string $start = null, string $end = null, string $name = null)
     {
-        list($page, $count) = paginate($page, $count);
+        list($page, $count) = paginateFormat($page, $count);
         $query = Tag::query();
         if ($name) {
             $query->where('name', 'like', '%' . $name . '%');
@@ -42,7 +42,7 @@ class TagService
     public function searchTags(int    $page, int $count, string $start = null,
                                       string $end = null, string $name = null, string $keyword = null)
     {
-        list($page, $count) = paginate($page, $count);
+        list($page, $count) = paginateFormat($page, $count);
         $query = Tag::query();
         if ($name) {
             $query->where('name', 'like', '%' . $name . '%');

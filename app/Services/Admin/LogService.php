@@ -20,7 +20,7 @@ class LogService
      */
     public static function getLogs(int $page, int $count, string $start = null, string $end = null, string $name = null)
     {
-        list($page, $count) = paginate($page, $count);
+        list($page, $count) = paginateFormat($page, $count);
         $query = LinLog::query();
         if ($name) {
             $query->where('username', 'like', '%' . $name . '%');
@@ -44,7 +44,7 @@ class LogService
     public static function searchLogs(int    $page, int $count, string $start = null,
                                       string $end = null, string $name = null, string $keyword = null)
     {
-        list($page, $count) = paginate($page, $count);
+        list($page, $count) = paginateFormat($page, $count);
         $query = LinLog::query();
         if ($name) {
             $query->where('username', 'like', '%' . $name . '%');
@@ -69,7 +69,7 @@ class LogService
      */
     public static function getUserNames(int $page, int $count)
     {
-        list($page, $count) = paginate($page, $count);
+        list($page, $count) = paginateFormat($page, $count);
         $list = LinLog::query()->groupBy('username')->get(['username'])->pluck('username')->toArray();
         return paginator($list, $page, $count);
     }

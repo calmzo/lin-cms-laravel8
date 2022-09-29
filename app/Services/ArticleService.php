@@ -36,7 +36,7 @@ class ArticleService
      */
     public function getArticles($page, $count, string $start = null, string $end = null, string $name = null)
     {
-        list($page, $count) = paginate($page, $count);
+        list($page, $count) = paginateFormat($page, $count);
         $query = Article::query();
         if ($name) {
             $query->where('name', 'like', '%' . $name . '%');
@@ -60,7 +60,7 @@ class ArticleService
     public function searchArticles(int    $page, int $count, string $start = null,
                                    string $end = null, string $name = null, string $keyword = null)
     {
-        list($page, $count) = paginate($page, $count);
+        list($page, $count) = paginateFormat($page, $count);
         $query = Article::query();
         if ($name) {
             $query->where('name', 'like', '%' . $name . '%');

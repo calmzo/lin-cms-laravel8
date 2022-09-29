@@ -69,7 +69,7 @@ function paginator($list, $page = 1, $count = 10)
  * @param int $count
  * @return int[]
  */
-function paginate(int $page = 0, int $count = 10)
+function paginateFormat(int $page = 0, int $count = 10): array
 {
 //    $count = $count >= 15 ? 15 : $count;
 //    $start = $page * $count;

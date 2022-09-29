@@ -54,7 +54,7 @@ class AdminService
      */
     public static function getUsers(int $page, int $count, int $groupId = null): LengthAwarePaginator
     {
-        list($page, $count) = paginate($page, $count);
+        list($page, $count) = paginateFormat($page, $count);
         $query = LinUser::query();
         if ($groupId) {
             $query->whereHas('groups', function ($query) use ($groupId){
