@@ -2,8 +2,8 @@
 
 namespace App\Services\Admin;
 
-use App\Models\ArticleTag;
 use App\Models\Question;
+use App\Models\QuestionTag;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 class QuestionService
@@ -16,7 +16,7 @@ class QuestionService
         $fakeId = false;
 
         if (!empty($where['tag_id'])) {
-            $where['id'] = $this->getTagArticleIds($where['tag_id']);
+            $where['id'] = $this->getTagQuestionIds($where['tag_id']);
             $fakeId = empty($where['id']);
         }
 
@@ -103,15 +103,15 @@ class QuestionService
         return $query->paginate($count, ['*'], 'page', $page);
     }
 
-    protected function getTagArticleIds($tagId)
+    protected function getTagQuestionIds($tagId)
     {
         $tagIds = is_array($tagId) ? $tagId : [$tagId];
-        $rows = ArticleTag::query()->whereIn('tag_id', $tagIds)->get();
+        $rows = QuestionTag::query()->whereIn('tag_id', $tagIds)->get();
 
         $result = [];
 
         if ($rows->count() > 0) {
-            $result = $rows->pluck('article_id');
+            $result = $rows->pluck('question_id');
         }
 
         return $result;
