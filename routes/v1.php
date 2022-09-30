@@ -11,6 +11,7 @@ use App\Http\Controllers\V1\AccountController;
 use App\Http\Controllers\V1\VerifyController;
 use App\Http\Controllers\V1\ArticleController;
 use App\Http\Controllers\V1\ReportController;
+use App\Http\Controllers\V1\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -97,7 +98,6 @@ Route::prefix('connect')->group(function () {
 });
 
 
-
 Route::prefix('verify')->group(function () {
     //
     Route::post('sms/code', [VerifyController::class, 'smsCode']);
@@ -128,6 +128,14 @@ Route::prefix('article')->group(function () {
 Route::prefix('report')->group(function () {
     //
     Route::post('', [ReportController::class, 'createReport']);
+
+
+});
+
+
+Route::prefix('user')->group(function () {
+    //
+    Route::get('{id}/info', [UserController::class, 'getUser']);
 
 
 });

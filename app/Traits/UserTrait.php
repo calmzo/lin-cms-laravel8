@@ -3,7 +3,7 @@
 namespace App\Traits;
 
 use App\Models\User;
-use App\Validators\User as UserValidator;
+use App\Lib\Validators\UserValidator;
 
 trait UserTrait
 {
@@ -29,7 +29,7 @@ trait UserTrait
 
         $user = User::query()->find($id, ['id', 'name', 'avatar', 'vip', 'title', 'about']);
 
-        if (!$user) return new \stdClass();
+        if (!$user) return (object)[];
 
         $result = $user->toArray();
 
