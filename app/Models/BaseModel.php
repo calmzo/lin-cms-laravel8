@@ -16,8 +16,12 @@ class BaseModel extends Model
     public const UPDATED_AT = 'update_time';
     public const DELETED_AT = 'delete_time';
 
+//    protected $hidden = [
+//        'create_time', 'update_time', 'delete_time'
+//    ];
+
     protected $hidden = [
-        'create_time', 'update_time', 'delete_time'
+        'delete_time'
     ];
     /**
      * 表名约定
