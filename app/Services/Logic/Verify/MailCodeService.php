@@ -4,8 +4,9 @@ namespace App\Services\Logic\Verify;
 
 use App\Lib\Notice\Mail\Verify as MailVerifyService;
 use App\Lib\Validators\VerifyValidator;
+use App\Services\Logic\LogicService;
 
-class MailCodeService
+class MailCodeService extends LogicService
 {
 
     public function handle($params)

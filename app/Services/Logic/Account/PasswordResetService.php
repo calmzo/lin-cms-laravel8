@@ -5,9 +5,10 @@ namespace App\Services\Logic\Account;
 use App\Library\Utils\Password as PasswordUtil;
 use App\Lib\Validators\AccountValidator;
 use App\Lib\Validators\VerifyValidator;
+use App\Services\Logic\LogicService;
 use Illuminate\Support\Facades\Hash;
 
-class PasswordResetService
+class PasswordResetService extends LogicService
 {
 
     public function handle($params)

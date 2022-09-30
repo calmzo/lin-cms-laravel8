@@ -8,11 +8,12 @@ use App\Lib\Notice\ArticleFavorited;
 use App\Lib\Validators\ArticleValidator;
 use App\Models\Article;
 use App\Models\User;
+use App\Services\Logic\LogicService;
 use App\Services\Token\AccountLoginTokenService;
 use App\Traits\UserLimitTrait;
 use App\Models\ArticleFavorite;
 
-class ArticleFavoriteService
+class ArticleFavoriteService extends LogicService
 {
 
     use UserLimitTrait;

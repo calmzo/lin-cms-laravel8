@@ -9,10 +9,11 @@ use App\Models\Article;
 use App\Models\User;
 use App\Models\ArticleLike;
 use App\Models\ArticleFavorite;
+use App\Services\Logic\LogicService;
 use App\Services\Token\AccountLoginTokenService;
 use App\Traits\UserTrait;
 
-class ArticleInfoService
+class ArticleInfoService extends LogicService
 {
 
     use UserTrait;

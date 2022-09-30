@@ -3,8 +3,9 @@
 namespace App\Services\Logic\Verify;
 
 use App\Lib\Notice\Sms\Verify;
+use App\Services\Logic\LogicService;
 
-class SmsCodeService
+class SmsCodeService extends LogicService
 {
 
     public function handle($params)

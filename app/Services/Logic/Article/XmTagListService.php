@@ -5,8 +5,9 @@ namespace App\Services\Logic\Article;
 use App\Enums\TagEnums;
 use App\Models\Article;
 use App\Models\Tag;
+use App\Services\Logic\LogicService;
 
-class XmTagListService
+class XmTagListService extends LogicService
 {
 
     public function handle($id)

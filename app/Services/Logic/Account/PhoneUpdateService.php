@@ -3,11 +3,12 @@
 namespace App\Services\Logic\Account;
 
 use App\Models\Account;
+use App\Services\Logic\LogicService;
 use App\Services\Token\AccountLoginTokenService;
 use App\Lib\Validators\AccountValidator;
 use App\Lib\Validators\VerifyValidator;
 
-class PhoneUpdateService
+class PhoneUpdateService extends LogicService
 {
 
     public function handle($params)

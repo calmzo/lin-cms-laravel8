@@ -4,8 +4,9 @@ namespace App\Services\Logic\Deliver;
 
 use App\Models\User;
 use App\Models\Vip;
+use App\Services\Logic\LogicService;
 
-class VipDeliver
+class VipDeliver extends LogicService
 {
 
     public function handle(Vip $vip, User $user)

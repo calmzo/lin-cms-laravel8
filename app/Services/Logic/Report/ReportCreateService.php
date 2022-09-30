@@ -6,13 +6,14 @@ use App\Events\IncrReportCountEvent;
 use App\Events\ReportAfterCreateEvent;
 use App\Models\Report;
 use App\Models\User;
+use App\Services\Logic\LogicService;
 use App\Services\Token\AccountLoginTokenService;
 use App\Traits\ClientTrait;
 use App\Traits\UserLimitTrait;
 use App\Traits\ReportCountTrait;
 use App\Lib\Validators\ReportValidator;
 
-class ReportCreateService
+class ReportCreateService extends LogicService
 {
 
     use ClientTrait;

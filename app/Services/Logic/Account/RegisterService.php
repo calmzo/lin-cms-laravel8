@@ -8,11 +8,12 @@ use App\Models\UserBalance;
 use App\Lib\Validators\AccountValidator;
 use App\Lib\Validators\CommonValidator;
 use App\Lib\Validators\VerifyValidator;
+use App\Services\Logic\LogicService;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 
-class RegisterService
+class RegisterService extends LogicService
 {
 
     public function handle($params)

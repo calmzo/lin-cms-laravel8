@@ -3,9 +3,10 @@
 namespace App\Services\Logic\Article;
 
 use App\Lib\Validators\ArticleValidator;
+use App\Services\Logic\LogicService;
 use App\Services\Token\AccountLoginTokenService;
 
-class ArticlePrivateService
+class ArticlePrivateService extends LogicService
 {
 
     public function handle($id)

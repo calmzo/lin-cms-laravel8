@@ -3,9 +3,10 @@
 namespace App\Services\Logic\User;
 
 use App\Models\User;
+use App\Services\Logic\LogicService;
 use App\Traits\UserTrait;
 
-class UserInfoService
+class UserInfoService extends LogicService
 {
 
     use UserTrait;

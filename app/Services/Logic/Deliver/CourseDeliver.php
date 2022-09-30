@@ -7,8 +7,9 @@ use App\Enums\CourseUserEnums;
 use App\Models\Course;
 use App\Models\CourseUser;
 use App\Models\User;
+use App\Services\Logic\LogicService;
 
-class CourseDeliver
+class CourseDeliver extends LogicService
 {
 
     public function handle(Course $course, User $user)

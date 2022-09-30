@@ -8,13 +8,14 @@ use App\Events\IncrArticleCountEvent;
 use App\Lib\Validators\ArticleValidator;
 use App\Models\Article;
 use App\Models\User;
+use App\Services\Logic\LogicService;
 use App\Services\Logic\Point\History\ArticlePostPointHistoryService;
 use App\Services\Token\AccountLoginTokenService;
 use App\Services\UserService;
 use App\Traits\ArticleDataTrait;
 use App\Traits\UserLimitTrait;
 
-class ArticleCreateService
+class ArticleCreateService extends LogicService
 {
 
     use ArticleDataTrait, UserLimitTrait;

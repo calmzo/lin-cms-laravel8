@@ -10,12 +10,13 @@ use App\Lib\Notice\ArticleLiked;
 use App\Lib\Validators\ArticleValidator;
 use App\Models\Article;
 use App\Models\User;
+use App\Services\Logic\LogicService;
 use App\Services\Token\AccountLoginTokenService;
 use App\Traits\UserLimitTrait;
 use App\Models\ArticleLike;
 use App\Services\Logic\Point\History\ArticleLikedService;
 
-class ArticleLikeService
+class ArticleLikeService extends LogicService
 {
 
     use UserLimitTrait;

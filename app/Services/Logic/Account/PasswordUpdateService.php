@@ -4,10 +4,11 @@ namespace App\Services\Logic\Account;
 
 use App\Lib\Validators\AccountValidator;
 use App\Models\Account;
+use App\Services\Logic\LogicService;
 use App\Services\Token\AccountLoginTokenService;
 use Illuminate\Support\Facades\Hash;
 
-class PasswordUpdateService
+class PasswordUpdateService extends LogicService
 {
 
     public function handle($params)
