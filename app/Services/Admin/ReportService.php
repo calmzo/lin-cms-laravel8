@@ -3,6 +3,7 @@
 namespace App\Services\Admin;
 
 use App\Builders\ArticleListBuilder;
+use App\Builders\QuestionListBuilder;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 class ReportService extends BaseService
@@ -40,7 +41,25 @@ class ReportService extends BaseService
         $limit = $params['count'] ?? 15;
 
         $questionService = new QuestionService();
-        return $questionService->paginate($params, 'reported', $page, $limit);
+
+        $paginate = $questionService->paginate($params, 'reported', $page, $limit);
+        return $this->handleQuestions($paginate);
+
+    }
+
+    protected function handleQuestions(LengthAwarePaginator $paginate)
+    {
+
+        if ($paginate->total() > 0) {
+
+            $builder = new QuestionListBuilder();
+            $items = collect($paginate->items())->toArray();
+            $pipeA = $builder->handleCategories($items);
+            $pipeB = $builder->handleUsers($pipeA);
+            $paginate = $this->newPaginator($paginate, $pipeB);
+        }
+
+        return $paginate;
     }
 
 }
