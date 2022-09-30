@@ -23,4 +23,11 @@ class UserService
     {
         return Article::query()->where('user_id', $uid)->where('published', ArticleEnums::PUBLISH_APPROVED)->count();
     }
+
+    public function findUserByIds($ids)
+    {
+        return User::query()
+            ->whereIn('id', $ids)
+            ->get(['id', 'name', 'avatar', 'vip', 'title', 'about']);
+    }
 }
