@@ -13,6 +13,18 @@ class Article extends BaseModel
         'published', 'user_id', 'title', 'content', 'source_type', 'closed', 'private', 'tags', 'client_ip', 'client_type', 'source_url', 'category_id', 'cover', 'summary', 'word_count'
     ];
 
+
+    public function user()
+    {
+        return $this->hasOne(User::class, 'id', 'user_id');
+    }
+
+
+    public function category()
+    {
+        return $this->hasOne(Category::class, 'id', 'category_id');
+    }
+
     protected static function booted()
     {
         //处理 Article「created」事件
