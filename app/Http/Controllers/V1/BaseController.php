@@ -66,8 +66,8 @@ class BaseController extends Controller
         if ($page instanceof LengthAwarePaginator) {
             return [
                 'total' => $page->total(),
-                'page' => $page->currentPage() - 1,
-                'count' => $page->perPage(),
+                'currentPage' => $page->currentPage(),
+                'perPage' => $page->perPage(),
                 'items' => $page->items()
             ];
         }
@@ -80,8 +80,8 @@ class BaseController extends Controller
         $total = count($page);
         return [
             'total' => $total,
-            'page' => 0,
-            'limit' => $total,
+            'currentPage' => 1,
+            'perPage' => $total,
             'items' => $page
         ];
 
