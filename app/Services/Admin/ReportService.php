@@ -91,4 +91,31 @@ class ReportService extends BaseService
 
         return $paginate;
     }
+
+
+
+    public function getComments($params)
+    {
+        $page = $params['page'] ?? 0;
+        $limit = $params['count'] ?? 15;
+
+        $answerService = new AnswerService();
+        $paginate = $answerService->paginate($params, 'reported', $page, $limit);
+        return $this->handleComments($paginate);
+    }
+
+    protected function handleComments(LengthAwarePaginator $paginate)
+    {
+        if ($paginate->total() > 0) {
+
+            $builder = new AnswerListBuilder();
+
+            $items = collect($paginate->items())->toArray();
+
+            $pipeA = $builder->handleUsers($items);
+            $paginate = $this->newPaginator($paginate, $pipeA);
+        }
+
+        return $paginate;
+    }
 }

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Cms;
 use App\Services\Admin\ReportService;
 use App\Validates\Report\ReportAnswerListValidate;
 use App\Validates\Report\ReportArticleListValidate;
+use App\Validates\Report\ReportCommentListValidate;
 use App\Validates\Report\ReportQuestionListValidate;
 
 class ReportController extends BaseController
@@ -53,6 +54,15 @@ class ReportController extends BaseController
         $params = $reportAnswerListValidate->check();
         $reportService = new ReportService();
         $list = $reportService->getAnswers($params);
+        return $this->successPaginate($list);
+    }
+
+
+    public function getComments(ReportCommentListValidate $reportCommentListValidate)
+    {
+        $params = $reportCommentListValidate->check();
+        $reportService = new ReportService();
+        $list = $reportService->getComments($params);
         return $this->successPaginate($list);
     }
 
