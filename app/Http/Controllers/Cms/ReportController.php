@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Cms;
 
 use App\Services\Admin\ReportService;
+use App\Validates\Report\ReportAnswerListValidate;
 use App\Validates\Report\ReportArticleListValidate;
 use App\Validates\Report\ReportQuestionListValidate;
 
@@ -25,11 +26,33 @@ class ReportController extends BaseController
         return $this->successPaginate($list);
     }
 
+    /**
+     * @groupRequired
+     * @permission('举报问题列表','举报管理')
+     * @param ReportQuestionListValidate $reportQuestionListValidate
+     * @return array|mixed
+     * @throws \App\Exceptions\ValidateException
+     */
     public function getQuestions(ReportQuestionListValidate $reportQuestionListValidate)
     {
         $params = $reportQuestionListValidate->check();
         $reportService = new ReportService();
         $list = $reportService->getQuestions($params);
+        return $this->successPaginate($list);
+    }
+
+    /**
+     * @groupRequired
+     * @permission('举报答案列表','举报管理')
+     * @param ReportQuestionListValidate $reportQuestionListValidate
+     * @return array|mixed
+     * @throws \App\Exceptions\ValidateException
+     */
+    public function getAnswers(ReportAnswerListValidate $reportAnswerListValidate)
+    {
+        $params = $reportAnswerListValidate->check();
+        $reportService = new ReportService();
+        $list = $reportService->getAnswers($params);
         return $this->successPaginate($list);
     }
 

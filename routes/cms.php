@@ -115,6 +115,7 @@ Route::prefix('article')->group(function () {
 Route::prefix('report')->group(function () {
     Route::get('articles', [ReportController::class, 'getArticles']);
     Route::get('questions', [ReportController::class, 'getQuestions']);
+    Route::get('answers', [ReportController::class, 'getAnswers']);
 });
 
 
