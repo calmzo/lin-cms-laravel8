@@ -136,6 +136,7 @@ Route::prefix('report')->group(function () {
 Route::prefix('user')->group(function () {
     //
     Route::get('{id}/info', [UserController::class, 'getUser']);
+    Route::get('{id}/articles', [UserController::class, 'getArticles']);
 
 
 });
