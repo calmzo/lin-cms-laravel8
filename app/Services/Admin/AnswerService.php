@@ -3,7 +3,6 @@
 namespace App\Services\Admin;
 
 use App\Models\Answer;
-use App\Models\ArticleTag;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 class AnswerService
@@ -54,20 +53,6 @@ class AnswerService
 
         list($page, $count) = paginateFormat($page, $count);
         return $query->paginate($count, ['*'], 'page', $page);
-    }
-
-    protected function getTagArticleIds($tagId)
-    {
-        $tagIds = is_array($tagId) ? $tagId : [$tagId];
-        $rows = ArticleTag::query()->whereIn('tag_id', $tagIds)->get();
-
-        $result = [];
-
-        if ($rows->count() > 0) {
-            $result = $rows->pluck('article_id');
-        }
-
-        return $result;
     }
 
 
