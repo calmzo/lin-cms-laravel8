@@ -5,6 +5,10 @@ namespace App\Services\Admin;
 use App\Builders\AnswerListBuilder;
 use App\Builders\ArticleListBuilder;
 use App\Builders\QuestionListBuilder;
+use App\Repositories\AnswerRepository;
+use App\Repositories\ArticleRepository;
+use App\Repositories\CommentRepository;
+use App\Repositories\QuestionRepository;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 class ReportService extends BaseService
@@ -14,9 +18,9 @@ class ReportService extends BaseService
     {
         $page = $params['page'] ?? 0;
         $limit = $params['count'] ?? 15;
-
-        $articleService = new ArticleService();
-        $paginate = $articleService->paginate($params, 'reported', $page, $limit);
+        list($page, $count) = paginateFormat($page, $limit);
+        $articleRepo = new ArticleRepository();
+        $paginate = $articleRepo->paginate($params, 'reported', $page, $count);
         return $this->handleArticles($paginate);
     }
 
@@ -39,11 +43,10 @@ class ReportService extends BaseService
     public function getQuestions($params)
     {
         $page = $params['page'] ?? 0;
-        $limit = $params['count'] ?? 15;
-
-        $questionService = new QuestionService();
-
-        $paginate = $questionService->paginate($params, 'reported', $page, $limit);
+        $count = $params['count'] ?? 15;
+        list($page, $count) = paginateFormat($page, $count);
+        $questionRepo = new QuestionRepository();
+        $paginate = $questionRepo->paginate($params, 'reported', $page, $count);
         return $this->handleQuestions($paginate);
 
     }
@@ -66,10 +69,10 @@ class ReportService extends BaseService
     public function getAnswers($params)
     {
         $page = $params['page'] ?? 0;
-        $limit = $params['count'] ?? 15;
-
-        $answerService = new AnswerService();
-        $paginate = $answerService->paginate($params, 'reported', $page, $limit);
+        $count = $params['count'] ?? 15;
+        list($page, $count) = paginateFormat($page, $count);
+        $answerRepo = new AnswerRepository();
+        $paginate = $answerRepo->paginate($params, 'reported', $page, $count);
         return $this->handleAnswers($paginate);
     }
 
@@ -96,10 +99,10 @@ class ReportService extends BaseService
     public function getComments($params)
     {
         $page = $params['page'] ?? 0;
-        $limit = $params['count'] ?? 15;
-
-        $answerService = new AnswerService();
-        $paginate = $answerService->paginate($params, 'reported', $page, $limit);
+        $count = $params['count'] ?? 15;
+        list($page, $count) = paginateFormat($page, $count);
+        $commentRepo = new CommentRepository();
+        $paginate = $commentRepo->paginate($params, 'reported', $page, $count);
         return $this->handleComments($paginate);
     }
 
