@@ -71,17 +71,17 @@ class BaseController extends Controller
                 'items' => $page->items()
             ];
         }
-        if ($page instanceof Collection) {
-            $page = $page->toArray();
-        }
         if (!is_array($page)) {
             return $page;
+        }
+        if ($page instanceof Collection) {
+            $page = $page->toArray();
         }
         $total = count($page);
         return [
             'total' => $total,
             'page' => 0,
-            'limit' => $total,
+            'count' => $total,
             'items' => $page
         ];
 
