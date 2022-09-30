@@ -2,18 +2,7 @@
 
 namespace DummyNamespace;
 
-use Prettus\Repository\Eloquent\BaseRepository;
-
 class DummyClass extends BaseRepository
 {
 
-    /**
-     * Specify Model class name
-     *
-     * @return string
-     */
-    public function model()
-    {
-        //set model name in here, this is necessary!
-    }
 }
