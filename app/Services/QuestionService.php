@@ -12,4 +12,11 @@ class QuestionService
     {
         return Question::query()->where('published', QuestionEnums::PUBLISH_APPROVED)->count();
     }
+
+    public function findByIds($ids, $columns = '*')
+    {
+        return Question::query()
+            ->whereIn('id', $ids)
+            ->get($columns);
+    }
 }
