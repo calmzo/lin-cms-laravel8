@@ -58,6 +58,13 @@ class ReportController extends BaseController
     }
 
 
+    /**
+     * @groupRequired
+     * @permission('举报评论列表','举报管理')
+     * @param ReportCommentListValidate $reportCommentListValidate
+     * @return array|mixed
+     * @throws \App\Exceptions\ValidateException
+     */
     public function getComments(ReportCommentListValidate $reportCommentListValidate)
     {
         $params = $reportCommentListValidate->check();
