@@ -43,8 +43,8 @@ class QuestionListBuilder
     public function getUsers($questions)
     {
 
-        $ownerIds = collect($questions)->pluck('user_id')->toArray();
-        $lastReplierIds = collect($questions)->pluck('last_replier_id')->toArray();
+        $ownerIds = array_column_unique($questions, 'user_id');
+        $lastReplierIds = array_column_unique($questions, 'last_replier_id');
         $ids = array_merge($ownerIds, $lastReplierIds);
 
         $userService = new UserService();

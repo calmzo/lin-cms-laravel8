@@ -369,7 +369,7 @@ function kg_substr($str, $start, $length, $suffix = '...')
  * @param mixed $indexKey
  * @return array
  */
-function kg_array_column($rows, $columnKey, $indexKey = null)
+function array_column_unique($rows, $columnKey, $indexKey = null)
 {
     $result = array_column($rows, $columnKey, $indexKey);
 

@@ -48,7 +48,7 @@ class ArticleListBuilder
 
     public function getUsers($articles)
     {
-        $ids = collect($articles)->pluck('user_id');
+        $ids = array_column_unique($articles, 'user_id');
 
         $userService = new UserService();
 

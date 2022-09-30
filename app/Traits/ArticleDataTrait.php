@@ -68,7 +68,7 @@ trait ArticleDataTrait
     {
         $originTagIds = [];
         if ($article->tags) {
-            $originTagIds = kg_array_column($article->tags, 'id');
+            $originTagIds = array_column_unique($article->tags, 'id');
         }
 
         $newTagIds = $tagIds ? explode(',', $tagIds) : [];

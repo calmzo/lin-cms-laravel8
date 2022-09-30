@@ -20,7 +20,7 @@ class XmTagListService
         if ($id > 0) {
             $article = Article::query()->find($id);
             if (!empty($article->tags)) {
-                $articleTagIds = kg_array_column($article->tags, 'id');
+                $articleTagIds = array_column_unique($article->tags, 'id');
             }
         }
 
