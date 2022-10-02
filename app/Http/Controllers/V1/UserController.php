@@ -5,6 +5,7 @@ namespace App\Http\Controllers\V1;
 
 use App\Services\UserService;
 use App\Validates\V1\User\ArticleListValidate;
+use App\Validates\V1\User\QuestionListValidate;
 
 class UserController extends BaseController
 {
@@ -34,6 +35,14 @@ class UserController extends BaseController
         $params = $articleListValidate->check();
         $service = new UserService();
         $pager = $service->getArticles($id, $params);
+        return $this->successPaginate($pager);
+    }
+
+    public function getQuestions(QuestionListValidate $questionListValidate, $id)
+    {
+        $params = $questionListValidate->check();
+        $service = new UserService();
+        $pager = $service->getQuestions($id, $params);
         return $this->successPaginate($pager);
     }
 

@@ -6,7 +6,7 @@ use App\Enums\ArticleEnums;
 use App\Exceptions\NotFoundException;
 use App\Models\Article;
 use App\Models\User;
-use App\Services\Logic\User\ArticleListService;
+use App\Services\Logic\User\UserQuestionList;
 use App\Services\Logic\User\UserArticleListService;
 use App\Services\Logic\User\UserInfoService;
 
@@ -24,6 +24,13 @@ class UserService
     public function getArticles($id, $params)
     {
         $service = new UserArticleListService();
+
+        return $service->handle($id, $params);
+    }
+
+    public function getQuestions($id, $params)
+    {
+        $service = new UserQuestionList();
 
         return $service->handle($id, $params);
     }
