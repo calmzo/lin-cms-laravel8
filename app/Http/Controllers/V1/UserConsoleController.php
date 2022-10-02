@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\V1;
 
 use App\Services\UserConsoleService;
+use Illuminate\Http\Request;
 
 class UserConsoleController extends BaseController
 {
@@ -19,6 +20,14 @@ class UserConsoleController extends BaseController
     {
         $service = new UserConsoleService();
         $profile = $service->getUserAccount();
+        return $this->success($profile);
+    }
+
+    public function getUserArticles(Request $request)
+    {
+        $params = $request->all();
+        $service = new UserConsoleService();
+        $profile = $service->getUserArticles($params);
         return $this->success($profile);
     }
 }

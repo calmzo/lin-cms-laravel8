@@ -8,7 +8,7 @@ use App\Repositories\UserRepository;
 use App\Services\Logic\LogicService;
 use App\Services\Token\AccountLoginTokenService;
 
-class AccountInfoService extends LogicService
+class ConsoleAccountInfoService extends LogicService
 {
 
     public function handle()
