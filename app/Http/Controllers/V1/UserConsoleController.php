@@ -14,4 +14,11 @@ class UserConsoleController extends BaseController
         $profile = $service->getUserConsole();
         return $this->success($profile);
     }
+
+    public function getUserAccount()
+    {
+        $service = new UserConsoleService();
+        $profile = $service->getUserAccount();
+        return $this->success($profile);
+    }
 }

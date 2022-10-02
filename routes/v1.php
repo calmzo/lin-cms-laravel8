@@ -148,6 +148,7 @@ Route::prefix('user')->group(function () {
 Route::prefix('uc')->group(function () {
     //
     Route::get('profile', [UserConsoleController::class, 'getUserConsole']);
+    Route::get('account', [UserConsoleController::class, 'getUserAccount']);
 
 
 });

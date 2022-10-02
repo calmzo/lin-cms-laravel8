@@ -3,11 +3,21 @@
 namespace App\Services\Logic\User\Console;
 
 use App\Models\User;
+use App\Repositories\UserRepository;
 use App\Services\Logic\LogicService;
+use App\Services\Token\AccountLoginTokenService;
 
 class ProfileInfoService extends LogicService
 {
-    public function handleUser(User $user)
+    public function handle()
+    {
+        $uid = AccountLoginTokenService::userId();
+        $userRepo = new UserRepository();
+        $user = $userRepo->findById($uid);
+        return $this->handleUser($user);
+    }
+
+    protected function handleUser(User $user)
     {
         $user->area = $this->handleArea($user->area);
         return [
