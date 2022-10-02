@@ -30,4 +30,12 @@ class UserConsoleController extends BaseController
         $profile = $service->getUserArticles($params);
         return $this->success($profile);
     }
+
+    public function getUserQuestions(Request $request)
+    {
+        $params = $request->all();
+        $service = new UserConsoleService();
+        $profile = $service->getUserQuestions($params);
+        return $this->success($profile);
+    }
 }

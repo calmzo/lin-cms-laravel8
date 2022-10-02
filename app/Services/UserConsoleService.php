@@ -26,4 +26,10 @@ class UserConsoleService extends BaseService
         return  $service->handle($params);
     }
 
+    public function getUserQuestions($params)
+    {
+        $service = new ConsoleArticleListService();
+        return  $service->handle($params);
+    }
+
 }
