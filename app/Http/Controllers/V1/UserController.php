@@ -46,4 +46,12 @@ class UserController extends BaseController
         return $this->successPaginate($pager);
     }
 
+    public function getAnswers(QuestionListValidate $questionListValidate, $id)
+    {
+        $params = $questionListValidate->check();
+        $service = new UserService();
+        $pager = $service->getAnswers($id, $params);
+        return $this->successPaginate($pager);
+    }
+
 }

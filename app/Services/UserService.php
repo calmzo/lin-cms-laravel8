@@ -6,6 +6,7 @@ use App\Enums\ArticleEnums;
 use App\Exceptions\NotFoundException;
 use App\Models\Article;
 use App\Models\User;
+use App\Services\Logic\User\UserAnswerList;
 use App\Services\Logic\User\UserQuestionList;
 use App\Services\Logic\User\UserArticleListService;
 use App\Services\Logic\User\UserInfoService;
@@ -34,6 +35,14 @@ class UserService
 
         return $service->handle($id, $params);
     }
+
+    public function getAnswers($id, $params)
+    {
+        $service = new UserAnswerList();
+
+        return $service->handle($id, $params);
+    }
+
 
 
     public function countVipUsers()

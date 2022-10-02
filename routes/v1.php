@@ -138,6 +138,7 @@ Route::prefix('user')->group(function () {
     Route::get('{id}/info', [UserController::class, 'getUser']);
     Route::get('{id}/articles', [UserController::class, 'getArticles']);
     Route::get('{id}/questions', [UserController::class, 'getQuestions']);
+    Route::get('{id}/answers', [UserController::class, 'getAnswers']);
 
 
 });
