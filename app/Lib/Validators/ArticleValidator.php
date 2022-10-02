@@ -7,6 +7,7 @@ use App\Caches\MaxArticleIdCache;
 use App\Enums\ArticleEnums;
 use App\Exceptions\BadRequestException;
 use App\Models\Article;
+use App\Repositories\ArticleRepository;
 use App\Utils\CodeResponse;
 
 class ArticleValidator extends BaseValidator
@@ -36,8 +37,9 @@ class ArticleValidator extends BaseValidator
     {
         $this->checkId($id);
 
-        $article = Article::query()->find($id);
+        $articleRepo = new ArticleRepository();
 
+        $article = $articleRepo->findById($id);
         if (!$article) {
             throw new BadRequestException(CodeResponse::NOT_FOUND_EXCEPTION, 'article.not_found');
         }

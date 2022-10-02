@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services;
+namespace App\Services\Admin;
 
 use App\Models\ArticleTag;
 use App\Models\Tag;
@@ -9,34 +9,41 @@ use App\Repositories\TagRepository;
 class TagService
 {
 
-
     /**
-     * @param int $page
-     * @param int $count
+     * @param $page
+     * @param $count
      * @param string|null $start
      * @param string|null $end
      * @param string|null $name
-     * @param string|null $keyword
      * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
      */
-    public function searchTags(int    $page, int $count, string $start = null,
-                                      string $end = null, string $name = null, string $keyword = null)
+    public function getTags($params)
     {
+        $page = $params['page'] ?? 0;
+        $sort = $params['sort'] ?? 'latest';
+        $count = $params['limit'] ?? 15;
+
         list($page, $count) = paginateFormat($page, $count);
-        $query = Tag::query();
-        if ($name) {
-            $query->where('name', 'like', '%' . $name . '%');
-        }
-        if ($start && $end) {
-            $query->whereBetween('create_time', [$start, $end]);
-        }
+        $tagRepo = new TagRepository();
+        return $tagRepo->paginate($params, $sort, $page, $count);
 
-        if ($keyword) {
-            $query->where('alias', 'like', '%' . $keyword . '%');
-        }
 
-        $res = $query->orderByDesc('create_time')->paginate($count, ['*'], 'page', $page);
-        return $res;
+    }
+
+
+    /**
+     * @param $params
+     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
+     */
+    public function searchTags($params)
+    {
+        $page = $params['page'] ?? 0;
+        $sort = $params['sort'] ?? 'latest';
+        $count = $params['limit'] ?? 15;
+
+        list($page, $count) = paginateFormat($page, $count);
+        $tagRepo = new TagRepository();
+        return $tagRepo->paginate($params, $sort, $page, $count);
     }
 
 

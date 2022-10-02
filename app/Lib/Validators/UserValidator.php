@@ -5,8 +5,8 @@ namespace App\Lib\Validators;
 use App\Caches\MaxUserIdCache;
 use App\Caches\UserCache;
 use App\Exceptions\BadRequestException;
-use App\Lib\Validators\CommonValidator;
 use App\Models\User;
+use App\Repositories\UserRepository;
 use App\Utils\CodeResponse;
 
 class UserValidator
@@ -35,8 +35,9 @@ class UserValidator
     public function checkUser($id)
     {
         $this->checkId($id);
+        $userRepo = new UserRepository();
 
-        $user = User::query()->find($id);
+        $user = $userRepo->findById($id);
 
         if (!$user) {
             throw new BadRequestException(CodeResponse::NOT_FOUND_EXCEPTION, 'user.not_found');

@@ -6,6 +6,7 @@ use App\Events\AccountLoginEvent;
 use App\Events\AccountLogoutEvent;
 use App\Events\AccountRegisterEvent;
 use App\Models\User;
+use App\Repositories\UserRepository;
 use App\Services\Logic\Account\RegisterService;
 use App\Services\Token\AccountLoginTokenService;
 use App\Lib\Validators\AccountValidator;
@@ -22,7 +23,8 @@ class AccountService
         $service = new RegisterService();
 
         $account = $service->handle($params);
-        $user = User::query()->find($account->id);
+        $userRepo = new UserRepository();
+        $user = $userRepo->findById($account->id);
         $token = AccountLoginTokenService::getToken($user);
         AccountRegisterEvent::dispatch($user);
         return $token;

@@ -116,4 +116,9 @@ class ArticleRepository extends BaseRepository
         return $result;
     }
 
+    public function findById($id)
+    {
+        return Article::query()->find($id);
+    }
+
 }

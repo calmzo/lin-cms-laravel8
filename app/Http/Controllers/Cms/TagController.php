@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Cms;
 
 use App\Events\Logger;
-use App\Services\TagService;
+use App\Services\Admin\TagService;
 use App\Validates\TagFormValidate;
 use App\Validates\TagListValidate;
 use App\Validates\TagSearchValidate;
@@ -24,13 +24,8 @@ class TagController extends BaseController
     public function getTags(TagListValidate $tagListValidate)
     {
         $params = $tagListValidate->check();
-        $start = $params['start'] ?? null;
-        $end = $params['end'] ?? null;
-        $name = $params['name'] ?? null;
-        $page = $params['page'] ?? 0; //分页数
-        $count = $params['count'] ?? 10; //分页值
         $tagService = new TagService();
-        return $this->successPaginate($tagService->getTags($page, $count, $start, $end, $name));
+        return $this->successPaginate($tagService->getTags($params));
     }
 
 
@@ -44,14 +39,8 @@ class TagController extends BaseController
     public function searchTags(TagSearchValidate $tagSearchValidate)
     {
         $params = $tagSearchValidate->check();
-        $start = $params['start'] ?? null;
-        $end = $params['end'] ?? null;
-        $name = $params['name'] ?? null;
-        $keyword = $params['keyword'] ?? null;
-        $page = $params['page'] ?? 0; //分页数
-        $count = $params['count'] ?? 10; //分页值
         $tagService = new TagService();
-        return $this->successPaginate($tagService->searchTags($page, $count, $start, $end, $name, $keyword));
+        return $this->successPaginate($tagService->searchTags($params));
     }
 
     /**

@@ -8,6 +8,7 @@ use App\Lib\Notice\ArticleFavorited;
 use App\Lib\Validators\ArticleValidator;
 use App\Models\Article;
 use App\Models\User;
+use App\Repositories\ArticleFavoriteRepository;
 use App\Services\Logic\LogicService;
 use App\Services\Token\AccountLoginTokenService;
 use App\Traits\UserLimitTrait;
@@ -28,8 +29,9 @@ class ArticleFavoriteService extends LogicService
 
         $this->checkFavoriteLimit($user);
 
-        $favorite = ArticleFavorite::query()->where('article_id', $article->id)->where('user_id', $user->id)->first();
+        $favoriteRepo = new ArticleFavoriteRepository();
 
+        $favorite = $favoriteRepo->findArticleFavorite($article->id, $user->id);
         $isFirstTime = true;
 
         if (!$favorite) {

@@ -6,6 +6,8 @@ use App\Enums\PointHistoryEnums;
 use App\Models\Article;
 use App\Models\PointHistory;
 use App\Models\User;
+use App\Repositories\PointHistoryRepository;
+use App\Repositories\UserRepository;
 use App\Services\Logic\Point\PointHistoryService;
 
 class ArticlePostPointHistoryService extends PointHistoryService
@@ -36,20 +38,21 @@ class ArticlePostPointHistoryService extends PointHistoryService
         $eventId = $article->id;
 
         $eventType = PointHistoryEnums::EVENT_ARTICLE_POST;
-        $pointHistoryService = new PointHistoryService();
-        $history = $pointHistoryService->findEventHistory($eventId, $eventType);
+        $historyRepo = new PointHistoryRepository();
+        $history = $historyRepo->findEventHistory($eventId, $eventType);
 
         if ($history) return;
 
         /**
          * @todo 使用缓存优化
          */
-        $dailyPoints = $pointHistoryService->sumUserDailyEventPoints($article->user_id, $eventType, date('Ymd'));
+        $dailyPoints = $historyRepo->sumUserDailyEventPoints($article->user_id, $eventType, date('Ymd'));
 
         if ($dailyPoints >= $dailyPointLimit) return;
 
+        $userRepo = new UserRepository();
 
-        $user = User::query()->find($article->user_id);
+        $user = $userRepo->findById($article->user_id);
 
         $eventInfo = [
             'article' => [

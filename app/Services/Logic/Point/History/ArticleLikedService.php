@@ -7,6 +7,10 @@ use App\Models\Article;
 use App\Models\ArticleLike;
 use App\Models\PointHistory;
 use App\Models\User;
+use App\Repositories\ArticleLikeRepository;
+use App\Repositories\ArticleRepository;
+use App\Repositories\PointHistoryRepository;
+use App\Repositories\UserRepository;
 use App\Services\Logic\Point\PointHistoryService;
 
 class ArticleLikedService extends PointHistoryService
@@ -37,24 +41,23 @@ class ArticleLikedService extends PointHistoryService
         $eventId = $articleLike->id;
 
         $eventType = PointHistoryEnums::EVENT_ARTICLE_LIKED;
-
-        $historyService = new PointHistoryService();
-
-        $history = $historyService->findEventHistory($eventId, $eventType);
+        $historyRepo = new PointHistoryRepository();
+        $history = $historyRepo->findEventHistory($eventId, $eventType);
 
         if ($history) return;
 
-        $article = Article::query()->find($articleLike->article_id);
+        $articleRepo = new ArticleRepository();
+        $article = $articleRepo->findById($articleLike->article_id);
 
         /**
          * @todo 使用缓存优化
          */
-        $dailyPoints = $historyService->sumUserDailyEventPoints($article->user_id, $eventType, date('Ymd'));
+        $dailyPoints = $historyRepo->sumUserDailyEventPoints($article->user_id, $eventType, date('Ymd'));
 
         if ($dailyPoints >= $dailyPointLimit) return;
 
-        $user = User::query()->find($article->user_id);
-
+        $userRepo = new UserRepository();
+        $user = $userRepo->findById($article->user_id);
         $eventInfo = [
             'article' => [
                 'id' => $article->id,

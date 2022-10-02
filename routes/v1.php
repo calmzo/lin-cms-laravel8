@@ -87,7 +87,7 @@ Route::prefix('account')->group(function () {
 
 
 Route::prefix('connect')->group(function () {
-    //
+    // todo
     Route::get('qq', [ConnectController::class, 'qqLogin']);
     Route::get('weixin', [ConnectController::class, 'weixinLogin']);
     Route::get('weiboLogin', [ConnectController::class, 'weiboLogin']);

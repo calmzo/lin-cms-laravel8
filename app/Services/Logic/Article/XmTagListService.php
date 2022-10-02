@@ -5,6 +5,8 @@ namespace App\Services\Logic\Article;
 use App\Enums\TagEnums;
 use App\Models\Article;
 use App\Models\Tag;
+use App\Repositories\ArticleRepository;
+use App\Repositories\TagRepository;
 use App\Services\Logic\LogicService;
 
 class XmTagListService extends LogicService
@@ -13,13 +15,15 @@ class XmTagListService extends LogicService
     public function handle($id)
     {
 
-        $allTags = Tag::query()->where('published', 1)->get();
+        $tagRepo = new TagRepository();
+
+        $allTags = $tagRepo->findAll(['published' => 1]);
         if ($allTags->count() == 0) return [];
 
         $articleTagIds = [];
 
         if ($id > 0) {
-            $article = Article::query()->find($id);
+            $article = $this->findArticle($id);
             if (!empty($article->tags)) {
                 $articleTagIds = array_column_unique($article->tags, 'id');
             }
@@ -41,5 +45,12 @@ class XmTagListService extends LogicService
         }
 
         return $list;
+    }
+
+    protected function findArticle($id)
+    {
+        $articleRepo = new ArticleRepository();
+
+        return $articleRepo->findById($id);
     }
 }

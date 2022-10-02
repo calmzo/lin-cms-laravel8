@@ -7,10 +7,10 @@ use App\Events\ArticleAfterDeleteEvent;
 use App\Lib\Validators\ArticleValidator;
 use App\Models\Article;
 use App\Models\User;
+use App\Repositories\UserRepository;
 use App\Services\Logic\LogicService;
 use App\Services\Sync\ArticleIndexSync;
 use App\Services\Token\AccountLoginTokenService;
-use App\Services\UserService;
 use App\Traits\ArticleDataTrait;
 use App\Traits\UserLimitTrait;
 
@@ -37,10 +37,8 @@ class ArticleDeleteService extends LogicService
 
     protected function recountUserArticles(User $user)
     {
-        $userService = new UserService();
-
-        $articleCount = $userService->countArticles($user->id);
-
+        $userRepo = new UserRepository();
+        $articleCount = $userRepo->countArticles($user->id);
         $user->article_count = $articleCount;
 
         $user->save();

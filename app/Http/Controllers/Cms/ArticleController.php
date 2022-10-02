@@ -23,13 +23,8 @@ class ArticleController extends BaseController
     public function getArticles(ArticleListValidate $articleListValidate)
     {
         $params = $articleListValidate->check();
-        $start = $params['start'] ?? null;
-        $end = $params['end'] ?? null;
-        $name = $params['name'] ?? null;
-        $page = $params['page'] ?? 0; //分页数
-        $count = $params['count'] ?? 10; //分页值
         $articleService = new ArticleService();
-        return $this->successPaginate($articleService->getArticles($page, $count, $start, $end, $name));
+        return $this->successPaginate($articleService->getArticles($params));
     }
 
 

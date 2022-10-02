@@ -5,6 +5,7 @@ namespace App\Lib\Validators;
 use App\Caches\MaxAnswerIdCache;
 use App\Exceptions\BadRequestException;
 use App\Models\Answer;
+use App\Repositories\AnswerRepository;
 use App\Utils\CodeResponse;
 
 class AnswerValidator extends BaseValidator
@@ -14,7 +15,9 @@ class AnswerValidator extends BaseValidator
     {
         $this->checkId($id);
 
-        $answer = Answer::query()->find($id);
+        $answerRepo = new AnswerRepository();
+
+        $answer = $answerRepo->findById($id);
 
         if (!$answer) {
             throw new BadRequestException(CodeResponse::NOT_FOUND_EXCEPTION, 'answer.not_found');

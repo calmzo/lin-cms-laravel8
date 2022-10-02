@@ -5,6 +5,7 @@ namespace App\Services\Logic\Point\History;
 use App\Enums\PointHistoryEnums;
 use App\Models\PointHistory;
 use App\Models\User;
+use App\Repositories\PointHistoryRepository;
 use App\Services\Logic\Point\PointHistoryService;
 
 class AccountRegister extends PointHistoryService
@@ -31,8 +32,8 @@ class AccountRegister extends PointHistoryService
         $eventId = $user->id;
         $eventType = PointHistoryEnums::EVENT_ACCOUNT_REGISTER;
         $eventInfo = new \stdClass();
-
-        $history =  PointHistory::query()->where('event_id', $eventId)->where('event_type', $eventType)->first();
+        $historyRepo = new PointHistoryRepository();
+        $history = $historyRepo->findEventHistory($eventId, $eventType);
 
         if ($history) return;
 

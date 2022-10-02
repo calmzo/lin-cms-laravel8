@@ -6,6 +6,8 @@ use App\Enums\PointHistoryEnums;
 use App\Models\Order;
 use App\Models\PointHistory;
 use App\Models\User;
+use App\Repositories\PointHistoryRepository;
+use App\Repositories\UserRepository;
 use App\Services\Logic\Point\PointHistoryService;
 
 class OrderConsumeService extends PointHistoryService
@@ -31,12 +33,12 @@ class OrderConsumeService extends PointHistoryService
         $eventId = $order->id;
         $eventType = PointHistoryEnums::EVENT_ORDER_CONSUME;
         $eventPoint = $ruleRate * $order->amount;
-        $pointHistoryService = new PointHistoryService();
-        $history = $pointHistoryService->findEventHistory($eventId, $eventType);
+        $historyRepo = new PointHistoryRepository();
+        $history = $historyRepo->findEventHistory($eventId, $eventType);
         if ($history) return;
 
-        $user = User::query()->find($order->user_id);
-
+        $userRepo = new UserRepository();
+        $user = $userRepo->findById($order->user_id);
         $eventInfo = [
             'order' => [
                 'sn' => $order->sn,

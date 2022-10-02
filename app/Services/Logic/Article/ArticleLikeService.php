@@ -10,6 +10,7 @@ use App\Lib\Notice\ArticleLiked;
 use App\Lib\Validators\ArticleValidator;
 use App\Models\Article;
 use App\Models\User;
+use App\Repositories\ArticleLikeRepository;
 use App\Services\Logic\LogicService;
 use App\Services\Token\AccountLoginTokenService;
 use App\Traits\UserLimitTrait;
@@ -30,9 +31,9 @@ class ArticleLikeService extends LogicService
 
         $this->checkDailyArticleLikeLimit($user);
 
+        $likeRepo = new ArticleLikeRepository();
 
-        $articleLike = ArticleLike::query()->where('article_id', $article->id)->where('user_id', $user->id)->first();
-
+        $articleLike = $likeRepo->findArticleLike($article->id, $user->id);
         $isFirstTime = true;
 
         if (!$articleLike) {

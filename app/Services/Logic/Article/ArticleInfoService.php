@@ -9,6 +9,8 @@ use App\Models\Article;
 use App\Models\User;
 use App\Models\ArticleLike;
 use App\Models\ArticleFavorite;
+use App\Repositories\ArticleFavoriteRepository;
+use App\Repositories\ArticleLikeRepository;
 use App\Services\Logic\LogicService;
 use App\Services\Token\AccountLoginTokenService;
 use App\Traits\UserTrait;
@@ -94,16 +96,18 @@ class ArticleInfoService extends LogicService
         }
 
         if ($user->id > 0) {
+            $likeRepo = new ArticleLikeRepository();
 
-            $like = ArticleLike::query()->where('article_id', $article->id)->where('user_id', $user->id)->first();
+            $like = $likeRepo->findArticleLike($article->id, $user->id);
 
-            if ($like && $like->deleted == 0) {
+            if ($like) {
                 $me['liked'] = 1;
             }
+            $favoriteRepo = new ArticleFavoriteRepository();
 
-            $favorite = ArticleFavorite::query()->where('article_id', $article->id)->where('user_id', $user->id)->first();
+            $favorite = $favoriteRepo->findArticleFavorite($article->id, $user->id);
 
-            if ($favorite && $favorite->deleted == 0) {
+            if ($favorite) {
                 $me['favorited'] = 1;
             }
         }

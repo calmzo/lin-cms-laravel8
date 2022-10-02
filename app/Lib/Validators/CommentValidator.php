@@ -4,8 +4,8 @@ namespace App\Lib\Validators;
 
 use App\Enums\CommentEnums;
 use App\Exceptions\BadRequestException;
-use App\Models\Comment;
-use App\Models\User;
+use App\Repositories\CommentRepository;
+use App\Repositories\UserRepository;
 use App\Utils\CodeResponse;
 
 class CommentValidator extends BaseValidator
@@ -13,7 +13,9 @@ class CommentValidator extends BaseValidator
 
     public function checkComment($id)
     {
-        $comment = Comment::query()->find($id);
+        $commentRepo = new CommentRepository();
+
+        $comment = $commentRepo->findById($id);
         if (!$comment) {
             throw new BadRequestException(CodeResponse::NOT_FOUND_EXCEPTION, 'comment.not_found');
         }
@@ -23,7 +25,9 @@ class CommentValidator extends BaseValidator
 
     public function checkParent($id)
     {
-        $comment = Comment::query()->find($id);
+        $commentRepo = new CommentRepository();
+
+        $comment = $commentRepo->findById($id);
         if (!$comment) {
             throw new BadRequestException(CodeResponse::NOT_FOUND_EXCEPTION, 'comment.parent_not_found');
         }
@@ -33,7 +37,9 @@ class CommentValidator extends BaseValidator
 
     public function checkToUser($userId)
     {
-        $user = User::query()->find($userId);
+        $userRepo = new UserRepository();
+
+        $user = $userRepo->findById($userId);
         if (!$user) {
             throw new BadRequestException(CodeResponse::NOT_FOUND_EXCEPTION, 'comment.to_user_not_found');
         }
@@ -43,8 +49,8 @@ class CommentValidator extends BaseValidator
 
     public function checkItem($itemId, $itemType)
     {
-        if (!array_key_exists($itemType, CommentModel::itemTypes())) {
-            throw new BadRequestException('comment.invalid_item_type');
+        if (!array_key_exists($itemType, CommentEnums::itemTypes())) {
+            throw new BadRequestException(CodeResponse::NOT_FOUND_EXCEPTION, 'comment.invalid_item_type');
         }
 
         $result = null;

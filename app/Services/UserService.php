@@ -55,11 +55,6 @@ class UserService
         return User::query()->count();
     }
 
-    public function countArticles($uid)
-    {
-        return Article::query()->where('user_id', $uid)->where('published', ArticleEnums::PUBLISH_APPROVED)->count();
-    }
-
     public function findUserByIds($ids)
     {
         return User::query()

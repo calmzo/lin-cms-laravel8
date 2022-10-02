@@ -116,4 +116,9 @@ class QuestionRepository extends BaseRepository
         return $result;
     }
 
+    public function findById($id)
+    {
+        return Question::query()->find($id);
+    }
+
 }

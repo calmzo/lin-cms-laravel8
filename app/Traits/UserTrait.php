@@ -4,6 +4,7 @@ namespace App\Traits;
 
 use App\Models\User;
 use App\Lib\Validators\UserValidator;
+use App\Repositories\UserRepository;
 
 trait UserTrait
 {
@@ -27,7 +28,8 @@ trait UserTrait
         if (empty($id)) return new \stdClass();
 
 
-        $user = User::query()->find($id, ['id', 'name', 'avatar', 'vip', 'title', 'about']);
+        $userRepo = new UserRepository();
+        $user = $userRepo->findShallowUserById($id);
 
         if (!$user) return (object)[];
 

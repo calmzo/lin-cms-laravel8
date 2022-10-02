@@ -6,7 +6,7 @@ use App\Enums\ReasonEnums;
 use App\Enums\ReportEnums;
 use App\Exceptions\BadRequestException;
 use App\Models\Report;
-use App\Services\ReportService;
+use App\Repositories\ReportRepository;
 use App\Utils\CodeResponse;
 
 class ReportValidator extends BaseValidator
@@ -68,10 +68,8 @@ class ReportValidator extends BaseValidator
 
     public function checkIfReported($userId, $itemId, $itemType)
     {
-        $reportService = new ReportService();
-
-        $report = $reportService->findUserReport($userId, $itemId, $itemType);
-
+        $reportRepo = new ReportRepository();
+        $report = $reportRepo->findUserReport($userId, $itemId, $itemType);
 
         if ($report) {
             throw new BadRequestException(CodeResponse::NOT_FOUND_EXCEPTION, 'report.has_reported');

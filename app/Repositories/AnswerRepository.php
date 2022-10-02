@@ -53,4 +53,10 @@ class AnswerRepository extends BaseRepository
         return $query->paginate($count, ['*'], 'page', $page);
     }
 
+    public function findById($id)
+    {
+        return Answer::query()->find($id);
+    }
+
+
 }

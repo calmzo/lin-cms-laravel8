@@ -13,6 +13,7 @@ use App\Services\Logic\Article\ArticleDeleteService;
 use App\Services\Logic\Article\ArticleFavoriteService;
 use App\Services\Logic\Article\ArticleInfoService;
 use App\Services\Logic\Article\ArticleLikeService;
+use App\Services\Logic\Article\ArticleListService;
 use App\Services\Logic\Article\ArticlePrivateService;
 use App\Services\Logic\Article\ArticleUpdateService;
 use App\Services\Logic\Article\XmTagListService;
@@ -34,17 +35,11 @@ class ArticleService
      * @param string|null $name
      * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
      */
-    public function getArticles($page, $count, string $start = null, string $end = null, string $name = null)
+    public function getArticles($params)
     {
-        list($page, $count) = paginateFormat($page, $count);
-        $query = Article::query();
-        if ($name) {
-            $query->where('name', 'like', '%' . $name . '%');
-        }
-        if ($start && $end) {
-            $query->whereBetween('create_time', [$start, $end]);
-        }
-        return $query->orderByDesc('create_time')->paginate($count, ['*'], 'page', $page);
+        $service = new ArticleListService();
+
+        return $service->handle($params);
     }
 
 
@@ -103,8 +98,7 @@ class ArticleService
     public function updateArticle($id, $params)
     {
         $articleUpdateService = new ArticleUpdateService();
-        $article = $articleUpdateService->handle($id, $params);
-        return $article;
+        return $articleUpdateService->handle($id, $params);
 
     }
 

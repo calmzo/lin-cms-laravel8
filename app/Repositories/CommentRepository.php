@@ -63,4 +63,9 @@ class CommentRepository extends BaseRepository
         return $query->paginate($count, ['*'], 'page', $page);
     }
 
+    public function findById($id)
+    {
+        return Comment::query()->find($id);
+    }
+
 }

@@ -9,6 +9,7 @@ use App\Models\Question;
 use App\Models\Question as QuestionModel;
 use App\Models\Reason as ReasonModel;
 use App\Repos\Question as QuestionRepo;
+use App\Repositories\QuestionRepository;
 use App\Utils\CodeResponse;
 
 class QuestionValidator extends BaseValidator
@@ -37,8 +38,9 @@ class QuestionValidator extends BaseValidator
     public function checkQuestion($id)
     {
         $this->checkId($id);
+        $questionRepo = new QuestionRepository();
 
-        $question = Question::query()->find($id);
+        $question = $questionRepo->findById($id);
         if (!$question) {
             throw new BadRequestException(CodeResponse::NOT_FOUND_EXCEPTION,'question.not_found');
         }
