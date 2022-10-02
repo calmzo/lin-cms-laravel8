@@ -12,6 +12,7 @@ use App\Http\Controllers\V1\VerifyController;
 use App\Http\Controllers\V1\ArticleController;
 use App\Http\Controllers\V1\ReportController;
 use App\Http\Controllers\V1\UserController;
+use App\Http\Controllers\V1\UserConsoleController;
 
 /*
 |--------------------------------------------------------------------------
@@ -139,6 +140,14 @@ Route::prefix('user')->group(function () {
     Route::get('{id}/articles', [UserController::class, 'getArticles']);
     Route::get('{id}/questions', [UserController::class, 'getQuestions']);
     Route::get('{id}/answers', [UserController::class, 'getAnswers']);
+
+
+});
+
+
+Route::prefix('uc')->group(function () {
+    //
+    Route::get('profile', [UserConsoleController::class, 'getUserConsole']);
 
 
 });

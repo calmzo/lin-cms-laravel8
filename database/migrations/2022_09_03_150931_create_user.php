@@ -32,6 +32,8 @@ class CreateUser extends Migration
             $table->timestamp('vip_expiry_time')->nullable()->comment('会员期限');
             $table->timestamp('active_time')->nullable()->comment('活跃时间');
             $table->integer('locked')->default(0)->comment('锁定表示');
+            $table->integer('edu_role')->nullable()->default(1)->comment('教学角色');
+            $table->integer('admin_role')->nullable()->default(0)->comment('后台角色');
             $table->timestamp('lock_expiry_time')->nullable()->comment('锁定期限');
             $table->timestamp('create_time');
             $table->timestamp('update_time');
