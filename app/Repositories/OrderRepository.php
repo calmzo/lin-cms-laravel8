@@ -17,6 +17,13 @@ class OrderRepository extends BaseRepository
         return Order::query()->where('sn', $sn)->first();
     }
 
+    public function findByIds($ids, $columns = '*')
+    {
+        return Order::query()
+            ->whereIn('id', $ids)
+            ->get($columns);
+    }
+
     public function paginate($where = [], $sort = 'latest', $page = 1, $count = 15): LengthAwarePaginator
     {
         $query = Order::query();

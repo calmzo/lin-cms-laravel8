@@ -16,4 +16,21 @@ class RefundEnums extends BaseEnums
     const STATUS_FINISHED = 5; // 已完成
     const STATUS_FAILED = 6; // 已失败
 
+    /**
+     * @param null $key
+     * @return array|mixed|string
+     */
+    public static function statusTypes($key = null)
+    {
+        $list = [
+            self::STATUS_PENDING => '待处理',
+            self::STATUS_CANCELED => '已取消',
+            self::STATUS_APPROVED => '已审核',
+            self::STATUS_REFUSED => '已拒绝',
+            self::STATUS_FINISHED => '已完成',
+            self::STATUS_FAILED => '已失败',
+        ];
+        return self::getDesc($list, $key);
+    }
+
 }

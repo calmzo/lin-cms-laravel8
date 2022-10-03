@@ -156,6 +156,7 @@ Route::prefix('uc')->group(function () {
     Route::get('consults', [UserConsoleController::class, 'getConsults']);
     Route::get('reviews', [UserConsoleController::class, 'getReviews']);
     Route::get('orders', [UserConsoleController::class, 'getOrders']);
+    Route::get('refunds', [UserConsoleController::class, 'getRefunds']);
 
 
 });
