@@ -5,6 +5,8 @@ namespace App\Services;
 use App\Services\Logic\User\Console\ConsoleAccountInfoService;
 use App\Services\Logic\User\Console\ConsoleAnswerListService;
 use App\Services\Logic\User\Console\ConsoleArticleListService;
+use App\Services\Logic\User\Console\ConsoleConsultList;
+use App\Services\Logic\User\Console\ConsoleConsultListService;
 use App\Services\Logic\User\Console\ConsoleFavoriteListService;
 use App\Services\Logic\User\Console\ConsoleProfileInfoService;
 use App\Services\Logic\User\Console\ConsoleQuestionListService;
@@ -45,6 +47,12 @@ class UserConsoleService extends BaseService
     public function getFavorites($params)
     {
         $service = new ConsoleFavoriteListService();
+        return  $service->handle($params);
+    }
+
+    public function getConsults($params)
+    {
+        $service = new ConsoleConsultListService();
         return  $service->handle($params);
     }
 
