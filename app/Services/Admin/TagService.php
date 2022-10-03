@@ -70,8 +70,7 @@ class TagService
      */
     public function findByIds($ids, $columns = '*')
     {
-        return Tag::query()
-            ->whereIn('id', $ids)
-            ->get($columns);
+        $tagRepo = new TagRepository();
+        return $tagRepo->findByIds($ids, $columns);
     }
 }

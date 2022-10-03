@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Exceptions\NotFoundException;
 use App\Exceptions\OperationException;
 use App\Models\Book;
+use App\Repositories\BookRepository;
 use App\Utils\CodeResponse;
 
 class BookService
@@ -15,7 +16,8 @@ class BookService
      */
     public static function getBook($bid)
     {
-        return Book::query()->find($bid);
+        $bookRepo = new BookRepository();
+        return $bookRepo->findById($bid);
     }
 
     /**
@@ -23,7 +25,8 @@ class BookService
      */
     public static function getBooks()
     {
-        return Book::query()->orderByDesc('create_time')->get();
+        $bookRepo = new BookRepository();
+        return $bookRepo->findAll();
     }
 
     /**
@@ -45,7 +48,8 @@ class BookService
     public static function updateBook($bid, $params)
     {
         try {
-            $book = Book::query()->find($bid);
+            $bookRepo = new BookRepository();
+            $book =  $bookRepo->findById($bid);
             if (is_null($book)) {
                 throw new NotFoundException();
             }

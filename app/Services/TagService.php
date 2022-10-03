@@ -19,8 +19,8 @@ class TagService
      * @param string|null $keyword
      * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
      */
-    public function searchTags(int    $page, int $count, string $start = null,
-                                      string $end = null, string $name = null, string $keyword = null)
+    public function searchTags(int $page, int $count, string $start = null,
+                               string $end = null, string $name = null, string $keyword = null)
     {
         list($page, $count) = paginateFormat($page, $count);
         $query = Tag::query();
@@ -63,8 +63,7 @@ class TagService
      */
     public function findByIds($ids, $columns = '*')
     {
-        return Tag::query()
-            ->whereIn('id', $ids)
-            ->get($columns);
+        $tagRepo = new TagRepository();
+        return $tagRepo->findByIds($ids, $columns);
     }
 }

@@ -16,6 +16,7 @@ use App\Models\Admin\LinGroup;
 use App\Models\Admin\LinGroupPermission;
 use App\Models\Admin\LinPermission;
 use App\Models\Admin\LinUserGroup;
+use App\Repositories\LinUserRepository;
 use App\Services\Token\LoginTokenService;
 use App\Utils\CodeResponse;
 use App\Models\Admin\LinUser;
@@ -89,7 +90,8 @@ class UserService
 
     public static function getPermissions(int $uid): array
     {
-        $user = LinUser::query()->where('id', $uid)->first();
+        $linUserRepo = new LinUserRepository();
+        $user = $linUserRepo->findById($uid);
         $user = $user->toArray() ?? [];
         $groupIds = LinUserGroup::query()->where('user_id', $uid)
             ->pluck('group_id');
@@ -156,7 +158,8 @@ class UserService
     public static function changePassword(string $oldPassword, string $newPassword): int
     {
         $userId = LoginTokenService::userId();
-        $user = LinUser::query()->find($userId);
+        $linUserRepo = new LinUserRepository();
+        $user = $linUserRepo->findById($uid);
         $is_pass = Hash::check($oldPassword, $user->password);
         if (!$is_pass) {
             throw new AuthFailedException('旧密码错误');
@@ -215,7 +218,9 @@ class UserService
     public static function getUserByUID($uid)
     {
         try {
-            $user = LinUser::query()->where('id', $uid)->first()->toArray();
+            $linUserRepo = new LinUserRepository();
+            $user = $linUserRepo->findById($uid);
+            $user = $user->toArray();
         } catch (\Exception $ex) {
             throw new UserException();
         }
@@ -239,7 +244,8 @@ class UserService
 
     public static function updateUserAvatar($uid, $url)
     {
-        $user = LinUser::query()->where('id', $uid)->first();
+        $linUserRepo = new LinUserRepository();
+        $user = $linUserRepo->findById($uid);
         if (!$user) {
             throw new UserException();
         }

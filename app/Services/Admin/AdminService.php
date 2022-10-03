@@ -12,6 +12,7 @@ use App\Models\Admin\LinGroupPermission;
 use App\Models\Admin\LinPermission;
 use App\Models\Admin\LinUser;
 use App\Models\Admin\LinUserGroup;
+use App\Repositories\LinUserRepository;
 use App\Utils\CodeResponse;
 use Illuminate\Pagination\LengthAwarePaginator;
 use App\Lib\Authenticator\PermissionScan;
@@ -75,7 +76,8 @@ class AdminService
      */
     public static function changeUserPassword(int $uid, string $newPassword): void
     {
-        $user = LinUser::query()->find($uid);
+        $linUserRepo = new LinUserRepository();
+        $user = $linUserRepo->findById($uid);
         if (!$user) {
             throw new NotFoundException();
         }
@@ -91,7 +93,8 @@ class AdminService
      */
     public static function deleteUser(int $uid): void
     {
-        $user = LinUser::query()->find($uid);
+        $linUserRepo = new LinUserRepository();
+        $user = $linUserRepo->findById($uid);
         if (!$user) {
             throw new NotFoundException();
         }
@@ -120,7 +123,8 @@ class AdminService
      */
     public static function updateUserInfo(int $uid, array $groupIds): void
     {
-        $user = LinUser::query()->where('id', $uid)->first();
+        $linUserRepo = new LinUserRepository();
+        $user = $linUserRepo->findById($uid);
         if (!$user) {
             throw new NotFoundException();
         }

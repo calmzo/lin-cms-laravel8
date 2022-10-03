@@ -39,4 +39,11 @@ class TagRepository extends BaseRepository
         return $query->paginate($count, ['*'], 'page', $page);
     }
 
+    public function findByIds($ids, $columns = '*')
+    {
+        return Tag::query()
+            ->whereIn('id', $ids)
+            ->get($columns);
+    }
+
 }
