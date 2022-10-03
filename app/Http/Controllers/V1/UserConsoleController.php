@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\V1;
 
 use App\Services\UserConsoleService;
+use App\Validates\ArticleFormValidate;
+use App\Validates\V1\User\Console\ConcoleProfileFormValidate;
 use Illuminate\Http\Request;
 
 class UserConsoleController extends BaseController
@@ -92,6 +94,22 @@ class UserConsoleController extends BaseController
         $params = $request->all();
         $service = new UserConsoleService();
         $profile = $service->getNotifications($params);
+        return $this->success($profile);
+    }
+
+    public function getNotifyStats(Request $request)
+    {
+        $params = $request->all();
+        $service = new UserConsoleService();
+        $profile = $service->getNotifyStats($params);
+        return $this->success($profile);
+    }
+
+    public function updateProfile(ConcoleProfileFormValidate $concoleProfileFormValidate)
+    {
+        $params = $concoleProfileFormValidate->check();
+        $service = new UserConsoleService();
+        $profile = $service->updateProfile($params);
         return $this->success($profile);
     }
 }

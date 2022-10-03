@@ -158,6 +158,8 @@ Route::prefix('uc')->group(function () {
     Route::get('orders', [UserConsoleController::class, 'getOrders']);
     Route::get('refunds', [UserConsoleController::class, 'getRefunds']);
     Route::get('notifications', [UserConsoleController::class, 'getNotifications']);
+    Route::get('notify-stats', [UserConsoleController::class, 'getNotifyStats']);
+    Route::put('profile', [UserConsoleController::class, 'updateProfile']);
 
 
 });

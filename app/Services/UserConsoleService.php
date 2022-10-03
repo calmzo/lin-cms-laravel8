@@ -9,8 +9,10 @@ use App\Services\Logic\User\Console\ConsoleConsultList;
 use App\Services\Logic\User\Console\ConsoleConsultListService;
 use App\Services\Logic\User\Console\ConsoleFavoriteListService;
 use App\Services\Logic\User\Console\ConsoleNotificationListService;
+use App\Services\Logic\User\Console\ConsoleNotifyStatsService;
 use App\Services\Logic\User\Console\ConsoleOrderListService;
 use App\Services\Logic\User\Console\ConsoleProfileInfoService;
+use App\Services\Logic\User\Console\ConsoleProfileUpdate;
 use App\Services\Logic\User\Console\ConsoleQuestionListService;
 use App\Services\Logic\User\Console\ConsoleRefundListService;
 use App\Services\Logic\User\Console\ConsoleReviewListService;
@@ -81,6 +83,18 @@ class UserConsoleService extends BaseService
     public function getNotifications($params)
     {
         $service = new ConsoleNotificationListService();
+        return  $service->handle($params);
+    }
+
+    public function getNotifyStats($params)
+    {
+        $service = new ConsoleNotifyStatsService();
+        return  $service->handle($params);
+    }
+
+    public function updateProfile($params)
+    {
+        $service = new ConsoleProfileUpdate();
         return  $service->handle($params);
     }
 

@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Enums\ArticleEnums;
 use App\Models\Article;
+use App\Models\Notification;
 use App\Models\User;
 use App\Models\UserBalance;
 
@@ -13,6 +14,10 @@ class UserRepository extends BaseRepository
     public function findById($id)
     {
         return User::query()->find($id);
+    }
+    public function findByName($name)
+    {
+        return User::query()->where('name', $name)->first();
     }
 
     public function countArticles($uid)
@@ -42,5 +47,10 @@ class UserRepository extends BaseRepository
         return User::query()
             ->whereIn('id', $ids)
             ->get(['id', 'name', 'avatar', 'vip', 'title', 'about']);
+    }
+
+    public function countUnreadNotifications($userId)
+    {
+        return Notification::query()->where('receiver_id', $userId)->where('viewed', 0)->count();
     }
 }

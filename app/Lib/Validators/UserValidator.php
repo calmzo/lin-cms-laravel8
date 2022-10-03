@@ -4,8 +4,10 @@ namespace App\Lib\Validators;
 
 use App\Caches\MaxUserIdCache;
 use App\Caches\UserCache;
+use App\Enums\UserEnums;
 use App\Exceptions\BadRequestException;
 use App\Models\User;
+use App\Repositories\RoleRepository;
 use App\Repositories\UserRepository;
 use App\Utils\CodeResponse;
 
@@ -59,55 +61,12 @@ class UserValidator
         }
     }
 
-    public function checkName($name)
-    {
-        $value = $this->filter->sanitize($name, ['trim', 'string']);
-
-        $length = kg_strlen($value);
-
-        if ($length < 2) {
-            throw new BadRequestException('user.name_too_short');
-        }
-
-        if ($length > 15) {
-            throw new BadRequestException('user.name_too_long');
-        }
-
-        return $value;
-    }
-
-    public function checkTitle($title)
-    {
-        $value = $this->filter->sanitize($title, ['trim', 'string']);
-
-        $length = kg_strlen($value);
-
-        if ($length > 30) {
-            throw new BadRequestException('user.title_too_long');
-        }
-
-        return $value;
-    }
-
-    public function checkAbout($about)
-    {
-        $value = $this->filter->sanitize($about, ['trim', 'string']);
-
-        $length = kg_strlen($value);
-
-        if ($length > 255) {
-            throw new BadRequestException('user.about_too_long');
-        }
-
-        return $value;
-    }
-
     public function checkGender($value)
     {
-        $list = UserModel::genderTypes();
+        $list = UserEnums::genderTypes();
 
         if (!isset($list[$value])) {
-            throw new BadRequestException('user.invalid_gender');
+            throw new BadRequestException(CodeResponse::NOT_FOUND_EXCEPTION, 'user.invalid_gender');
         }
 
         return $value;
@@ -116,7 +75,7 @@ class UserValidator
     public function checkArea($area)
     {
         if (empty($area['province'] || empty($area['city']))) {
-            throw new BadRequestException('user.invalid_area');
+            throw new BadRequestException(CodeResponse::NOT_FOUND_EXCEPTION, 'user.invalid_area');
         }
 
         if (empty($area['county'])) {
@@ -126,23 +85,13 @@ class UserValidator
         return join('/', $area);
     }
 
-    public function checkAvatar($avatar)
-    {
-        $value = $this->filter->sanitize($avatar, ['trim', 'string']);
-
-        if (!CommonValidator::url($value)) {
-            throw new BadRequestException('user.invalid_avatar');
-        }
-
-        return kg_cos_img_style_trim($value);
-    }
 
     public function checkEduRole($value)
     {
-        $list = UserModel::eduRoleTypes();
+        $list = UserEnums::eduRoleTypes();
 
         if (!isset($list[$value])) {
-            throw new BadRequestException('user.invalid_edu_role');
+            throw new BadRequestException(CodeResponse::NOT_FOUND_EXCEPTION, 'user.invalid_edu_role');
         }
 
         return $value;
@@ -152,12 +101,12 @@ class UserValidator
     {
         if (!$value) return 0;
 
-        $roleRepo = new RoleRepo();
+        $roleRepo = new RoleRepository();
 
         $role = $roleRepo->findById($value);
 
-        if (!$role || $role->deleted == 1) {
-            throw new BadRequestException('user.invalid_admin_role');
+        if (!$role) {
+            throw new BadRequestException(CodeResponse::NOT_FOUND_EXCEPTION, 'user.invalid_admin_role');
         }
 
         return $role->id;
@@ -166,7 +115,7 @@ class UserValidator
     public function checkVipStatus($status)
     {
         if (!in_array($status, [0, 1])) {
-            throw new BadRequestException('user.invalid_vip_status');
+            throw new BadRequestException(CodeResponse::NOT_FOUND_EXCEPTION, 'user.invalid_vip_status');
         }
 
         return $status;
@@ -175,7 +124,7 @@ class UserValidator
     public function checkVipExpiryTime($expiryTime)
     {
         if (!CommonValidator::date($expiryTime, 'Y-m-d H:i:s')) {
-            throw new BadRequestException('user.invalid_vip_expiry_time');
+            throw new BadRequestException(CodeResponse::NOT_FOUND_EXCEPTION, 'user.invalid_vip_expiry_time');
         }
 
         return strtotime($expiryTime);
@@ -184,7 +133,7 @@ class UserValidator
     public function checkLockStatus($status)
     {
         if (!in_array($status, [0, 1])) {
-            throw new BadRequestException('user.invalid_lock_status');
+            throw new BadRequestException(CodeResponse::NOT_FOUND_EXCEPTION, 'user.invalid_lock_status');
         }
 
         return $status;
@@ -193,7 +142,7 @@ class UserValidator
     public function checkLockExpiryTime($expiryTime)
     {
         if (!CommonValidator::date($expiryTime, 'Y-m-d H:i:s')) {
-            throw new BadRequestException('user.invalid_lock_expiry_time');
+            throw new BadRequestException(CodeResponse::NOT_FOUND_EXCEPTION, 'user.invalid_lock_expiry_time');
         }
 
         return strtotime($expiryTime);
@@ -201,12 +150,12 @@ class UserValidator
 
     public function checkIfNameTaken($name)
     {
-        $userRepo = new UserRepo();
+        $userRepo = new UserRepository();
 
         $user = $userRepo->findByName($name);
 
         if ($user) {
-            throw new BadRequestException('user.name_taken');
+            throw new BadRequestException(CodeResponse::NOT_FOUND_EXCEPTION, 'user.name_taken');
         }
     }
 
