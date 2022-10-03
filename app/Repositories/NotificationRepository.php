@@ -47,4 +47,13 @@ class NotificationRepository extends BaseRepository
         return $query->paginate($count, ['*'], 'page', $page);
     }
 
+    /**
+     * @param $userId
+     * @return int
+     */
+    public function markAllAsViewed($userId)
+    {
+        return Notification::query()->where('receiver_id', $userId)->where('viewed', 0)->update(['viewed' => 1]);
+    }
+
 }

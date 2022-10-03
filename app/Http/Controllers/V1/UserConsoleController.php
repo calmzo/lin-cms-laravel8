@@ -14,109 +14,109 @@ class UserConsoleController extends BaseController
     public function getUserConsole()
     {
         $service = new UserConsoleService();
-        $profile = $service->getUserConsole();
-        return $this->success($profile);
+        $pager = $service->getUserConsole();
+        return $this->success($pager);
     }
 
     public function getUserAccount()
     {
         $service = new UserConsoleService();
-        $profile = $service->getUserAccount();
-        return $this->success($profile);
+        $account = $service->getUserAccount();
+        return $this->success($account);
     }
 
     public function getUserArticles(Request $request)
     {
         $params = $request->all();
         $service = new UserConsoleService();
-        $profile = $service->getUserArticles($params);
-        return $this->success($profile);
+        $pager = $service->getUserArticles($params);
+        return $this->success($pager);
     }
 
     public function getUserQuestions(Request $request)
     {
         $params = $request->all();
         $service = new UserConsoleService();
-        $profile = $service->getUserQuestions($params);
-        return $this->success($profile);
+        $pager = $service->getUserQuestions($params);
+        return $this->success($pager);
     }
 
     public function getAnswers(Request $request)
     {
         $params = $request->all();
         $service = new UserConsoleService();
-        $profile = $service->getAnswers($params);
-        return $this->success($profile);
+        $pager = $service->getAnswers($params);
+        return $this->success($pager);
     }
 
     public function getFavorites(Request $request)
     {
         $params = $request->all();
         $service = new UserConsoleService();
-        $profile = $service->getFavorites($params);
-        return $this->success($profile);
+        $pager = $service->getFavorites($params);
+        return $this->success($pager);
     }
 
     public function getConsults(Request $request)
     {
         $params = $request->all();
         $service = new UserConsoleService();
-        $profile = $service->getConsults($params);
-        return $this->success($profile);
+        $pager = $service->getConsults($params);
+        return $this->success($pager);
     }
 
     public function getReviews(Request $request)
     {
         $params = $request->all();
         $service = new UserConsoleService();
-        $profile = $service->getReviews($params);
-        return $this->success($profile);
+        $pager = $service->getReviews($params);
+        return $this->success($pager);
     }
 
     public function getOrders(Request $request)
     {
         $params = $request->all();
         $service = new UserConsoleService();
-        $profile = $service->getOrders($params);
-        return $this->success($profile);
+        $pager = $service->getOrders($params);
+        return $this->success($pager);
     }
 
     public function getRefunds(Request $request)
     {
         $params = $request->all();
         $service = new UserConsoleService();
-        $profile = $service->getRefunds($params);
-        return $this->success($profile);
+        $pager = $service->getRefunds($params);
+        return $this->success($pager);
     }
 
     public function getNotifications(Request $request)
     {
         $params = $request->all();
         $service = new UserConsoleService();
-        $profile = $service->getNotifications($params);
-        return $this->success($profile);
+        $pager = $service->getNotifications($params);
+        return $this->success($pager);
     }
 
     public function getNotifyStats(Request $request)
     {
         $params = $request->all();
         $service = new UserConsoleService();
-        $profile = $service->getNotifyStats($params);
-        return $this->success($profile);
+        $stats = $service->getNotifyStats($params);
+        return $this->success($stats);
     }
 
     public function updateProfile(ConcoleProfileFormValidate $concoleProfileFormValidate)
     {
         $params = $concoleProfileFormValidate->check();
         $service = new UserConsoleService();
-        $profile = $service->updateProfile($params);
-        return $this->success($profile);
+        $service->updateProfile($params);
+        return $this->success();
     }
 
     public function online()
     {
         $service = new UserConsoleService();
-        $profile = $service->online();
-        return $this->success($profile);
+        $service->online();
+        return $this->success();
     }
 }
