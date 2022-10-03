@@ -70,4 +70,12 @@ class UserConsoleController extends BaseController
         $profile = $service->getReviews($params);
         return $this->success($profile);
     }
+
+    public function getOrders(Request $request)
+    {
+        $params = $request->all();
+        $service = new UserConsoleService();
+        $profile = $service->getOrders($params);
+        return $this->success($profile);
+    }
 }

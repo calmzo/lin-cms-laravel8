@@ -8,6 +8,7 @@ use App\Services\Logic\User\Console\ConsoleArticleListService;
 use App\Services\Logic\User\Console\ConsoleConsultList;
 use App\Services\Logic\User\Console\ConsoleConsultListService;
 use App\Services\Logic\User\Console\ConsoleFavoriteListService;
+use App\Services\Logic\User\Console\ConsoleOrderListService;
 use App\Services\Logic\User\Console\ConsoleProfileInfoService;
 use App\Services\Logic\User\Console\ConsoleQuestionListService;
 use App\Services\Logic\User\Console\ConsoleReviewListService;
@@ -60,6 +61,12 @@ class UserConsoleService extends BaseService
     public function getReviews($params)
     {
         $service = new ConsoleReviewListService();
+        return  $service->handle($params);
+    }
+
+    public function getOrders($params)
+    {
+        $service = new ConsoleOrderListService();
         return  $service->handle($params);
     }
 
