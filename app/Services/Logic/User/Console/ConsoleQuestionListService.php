@@ -10,7 +10,7 @@ use App\Services\Token\AccountLoginTokenService;
 class ConsoleQuestionListService extends LogicService
 {
 
-    public function handle()
+    public function handle($params)
     {
         $uid = AccountLoginTokenService::userId();
         $params['user_id'] = $uid;

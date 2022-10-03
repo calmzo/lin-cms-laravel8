@@ -121,4 +121,11 @@ class QuestionRepository extends BaseRepository
         return Question::query()->find($id);
     }
 
+    public function findByIds($ids, $columns = '*')
+    {
+        return Question::query()
+            ->whereIn('id', $ids)
+            ->get($columns);
+    }
+
 }

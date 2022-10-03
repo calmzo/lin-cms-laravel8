@@ -152,6 +152,7 @@ Route::prefix('uc')->group(function () {
     Route::get('articles', [UserConsoleController::class, 'getUserArticles']);
     Route::get('questions', [UserConsoleController::class, 'getUserQuestions']);
     Route::get('answers', [UserConsoleController::class, 'getAnswers']);
+    Route::get('favorites', [UserConsoleController::class, 'getFavorites']);
 
 
 });

@@ -29,4 +29,18 @@ class UserRepository extends BaseRepository
     {
         return User::query()->find($id, ['id', 'name', 'avatar', 'vip', 'title', 'about']);
     }
+
+    public function findByIds($ids, $columns = '*')
+    {
+        return User::query()
+            ->whereIn('id', $ids)
+            ->get($columns);
+    }
+
+    public function findShallowUserByIds($ids)
+    {
+        return User::query()
+            ->whereIn('id', $ids)
+            ->get(['id', 'name', 'avatar', 'vip', 'title', 'about']);
+    }
 }

@@ -2,22 +2,17 @@
 
 namespace App\Repositories;
 
-use App\Models\ArticleFavorite;
+use App\Models\CourseFavorite;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
-class ArticleFavoriteRepository extends BaseRepository
+class CourseFavoriteRepository extends BaseRepository
 {
-    public function findArticleFavorite($articleId, $uid)
-    {
-        return ArticleFavorite::query()->where('article_id', $articleId)->where('user_id', $uid)->first();
-    }
-
     public function paginate($where = [], $sort = 'latest', $page = 1, $limit = 15): LengthAwarePaginator
     {
-        $query = ArticleFavorite::query();
+        $query = CourseFavorite::query();
 
-        if (!empty($where['article_id'])) {
-            $query->where('article_id', $where['article_id']);
+        if (!empty($where['course_id'])) {
+            $query->where('course_id', $where['course_id']);
         }
 
         if (!empty($where['user_id'])) {

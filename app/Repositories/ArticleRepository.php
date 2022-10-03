@@ -121,4 +121,11 @@ class ArticleRepository extends BaseRepository
         return Article::query()->find($id);
     }
 
+    public function findByIds($ids, $columns = '*')
+    {
+        return Article::query()
+            ->whereIn('id', $ids)
+            ->get($columns);
+    }
+
 }

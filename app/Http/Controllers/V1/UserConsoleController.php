@@ -46,4 +46,12 @@ class UserConsoleController extends BaseController
         $profile = $service->getAnswers($params);
         return $this->success($profile);
     }
+
+    public function getFavorites(Request $request)
+    {
+        $params = $request->all();
+        $service = new UserConsoleService();
+        $profile = $service->getFavorites($params);
+        return $this->success($profile);
+    }
 }
