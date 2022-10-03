@@ -86,4 +86,12 @@ class UserConsoleController extends BaseController
         $profile = $service->getRefunds($params);
         return $this->success($profile);
     }
+
+    public function getNotifications(Request $request)
+    {
+        $params = $request->all();
+        $service = new UserConsoleService();
+        $profile = $service->getNotifications($params);
+        return $this->success($profile);
+    }
 }

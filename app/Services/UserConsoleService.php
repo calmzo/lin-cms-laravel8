@@ -8,6 +8,7 @@ use App\Services\Logic\User\Console\ConsoleArticleListService;
 use App\Services\Logic\User\Console\ConsoleConsultList;
 use App\Services\Logic\User\Console\ConsoleConsultListService;
 use App\Services\Logic\User\Console\ConsoleFavoriteListService;
+use App\Services\Logic\User\Console\ConsoleNotificationListService;
 use App\Services\Logic\User\Console\ConsoleOrderListService;
 use App\Services\Logic\User\Console\ConsoleProfileInfoService;
 use App\Services\Logic\User\Console\ConsoleQuestionListService;
@@ -74,6 +75,12 @@ class UserConsoleService extends BaseService
     public function getRefunds($params)
     {
         $service = new ConsoleRefundListService();
+        return  $service->handle($params);
+    }
+
+    public function getNotifications($params)
+    {
+        $service = new ConsoleNotificationListService();
         return  $service->handle($params);
     }
 
