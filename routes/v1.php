@@ -151,6 +151,7 @@ Route::prefix('uc')->group(function () {
     Route::get('account', [UserConsoleController::class, 'getUserAccount']);
     Route::get('articles', [UserConsoleController::class, 'getUserArticles']);
     Route::get('questions', [UserConsoleController::class, 'getUserQuestions']);
+    Route::get('answers', [UserConsoleController::class, 'getAnswers']);
 
 
 });
