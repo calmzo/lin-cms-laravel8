@@ -29,12 +29,12 @@ class CreateUser extends Migration
             $table->integer('comment_count')->default(0)->comment('评论数');
             $table->integer('favorite_count')->default(0)->comment('收藏数');
             $table->integer('report_count')->default(0)->comment('举报数');
-            $table->timestamp('vip_expiry_time')->nullable()->comment('会员期限');
-            $table->timestamp('active_time')->nullable()->comment('活跃时间');
+            $table->integer('vip_expiry_time')->unsigned()->default(0)->comment('会员期限');
+            $table->integer('active_time')->unsigned()->default(0)->comment('活跃时间');
             $table->integer('locked')->default(0)->comment('锁定表示');
             $table->integer('edu_role')->nullable()->default(1)->comment('教学角色');
             $table->integer('admin_role')->nullable()->default(0)->comment('后台角色');
-            $table->timestamp('lock_expiry_time')->nullable()->comment('锁定期限');
+            $table->integer('lock_expiry_time')->unsigned()->default(0)->comment('锁定期限');
             $table->timestamp('create_time');
             $table->timestamp('update_time');
             $table->softDeletes('delete_time');

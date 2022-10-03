@@ -10,6 +10,7 @@ use App\Services\Logic\User\Console\ConsoleConsultListService;
 use App\Services\Logic\User\Console\ConsoleFavoriteListService;
 use App\Services\Logic\User\Console\ConsoleNotificationListService;
 use App\Services\Logic\User\Console\ConsoleNotifyStatsService;
+use App\Services\Logic\User\Console\ConsoleOnlineService;
 use App\Services\Logic\User\Console\ConsoleOrderListService;
 use App\Services\Logic\User\Console\ConsoleProfileInfoService;
 use App\Services\Logic\User\Console\ConsoleProfileUpdate;
@@ -96,6 +97,12 @@ class UserConsoleService extends BaseService
     {
         $service = new ConsoleProfileUpdate();
         return  $service->handle($params);
+    }
+
+    public function online()
+    {
+        $service = new ConsoleOnlineService();
+        return  $service->handle();
     }
 
 }

@@ -112,4 +112,11 @@ class UserConsoleController extends BaseController
         $profile = $service->updateProfile($params);
         return $this->success($profile);
     }
+
+    public function online()
+    {
+        $service = new UserConsoleService();
+        $profile = $service->online();
+        return $this->success($profile);
+    }
 }

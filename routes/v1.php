@@ -160,6 +160,7 @@ Route::prefix('uc')->group(function () {
     Route::get('notifications', [UserConsoleController::class, 'getNotifications']);
     Route::get('notify-stats', [UserConsoleController::class, 'getNotifyStats']);
     Route::put('profile', [UserConsoleController::class, 'updateProfile']);
+    Route::post('online', [UserConsoleController::class, 'online']);
 
 
 });

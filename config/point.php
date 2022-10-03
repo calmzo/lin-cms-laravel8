@@ -18,6 +18,12 @@ return [
             'point' => 100,
             'limit' => 1
         ],
+        'site_visit' => [
+            'enabled' => 1,
+            'point' => 100,
+            'limit' => 1
+        ],
+
 
 
     ],

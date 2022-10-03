@@ -27,4 +27,20 @@ class PointHistoryRepository extends BaseRepository
         return PointHistory::query()->where('user_id', $userId)->where('event_type', $eventType)->where('create_time', '>', $date)->sum('event_point');
     }
 
+
+    /**
+     * @param $eventId
+     * @param $eventType
+     * @param $date
+     * @return \Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Model|object|null
+     */
+    public function findDailyEventHistory($eventId, $eventType, $date)
+    {
+        return PointHistory::query()
+            ->where('event_id', $eventId)
+            ->where('event_type', $eventType)
+            ->where('create_time', '>', $date)
+            ->first();
+    }
+
 }
