@@ -10,6 +10,7 @@ use App\Services\Logic\User\Console\ConsoleConsultListService;
 use App\Services\Logic\User\Console\ConsoleFavoriteListService;
 use App\Services\Logic\User\Console\ConsoleProfileInfoService;
 use App\Services\Logic\User\Console\ConsoleQuestionListService;
+use App\Services\Logic\User\Console\ConsoleReviewListService;
 
 class UserConsoleService extends BaseService
 {
@@ -53,6 +54,12 @@ class UserConsoleService extends BaseService
     public function getConsults($params)
     {
         $service = new ConsoleConsultListService();
+        return  $service->handle($params);
+    }
+
+    public function getReviews($params)
+    {
+        $service = new ConsoleReviewListService();
         return  $service->handle($params);
     }
 
