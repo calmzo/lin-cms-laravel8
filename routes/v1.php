@@ -13,6 +13,7 @@ use App\Http\Controllers\V1\ArticleController;
 use App\Http\Controllers\V1\ReportController;
 use App\Http\Controllers\V1\UserController;
 use App\Http\Controllers\V1\UserConsoleController;
+use App\Http\Controllers\V1\ReviewController;
 
 /*
 |--------------------------------------------------------------------------
@@ -163,4 +164,9 @@ Route::prefix('uc')->group(function () {
     Route::post('online', [UserConsoleController::class, 'online']);
 
 
+});
+
+Route::prefix('review')->group(function () {
+    //
+    Route::get('{id}/info', [ReviewController::class, 'getReview']);
 });

@@ -6,6 +6,12 @@ use App\Models\Course;
 
 class CourseRepository extends BaseRepository
 {
+
+    public function findById($id)
+    {
+        return Course::query()->find($id);
+    }
+
     public function findByIds($ids, $columns = '*')
     {
         return Course::query()

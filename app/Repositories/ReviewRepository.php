@@ -8,6 +8,11 @@ use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 class ReviewRepository extends BaseRepository
 {
+    public function findById($id)
+    {
+        return Review::query()->find($id);
+    }
+
     public function countReviews()
     {
         return Review::query()->where('published', ReviewEnums::PUBLISH_APPROVED)->count();
