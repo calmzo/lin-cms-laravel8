@@ -11,7 +11,7 @@ use App\Models\Tag;
 use App\Models\User;
 use App\Services\ArticleTagService;
 use App\Services\TagService;
-use App\Lib\Validators\ArticleValidator;
+use App\Validators\ArticleValidator;
 
 trait ArticleDataTrait
 {

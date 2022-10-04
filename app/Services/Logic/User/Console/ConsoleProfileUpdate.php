@@ -5,7 +5,7 @@ namespace App\Services\Logic\User\Console;
 use App\Caches\UserCache;
 use App\Repositories\UserRepository;
 use App\Services\Logic\LogicService;
-use App\Lib\Validators\UserValidator;
+use App\Validators\UserValidator;
 use App\Services\Token\AccountLoginTokenService;
 
 class ConsoleProfileUpdate extends LogicService

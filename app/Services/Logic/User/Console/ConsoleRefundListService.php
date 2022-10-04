@@ -7,7 +7,7 @@ use App\Repositories\RefundRepository;
 use App\Services\Logic\LogicService;
 use App\Services\Token\AccountLoginTokenService;
 use App\Traits\UserTrait;
-use App\Lib\Validators\RefundValidator;
+use App\Validators\RefundValidator;
 
 class ConsoleRefundListService extends LogicService
 {

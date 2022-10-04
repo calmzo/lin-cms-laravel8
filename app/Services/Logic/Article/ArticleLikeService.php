@@ -7,7 +7,7 @@ use App\Events\ArticleAfterLikeEvent;
 use App\Events\ArticleAfterUndoLikeEvent;
 use App\Events\IncrArticleLikeCountEvent;
 use App\Lib\Notice\ArticleLiked;
-use App\Lib\Validators\ArticleValidator;
+use App\Validators\ArticleValidator;
 use App\Models\Article;
 use App\Models\User;
 use App\Repositories\ArticleLikeRepository;

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Lib\Validators;
+namespace App\Validators;
 
 use App\Caches\Article as ArticleCache;
 use App\Caches\MaxArticleIdCache;

@@ -2,7 +2,7 @@
 
 namespace App\Services\Logic\Account;
 
-use App\Lib\Validators\AccountValidator;
+use App\Validators\AccountValidator;
 use App\Models\Account;
 use App\Services\Logic\LogicService;
 use App\Services\Token\AccountLoginTokenService;

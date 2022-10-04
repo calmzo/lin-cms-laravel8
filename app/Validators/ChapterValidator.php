@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Lib\Validators;
+namespace App\Validators;
 
 use App\Caches\Chapter as ChapterCache;
 use App\Caches\MaxChapterId as MaxChapterIdCache;

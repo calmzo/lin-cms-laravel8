@@ -4,7 +4,7 @@ namespace App\Services\Logic\Article;
 
 
 use App\Events\ArticleAfterDeleteEvent;
-use App\Lib\Validators\ArticleValidator;
+use App\Validators\ArticleValidator;
 use App\Models\Article;
 use App\Models\User;
 use App\Repositories\UserRepository;

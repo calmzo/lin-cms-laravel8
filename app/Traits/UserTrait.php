@@ -3,7 +3,7 @@
 namespace App\Traits;
 
 use App\Models\User;
-use App\Lib\Validators\UserValidator;
+use App\Validators\UserValidator;
 use App\Repositories\UserRepository;
 
 trait UserTrait

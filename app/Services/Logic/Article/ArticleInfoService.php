@@ -4,7 +4,7 @@ namespace App\Services\Logic\Article;
 
 use App\Caches\CategoryCache;
 use App\Events\ArticleAfterViewEvent;
-use App\Lib\Validators\ArticleValidator;
+use App\Validators\ArticleValidator;
 use App\Models\Article;
 use App\Models\User;
 use App\Models\ArticleLike;

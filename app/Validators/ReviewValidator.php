@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Lib\Validators;
+namespace App\Validators;
 
 use App\Exceptions\BadRequestException;
 use App\Models\Review as ReviewModel;

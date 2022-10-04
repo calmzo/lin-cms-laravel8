@@ -2,7 +2,7 @@
 
 namespace App\Traits;
 
-use App\Lib\Validators\ReviewValidator;
+use App\Validators\ReviewValidator;
 
 trait ReviewTrait
 {

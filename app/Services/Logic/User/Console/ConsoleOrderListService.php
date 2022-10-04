@@ -7,7 +7,7 @@ use App\Repositories\OrderRepository;
 use App\Services\Logic\LogicService;
 use App\Services\Token\AccountLoginTokenService;
 use App\Traits\UserTrait;
-use App\Lib\Validators\OrderValidator;
+use App\Validators\OrderValidator;
 
 class ConsoleOrderListService extends LogicService
 {

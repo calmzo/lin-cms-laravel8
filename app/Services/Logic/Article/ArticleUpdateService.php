@@ -5,7 +5,7 @@ namespace App\Services\Logic\Article;
 
 use App\Enums\ArticleEnums;
 use App\Events\ArticleAfterUpdateEvent;
-use App\Lib\Validators\ArticleValidator;
+use App\Validators\ArticleValidator;
 use App\Services\Logic\LogicService;
 use App\Traits\ArticleDataTrait;
 

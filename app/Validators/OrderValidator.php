@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Lib\Validators;
+namespace App\Validators;
 
 use App\Enums\OrderEnums;
 use App\Exceptions\BadRequestException;

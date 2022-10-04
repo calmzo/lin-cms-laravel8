@@ -11,7 +11,7 @@ use App\Services\Token\AccountLoginTokenService;
 use App\Traits\ClientTrait;
 use App\Traits\UserLimitTrait;
 use App\Traits\ReportCountTrait;
-use App\Lib\Validators\ReportValidator;
+use App\Validators\ReportValidator;
 
 class ReportCreateService extends LogicService
 {

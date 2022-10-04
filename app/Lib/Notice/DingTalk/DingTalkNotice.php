@@ -2,7 +2,7 @@
 
 namespace App\Lib\Notice\DingTalk;
 
-use App\Lib\Validators\CommonValidator;
+use App\Validators\CommonValidator;
 use GuzzleHttp\Client as HttpClient;
 use Illuminate\Support\Facades\Log;
 

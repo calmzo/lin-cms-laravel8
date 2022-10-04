@@ -9,7 +9,7 @@ use App\Models\User;
 use App\Repositories\UserRepository;
 use App\Services\Logic\Account\RegisterService;
 use App\Services\Token\AccountLoginTokenService;
-use App\Lib\Validators\AccountValidator;
+use App\Validators\AccountValidator;
 
 class AccountService
 {

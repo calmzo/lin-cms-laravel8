@@ -5,8 +5,8 @@ namespace App\Services\Logic\Account;
 use App\Models\Account;
 use App\Services\Logic\LogicService;
 use App\Services\Token\AccountLoginTokenService;
-use App\Lib\Validators\AccountValidator;
-use App\Lib\Validators\VerifyValidator;
+use App\Validators\AccountValidator;
+use App\Validators\VerifyValidator;
 
 class EmailUpdateService extends LogicService
 {
