@@ -2,7 +2,7 @@
 
 namespace App\Lib\Validators;
 
-class IdCard
+class IdCardValidator
 {
 
     /**
