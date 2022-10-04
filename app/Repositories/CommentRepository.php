@@ -2,11 +2,17 @@
 
 namespace App\Repositories;
 
+use App\Enums\CommentEnums;
 use App\Models\Comment;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 class CommentRepository extends BaseRepository
 {
+    public function countComments()
+    {
+        return Comment::query()->where('published', CommentEnums::PUBLISH_APPROVED)->count();
+    }
+    
     public function paginate($where = [], $sort = 'latest', $page = 1, $count = 15): LengthAwarePaginator
     {
         $query = Comment::query();

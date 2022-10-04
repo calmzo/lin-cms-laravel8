@@ -2,11 +2,16 @@
 
 namespace App\Repositories;
 
+use App\Enums\ConsultEnums;
 use App\Models\Consult;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 class ConsultRepository extends BaseRepository
 {
+    public function countConsults()
+    {
+        return Consult::query()->where('published', ConsultEnums::PUBLISH_APPROVED)->count();
+    }
 
     public function paginate($where = [], $sort = 'latest', $page = 1, $count = 15): LengthAwarePaginator
     {

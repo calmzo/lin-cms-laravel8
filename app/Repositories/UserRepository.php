@@ -10,11 +10,21 @@ use App\Models\UserBalance;
 
 class UserRepository extends BaseRepository
 {
+    public function countUsers()
+    {
+        return User::query()->count();
+    }
+
+    public function countVipUsers()
+    {
+        return User::query()->where('vip', 1)->count();
+    }
 
     public function findById($id)
     {
         return User::query()->find($id);
     }
+
     public function findByName($name)
     {
         return User::query()->where('name', $name)->first();

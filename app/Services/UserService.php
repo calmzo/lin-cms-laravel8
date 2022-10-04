@@ -2,9 +2,6 @@
 
 namespace App\Services;
 
-use App\Enums\ArticleEnums;
-use App\Exceptions\NotFoundException;
-use App\Models\Article;
 use App\Models\User;
 use App\Services\Logic\User\UserAnswerList;
 use App\Services\Logic\User\UserQuestionList;
@@ -41,18 +38,6 @@ class UserService
         $service = new UserAnswerList();
 
         return $service->handle($id, $params);
-    }
-
-
-
-    public function countVipUsers()
-    {
-        return User::query()->where('vip', 1)->count();
-    }
-
-    public function countUsers()
-    {
-        return User::query()->count();
     }
 
     public function findUserByIds($ids)

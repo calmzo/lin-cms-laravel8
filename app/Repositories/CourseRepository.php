@@ -13,4 +13,9 @@ class CourseRepository extends BaseRepository
             ->get($columns);
     }
 
+    public function countCourses()
+    {
+        return Course::query()->where('published', 1)->count();
+    }
+
 }

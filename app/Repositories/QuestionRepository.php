@@ -2,11 +2,17 @@
 
 namespace App\Repositories;
 
+use App\Enums\QuestionEnums;
 use App\Models\Question;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 class QuestionRepository extends BaseRepository
 {
+    public function countQuestions()
+    {
+        return Question::query()->where('published', QuestionEnums::PUBLISH_APPROVED)->count();
+    }
+
     public function paginate($where = [], $sort = 'latest', $page = 1, $count = 15): LengthAwarePaginator
     {
         $query = Question::query();

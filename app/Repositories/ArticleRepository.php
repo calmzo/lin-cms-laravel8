@@ -2,11 +2,17 @@
 
 namespace App\Repositories;
 
+use App\Enums\ArticleEnums;
 use App\Models\Article;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 class ArticleRepository extends BaseRepository
 {
+
+    public function countArticles()
+    {
+        return Article::query()->where('published', ArticleEnums::PUBLISH_APPROVED)->count();
+    }
 
     public function paginate($where = [], $sort = 'latest', $page = 1, $count = 15): LengthAwarePaginator
     {

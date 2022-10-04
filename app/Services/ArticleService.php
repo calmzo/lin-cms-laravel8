@@ -21,11 +21,6 @@ use App\Services\Logic\Article\XmTagListService;
 class ArticleService
 {
 
-    public function countArticles()
-    {
-        return Article::query()->where('published', ArticleEnums::PUBLISH_APPROVED)->count();
-    }
-
 
     /**
      * @param $page
