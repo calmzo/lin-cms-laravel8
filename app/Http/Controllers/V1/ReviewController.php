@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\V1;
 
 use App\Services\ReviewService;
+use App\Validates\ArticleFormValidate;
+use App\Validates\Review\ReviewFormValidate;
 
 class ReviewController extends BaseController
 {
@@ -14,6 +16,22 @@ class ReviewController extends BaseController
         $review = $service->getReview($id);
         return $this->success($review);
     }
+
+
+    /**
+     * 评价
+     * @param ReviewFormValidate $reviewFormValidate
+     * @return array|\Illuminate\Http\JsonResponse
+     * @throws \App\Exceptions\ValidateException
+     */
+    public function createReview(ReviewFormValidate $reviewFormValidate)
+    {
+        $params = $reviewFormValidate->check();
+        $service = new ReviewService();
+        $review = $service->createReview($params);
+        return $this->success($review);
+    }
+
 
 
 }

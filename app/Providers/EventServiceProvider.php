@@ -52,6 +52,7 @@ class EventServiceProvider extends ServiceProvider
         'App\Listeners\AccountListener',
         'App\Listeners\ArticleListener',
         'App\Listeners\ReportListener',
+        'App\Listeners\ReviewListener',
     ];
 
 }

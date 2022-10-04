@@ -9,6 +9,7 @@ use App\Models\User;
 use App\Models\Account;
 use App\Utils\CodeResponse;
 use Illuminate\Support\Facades\Hash;
+use App\Lib\Validators\CommonValidator;
 
 class AccountValidator extends BaseValidator
 {

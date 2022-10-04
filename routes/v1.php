@@ -169,4 +169,5 @@ Route::prefix('uc')->group(function () {
 Route::prefix('review')->group(function () {
     //
     Route::get('{id}/info', [ReviewController::class, 'getReview']);
+    Route::post('', [ReviewController::class, 'createReview']);
 });

@@ -30,22 +30,6 @@ class ReviewValidator extends BaseValidator
         return $validator->checkCourse($id);
     }
 
-    public function checkContent($content)
-    {
-        $value = $this->filter->sanitize($content, ['trim', 'string']);
-
-        $length = kg_strlen($value);
-
-        if ($length < 10) {
-            throw new BadRequestException('review.content_too_short');
-        }
-
-        if ($length > 255) {
-            throw new BadRequestException('review.content_too_long');
-        }
-
-        return $value;
-    }
 
     public function checkRating($rating)
     {

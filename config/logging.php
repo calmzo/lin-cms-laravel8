@@ -184,6 +184,13 @@ return [
             'level' => 'debug',
             'days' => 14,
         ],
+
+        'review' => [
+            'driver' => 'daily',
+            'path' => storage_path('logs/review/review.log'),
+            'level' => 'debug',
+            'days' => 14,
+        ],
     ],
 
 ];

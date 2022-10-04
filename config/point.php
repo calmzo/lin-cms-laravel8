@@ -23,6 +23,11 @@ return [
             'point' => 100,
             'limit' => 1
         ],
+        'course_review' => [
+            'enabled' => 1,
+            'point' => 100,
+            'limit' => 1
+        ],
 
 
 
