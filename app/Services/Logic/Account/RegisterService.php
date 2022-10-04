@@ -6,7 +6,7 @@ use App\Models\Account;
 use App\Models\User;
 use App\Models\UserBalance;
 use App\Validators\AccountValidator;
-use App\Validators\CommonValidator;
+use App\Lib\Validators\CommonValidator;
 use App\Validators\VerifyValidator;
 use App\Services\Logic\LogicService;
 use Illuminate\Support\Facades\DB;

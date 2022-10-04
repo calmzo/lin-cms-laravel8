@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Validators;
+namespace App\Lib\Validators;
 
-class IdCard extends BaseValidator
+class IdCard
 {
 
     /**

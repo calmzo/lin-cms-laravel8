@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Validators;
+namespace App\Lib\Validators;
 
-class CommonValidator extends BaseValidator
+class CommonValidator
 {
 
     public static function in($needle, $haystack)
