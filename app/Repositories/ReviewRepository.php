@@ -2,11 +2,17 @@
 
 namespace App\Repositories;
 
+use App\Enums\ReviewEnums;
 use App\Models\Review;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 class ReviewRepository extends BaseRepository
 {
+    public function countReviews()
+    {
+        return Review::query()->where('published', ReviewEnums::PUBLISH_APPROVED)->count();
+    }
+
     public function paginate($where = [], $sort = 'latest', $page = 1, $count = 15): LengthAwarePaginator
     {
         $query = Review::query();
