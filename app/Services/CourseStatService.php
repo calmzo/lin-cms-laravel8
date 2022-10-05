@@ -40,7 +40,6 @@ class CourseStatService extends BaseService
         $courseRepo = new CourseRepository();
 
         $course = $courseRepo->findById($courseId);
-
         $courseRatingRepo = new CourseRatingRepository();
 
         $courseRating = $courseRatingRepo->findByCourseId($course->id);

@@ -170,4 +170,5 @@ Route::prefix('review')->group(function () {
     //
     Route::get('{id}/info', [ReviewController::class, 'getReview']);
     Route::post('', [ReviewController::class, 'createReview']);
+    Route::put('{id}', [ReviewController::class, 'updateReview']);
 });

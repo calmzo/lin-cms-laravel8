@@ -32,6 +32,13 @@ class ReviewController extends BaseController
         return $this->success($review);
     }
 
+    public function updateReview($id, ReviewFormValidate $reviewFormValidate)
+    {
+        $params = $reviewFormValidate->check();
+        $service = new ReviewService();
+        $review = $service->updateReview($id, $params);
+        return $this->success($review);
+    }
 
 
 }

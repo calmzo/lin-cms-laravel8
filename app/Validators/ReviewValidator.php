@@ -3,9 +3,9 @@
 namespace App\Validators;
 
 use App\Exceptions\BadRequestException;
-use App\Models\Review as ReviewModel;
 use App\Repositories\ReviewRepository;
 use App\Utils\CodeResponse;
+use App\Models\Review;
 
 class ReviewValidator extends BaseValidator
 {
@@ -49,12 +49,12 @@ class ReviewValidator extends BaseValidator
         return $status;
     }
 
-    public function checkIfAllowEdit(ReviewModel $review)
+    public function checkIfAllowEdit(Review $review)
     {
-        $case = time() - $review->create_time > 3600;
+        $case = time() - strtotime($review->create_time) > 3600;
 
         if ($case) {
-            throw new BadRequestException('review.edit_not_allowed');
+            throw new BadRequestException(CodeResponse::NOT_FOUND_EXCEPTION, 'review.edit_not_allowed');
         }
     }
 

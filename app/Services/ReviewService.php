@@ -6,6 +6,7 @@ use App\Enums\ReviewEnums;
 use App\Exceptions\NotFoundException;
 use App\Services\Logic\Review\ReviewCreateService;
 use App\Services\Logic\Review\ReviewInfoService;
+use App\Services\Logic\Review\ReviewUpdateService;
 
 class ReviewService
 {
@@ -31,8 +32,17 @@ class ReviewService
         $service = new ReviewInfoService();
         $review = $service->handle($review->id);
         return $review;
+    }
 
+    public function updateReview($id, $params)
+    {
+        $service = new ReviewUpdateService();
 
+        $service->handle($id, $params);
+
+        $service = new ReviewInfoService();
+        $review = $service->handle($id);
+        return $review;
     }
 
 }
