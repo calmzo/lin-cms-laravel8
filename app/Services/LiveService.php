@@ -17,13 +17,24 @@ class LiveService extends BaseService
 
     }
 
-    public function getLiveChats($id)
+    public function getLiveStats($id)
     {
         $service = new LiveChapterService();
 
-        $chats = $service->getRecentChats($id);
+        $stats = $service->getStats($id);
 
-        return ['chats' => $chats];
+        return ['stats' => $stats];
+
+    }
+
+
+    public function getLiveStatus($id)
+    {
+        $service = new LiveChapterService();
+
+        $status = $service->getStatus($id);
+
+        return ['status' => $status];
 
     }
 

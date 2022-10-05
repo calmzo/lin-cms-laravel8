@@ -24,4 +24,18 @@ class LiveController extends BaseController
         $res = $service->getLiveChats($id);
         return $this->success($res);
     }
+
+    public function getLiveStats($id)
+    {
+        $service = new LiveService();
+        $res = $service->getLiveStats($id);
+        return $this->success($res);
+    }
+
+    public function getLiveStatus($id)
+    {
+        $service = new LiveService();
+        $res = $service->getLiveStatus($id);
+        return $this->success($res);
+    }
 }
