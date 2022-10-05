@@ -31,7 +31,7 @@ class CreateConsult extends Migration
             $table->integer('reply_time')->unsigned()->default(0)->comment('回复时间');
             $table->timestamp('create_time');
             $table->timestamp('update_time');
-            $table->softDeletes('delete_time');
+            $table->integer('deleted')->unsigned()->default(0);
             $table->index('course_id', 'course_id');
             $table->index('chapter_id', 'chapter_id');
             $table->index('user_id', 'user_id', 'BTREE');

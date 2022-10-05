@@ -42,7 +42,7 @@ class CreateQuestion extends Migration
             $table->timestamp('last_reply_time')->nullable()->comment('回应时间');
             $table->timestamp('create_time');
             $table->timestamp('update_time');
-            $table->softDeletes('delete_time');
+            $table->integer('deleted')->unsigned()->default(0);
             $table->index('user_id');
             $table->index('last_reply_time');
             $table->index('category_id');

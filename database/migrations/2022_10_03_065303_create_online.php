@@ -21,7 +21,7 @@ class CreateOnline extends Migration
             $table->integer('active_time')->unsigned()->default(0)->comment('活跃时间');
             $table->timestamp('create_time');
             $table->timestamp('update_time');
-            $table->softDeletes('delete_time');
+            $table->integer('deleted')->unsigned()->default(0);
             $table->index('user_id');
             $table->index('active_time');
         });

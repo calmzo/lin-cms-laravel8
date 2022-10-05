@@ -28,7 +28,7 @@ class CreatePointGiftRedeem extends Migration
             $table->integer('status')->unsigned()->default(0)->comment('状态标识');
             $table->timestamp('create_time');
             $table->timestamp('update_time');
-            $table->softDeletes('delete_time');
+            $table->integer('deleted')->unsigned()->default(0);
             $table->index('gift_id');
             $table->index('user_id');
         });

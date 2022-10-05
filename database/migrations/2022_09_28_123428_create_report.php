@@ -25,7 +25,7 @@ class CreateReport extends Migration
             $table->integer('accepted')->unsigned()->default(0)->comment('采纳标识');
             $table->timestamp('create_time');
             $table->timestamp('update_time');
-            $table->softDeletes('delete_time');
+            $table->integer('deleted')->unsigned()->default(0);
             $table->index('user_id');
             $table->index(['item_id', 'item_type']);
         });

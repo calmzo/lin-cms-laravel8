@@ -26,7 +26,7 @@ class CreateCourseUser extends Migration
             $table->integer('expiry_time')->unsigned()->default(0)->comment('过期时间');
             $table->timestamp('create_time');
             $table->timestamp('update_time');
-            $table->softDeletes('delete_time');
+            $table->integer('deleted')->unsigned()->default(0);
         });
     }
 

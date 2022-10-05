@@ -20,7 +20,7 @@ class CreateWechatSubscribe extends Migration
             $table->string('union_id', 64)->default('')->comment('联合ID');
             $table->timestamp('create_time');
             $table->timestamp('update_time');
-            $table->softDeletes('delete_time');
+            $table->integer('deleted')->unsigned()->default(0);
             $table->index('user_id', 'user_id');
             $table->index('open_id', 'phone', 'BTREE');
             $table->index('union_id', 'union_id');

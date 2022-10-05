@@ -45,7 +45,7 @@ class CreateCourse extends Migration
             $table->integer('favorite_count')->unsigned()->default(0)->comment('收藏数');
             $table->timestamp('create_time');
             $table->timestamp('update_time');
-            $table->softDeletes('delete_time');
+            $table->integer('deleted')->unsigned()->default(0);
         });
     }
 

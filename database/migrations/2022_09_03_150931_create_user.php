@@ -37,7 +37,7 @@ class CreateUser extends Migration
             $table->integer('lock_expiry_time')->unsigned()->default(0)->comment('锁定期限');
             $table->timestamp('create_time');
             $table->timestamp('update_time');
-            $table->softDeletes('delete_time');
+            $table->integer('deleted')->unsigned()->default(0);
         });
     }
 

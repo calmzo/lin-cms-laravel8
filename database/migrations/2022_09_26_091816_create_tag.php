@@ -27,7 +27,7 @@ class CreateTag extends Migration
             $table->integer('question_count')->unsigned()->default(0)->comment('问题数');
             $table->timestamp('create_time');
             $table->timestamp('update_time');
-            $table->softDeletes('delete_time');
+            $table->integer('deleted')->unsigned()->default(0);
             $table->index('name');
 
         });

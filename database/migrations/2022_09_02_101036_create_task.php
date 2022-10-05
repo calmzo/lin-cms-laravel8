@@ -24,7 +24,7 @@ class CreateTask extends Migration
             $table->integer('max_try_count')->default(3)->comment('最大重试数');
             $table->timestamp('create_time');
             $table->timestamp('update_time');
-            $table->softDeletes('delete_time');
+            $table->integer('deleted')->unsigned()->default(0);
         });
     }
 

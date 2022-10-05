@@ -23,7 +23,7 @@ class CreateNotification extends Migration
             $table->integer('viewed')->unsigned()->default(0)->comment('已读标识');
             $table->timestamp('create_time');
             $table->timestamp('update_time');
-            $table->softDeletes('delete_time');
+            $table->integer('deleted')->unsigned()->default(0);
             $table->index('sender_id');
             $table->index('receiver_id');
 

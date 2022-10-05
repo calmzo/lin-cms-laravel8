@@ -21,7 +21,7 @@ class CreateBook extends Migration
             $table->string('image', 50)->comment('封面');
             $table->timestamp('create_time');
             $table->timestamp('update_time');
-            $table->softDeletes('delete_time');
+            $table->integer('deleted')->unsigned()->default(0);
         });
     }
 

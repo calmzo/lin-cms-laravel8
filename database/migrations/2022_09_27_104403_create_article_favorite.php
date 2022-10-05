@@ -19,7 +19,7 @@ class CreateArticleFavorite extends Migration
             $table->integer('user_id')->unsigned()->default(0)->comment('用户编号');
             $table->timestamp('create_time');
             $table->timestamp('update_time');
-            $table->softDeletes('delete_time');
+            $table->integer('deleted')->unsigned()->default(0);
             $table->index('article_id');
             $table->index('user_id');
 

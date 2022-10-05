@@ -23,7 +23,7 @@ class CreatePointHistory extends Migration
             $table->integer('event_point')->unsigned()->default(0)->comment('事件积分');
             $table->timestamp('create_time');
             $table->timestamp('update_time');
-            $table->softDeletes('delete_time');
+            $table->integer('deleted')->unsigned()->default(0);
         });
     }
 

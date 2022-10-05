@@ -21,7 +21,7 @@ class CreateVip extends Migration
             $table->decimal('price', 10, 2)->default(0.00)->comment('价格');
             $table->timestamp('create_time');
             $table->timestamp('update_time');
-            $table->softDeletes('delete_time');
+            $table->integer('deleted')->unsigned()->default(0);
         });
     }
 

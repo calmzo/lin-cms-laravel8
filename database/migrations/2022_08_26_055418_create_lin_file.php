@@ -23,7 +23,7 @@ class CreateLinFile extends Migration
             $table->string('md5', 40)->comment('图片md5值，防止上传重复图片');
             $table->timestamp('create_time');
             $table->timestamp('update_time');
-            $table->softDeletes('delete_time');
+            $table->integer('deleted')->unsigned()->default(0);
             $table->index(['md5']);
         });
     }

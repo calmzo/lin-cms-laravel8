@@ -22,7 +22,7 @@ class CreateTopic extends Migration
             $table->integer('published')->unsigned()->default(1)->comment('发布标识');
             $table->timestamp('create_time');
             $table->timestamp('update_time');
-            $table->softDeletes('delete_time');
+            $table->integer('deleted')->unsigned()->default(0);
         });
     }
 

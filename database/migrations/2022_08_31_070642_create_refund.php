@@ -26,7 +26,7 @@ class CreateRefund extends Migration
             $table->string('review_note', 255)->default('')->comment('审核备注');
             $table->timestamp('create_time');
             $table->timestamp('update_time');
-            $table->softDeletes('delete_time');
+            $table->integer('deleted')->unsigned()->default(0);
         });
     }
 

@@ -22,7 +22,7 @@ class CreateLinUser extends Migration
             $table->string('avatar', 500)->comment('头像url');
             $table->timestamp('create_time');
             $table->timestamp('update_time');
-            $table->softDeletes('delete_time');
+            $table->integer('deleted')->unsigned()->default(0);
             $table->index(['nickname', 'email']);
             $table->unique(['username', 'email']);
         });

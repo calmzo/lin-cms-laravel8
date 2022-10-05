@@ -20,7 +20,7 @@ class CreateAccount extends Migration
             $table->string('password', 500)->default('')->comment('密码');
             $table->timestamp('create_time');
             $table->timestamp('update_time');
-            $table->softDeletes('delete_time');
+            $table->integer('deleted')->unsigned()->default(0);
             $table->index('phone');
             $table->index('email');
         });

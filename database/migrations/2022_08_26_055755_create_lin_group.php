@@ -20,7 +20,7 @@ class CreateLinGroup extends Migration
             $table->tinyInteger('level')->default(3)->comment('分组级别 1：root 2：guest 3：user（root、guest分组只能存在一个)');
             $table->timestamp('create_time');
             $table->timestamp('update_time');
-            $table->softDeletes('delete_time');
+            $table->integer('deleted')->unsigned()->default(0);
         });
     }
 

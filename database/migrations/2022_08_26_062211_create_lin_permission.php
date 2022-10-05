@@ -20,7 +20,7 @@ class CreateLinPermission extends Migration
             $table->tinyInteger('mount')->default(1)->comment('0：关闭 1：开启');
             $table->timestamp('create_time');
             $table->timestamp('update_time');
-            $table->softDeletes('delete_time');
+            $table->integer('deleted')->unsigned()->default(0);
         });
     }
 

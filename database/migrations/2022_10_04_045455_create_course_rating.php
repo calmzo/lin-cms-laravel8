@@ -21,7 +21,7 @@ class CreateCourseRating extends Migration
             $table->float('rating3', 10)->unsigned()->default(5.00)->comment('维度3评分');
             $table->timestamp('create_time');
             $table->timestamp('update_time');
-            $table->softDeletes('delete_time');
+            $table->integer('deleted')->unsigned()->default(0);
         });
     }
 

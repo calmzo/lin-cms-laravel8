@@ -19,7 +19,7 @@ class CreateArticleTag extends Migration
             $table->integer('tag_id')->unsigned()->default(0)->comment('标签编号');
             $table->timestamp('create_time');
             $table->timestamp('update_time');
-            $table->softDeletes('delete_time');
+            $table->integer('deleted')->unsigned()->default(0);
             $table->index('article_id');
             $table->index('tag_id');
         });

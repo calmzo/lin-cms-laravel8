@@ -25,7 +25,7 @@ class CreateTrade extends Migration
             $table->integer('status')->default(1)->comment('状态类型');
             $table->timestamp('create_time');
             $table->timestamp('update_time');
-            $table->softDeletes('delete_time');
+            $table->integer('deleted')->unsigned()->default(0);
         });
     }
 

@@ -23,7 +23,7 @@ class CreateConnect extends Migration
             $table->integer('provider')->unsigned()->default(0)->comment('提供方');
             $table->timestamp('create_time');
             $table->timestamp('update_time');
-            $table->softDeletes('delete_time');
+            $table->integer('deleted')->unsigned()->default(0);
             $table->index(['union_id', 'provider']);
             $table->index(['open_id', 'provider']);
             $table->index('user_id', 'user_id');
