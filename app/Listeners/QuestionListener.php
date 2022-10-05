@@ -23,12 +23,22 @@ class QuestionListener
         Log::channel('question')->info('监听问题查看事件');
     }
 
+    public function afterDelete($event)
+    {
+        Log::channel('question')->info('监听问题删除事件');
+    }
+
 
     public function subscribe($events)
     {
         $events->listen(
             'App\Events\QuestionAfterViewEvent',
             [QuestionListener::class, 'afterView']
+        );
+
+        $events->listen(
+            'App\Events\QuestionAfterDeleteEvent',
+            [QuestionListener::class, 'afterDelete']
         );
     }
 }
