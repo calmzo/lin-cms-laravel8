@@ -17,6 +17,7 @@ use App\Http\Controllers\V1\ReviewController;
 use App\Http\Controllers\V1\QuestionController;
 use App\Http\Controllers\V1\IndexController;
 use App\Http\Controllers\V1\LiveController;
+use App\Http\Controllers\V1\HelpController;
 
 /*
 |--------------------------------------------------------------------------
@@ -215,4 +216,10 @@ Route::prefix('live')->group(function () {
     Route::get('{id}/status', [LiveController::class, 'getLiveStatus']);
     Route::post('{id}/user/bind', [LiveController::class, 'bindUser']);
     Route::post('{id}/msg/send', [LiveController::class, 'sendMsg']);
+});
+
+Route::prefix('help')->group(function () {
+    //
+    Route::get('list', [HelpController::class, 'getHelps']);
+    Route::get('{id}/info', [HelpController::class, 'getHelp']);
 });

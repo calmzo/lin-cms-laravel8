@@ -3,9 +3,8 @@
 namespace App\Validators;
 
 use App\Exceptions\BadRequestException;
-use App\Validates\BaseValidate;
 
-class LiveValidator extends BaseValidate
+class LiveValidator extends BaseValidator
 {
 
     public function checkMessage($content)

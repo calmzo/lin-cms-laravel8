@@ -6,9 +6,8 @@ use App\Caches\UserDailyCounterCache;
 use App\Exceptions\BadRequestException;
 use App\Models\User;
 use App\Utils\CodeResponse;
-use App\Validates\BaseValidate;
 
-class UserLimitValidator extends BaseValidate
+class UserLimitValidator extends BaseValidator
 {
 
     protected $counter;
