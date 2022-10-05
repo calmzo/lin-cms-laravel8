@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\V1;
 
 use App\Caches\IndexArticleListCache;
+use App\Caches\IndexFlashSaleListCache;
 use App\Caches\IndexLiveListCache;
 use App\Caches\IndexQuestionListCache;
 use App\Caches\IndexSlideListCache;
@@ -60,6 +61,16 @@ class IndexController extends BaseController
         $teachers = $cache->get();
 
         return $this->success(['teachers' => $teachers]);
+
+    }
+
+    public function getFalshSales()
+    {
+        $cache = new IndexFlashSaleListCache();
+
+        $sales = $cache->get();
+
+        return $this->success(['sales' => $sales]);
 
     }
 }
