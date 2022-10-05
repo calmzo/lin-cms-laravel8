@@ -172,4 +172,5 @@ Route::prefix('review')->group(function () {
     Route::post('', [ReviewController::class, 'createReview']);
     Route::put('{id}', [ReviewController::class, 'updateReview']);
     Route::delete('{id}', [ReviewController::class, 'deleteReview']);
+    Route::post('like/{id}', [ReviewController::class, 'likeReview']);
 });
