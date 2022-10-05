@@ -4,7 +4,7 @@ namespace App\Listeners;
 
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
-use App\Caches\UserDailyCounter;
+use App\Caches\UserDailyCounterCache;
 
 class UserDailyCounterListener
 {
@@ -12,7 +12,7 @@ class UserDailyCounterListener
 
     public function __construct()
     {
-        $this->counter = new UserDailyCounter();
+        $this->counter = new UserDailyCounterCache();
     }
 
     /**
@@ -56,6 +56,12 @@ class UserDailyCounterListener
     }
 
 
+    public function incrReviewLikeCount($event)
+    {
+        $this->counter->hIncrBy($event->user->id, 'review_like_count');
+    }
+
+
     /**
      * 为事件订阅者注册监听器
      *
@@ -87,6 +93,11 @@ class UserDailyCounterListener
         $events->listen(
             'App\Events\IncrReportCountEvent',
             [UserDailyCounterListener::class, 'incrReportCount']
+        );
+
+        $events->listen(
+            'App\Events\UserDailyCounterIncrReviewLikeCountEvent',
+            [UserDailyCounterListener::class, 'incrReviewLikeCount']
         );
     }
 }
