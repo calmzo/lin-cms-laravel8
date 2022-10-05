@@ -10,7 +10,7 @@ use Illuminate\Support\Str;
 
 class BaseModel extends Model
 {
-    use HasFactory, BooleanSoftDeletes;
+    use BooleanSoftDeletes, HasFactory;
 
     public const CREATED_AT = 'create_time';
     public const UPDATED_AT = 'update_time';

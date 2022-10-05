@@ -43,8 +43,7 @@ class CourseDeliver extends LogicService
 
     protected function revokeCourseUser(Course $course, User $user)
     {
-
-        CourseUser::query()->where('course_id', $course->id)->where('user_id', $user->id)->update(['delete_time' => now()]);
+        CourseUser::query()->where('course_id', $course->id)->where('user_id', $user->id)->delete();
     }
 
 }

@@ -44,13 +44,15 @@ class ArticleFavoriteService extends LogicService
         } else {
 
             $isFirstTime = false;
+            if ($favorite->trashed()) {
+                $favorite->restore();
+            } else {
+                $favorite->delete();
+            }
 
-            $favorite->delete_time = is_null($favorite->delete_time) ? now() : null;
-
-            $favorite->save();
         }
 
-        if (is_null($favorite->delete_time)) {
+        if ($favorite->deleted == 0) {
 
             $action = 'do';
 

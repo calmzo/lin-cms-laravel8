@@ -3,12 +3,9 @@
 namespace App\Models;
 
 use App\Caches\MaxArticleIdCache;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Article extends BaseModel
 {
-    use BooleanSoftDeletes, HasFactory;
-
     public $fillable = [
         'published', 'user_id', 'title', 'content', 'source_type', 'closed', 'private', 'tags', 'client_ip', 'client_type', 'source_url', 'category_id', 'cover', 'summary', 'word_count'
     ];

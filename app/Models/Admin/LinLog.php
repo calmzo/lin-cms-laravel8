@@ -3,17 +3,14 @@
 namespace App\Models\Admin;
 
 use App\Models\BaseModel;
-use App\Models\BooleanSoftDeletes;
 use App\Scopes\LinLogScope;
 
 class LinLog extends BaseModel
 {
-    use BooleanSoftDeletes;
 
     protected $fillable = [
         'message', 'user_id', 'username', 'status_code', 'method', 'path', 'permission'
     ];
-    protected $hidden = ['update_time', 'delete_time'];
     public $splitType = 'create_time';
 
 //    /**

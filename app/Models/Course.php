@@ -6,11 +6,9 @@ use App\Caches\MaxCourseIdCache;
 use App\Enums\CourseEnums;
 use App\Services\Sync\CourseIndexSync;
 use App\Services\Sync\CourseScoreSync;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Course extends BaseModel
 {
-    use BooleanSoftDeletes, HasFactory;
 
     public $fillable = [
 

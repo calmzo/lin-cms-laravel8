@@ -2,12 +2,9 @@
 
 namespace App\Models;
 
-
 class Organization extends BaseModel
 {
-    use BooleanSoftDeletes;
     protected $table = 'organization';
-
 
     public $fillable = [
         'name',

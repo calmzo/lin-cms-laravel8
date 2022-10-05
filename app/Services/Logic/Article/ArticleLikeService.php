@@ -45,16 +45,17 @@ class ArticleLikeService extends LogicService
         } else {
 
             $isFirstTime = false;
-
-            $articleLike->delete_time = is_null($articleLike->delete_time) ? now() : null;
-
-            $articleLike->save();
+            if ($articleLike->trashed()) {
+                $articleLike->restore();
+            } else {
+                $articleLike->delete();
+            }
         }
 
         $this->incrUserDailyArticleLikeCount($user);
 
 
-        if (is_null($articleLike->delete_time)) {
+        if ($articleLike->deleted == 0) {
 
             $action = 'do';
 

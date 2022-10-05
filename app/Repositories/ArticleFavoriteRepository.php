@@ -9,7 +9,7 @@ class ArticleFavoriteRepository extends BaseRepository
 {
     public function findArticleFavorite($articleId, $uid)
     {
-        return ArticleFavorite::query()->where('article_id', $articleId)->where('user_id', $uid)->first();
+        return ArticleFavorite::withTrashed()->where('article_id', $articleId)->where('user_id', $uid)->first();
     }
 
     public function paginate($where = [], $sort = 'latest', $page = 1, $limit = 15): LengthAwarePaginator

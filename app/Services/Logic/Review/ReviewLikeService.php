@@ -42,7 +42,7 @@ class ReviewLikeService extends LogicService
         $isFirstTime = true;
         if (!$reviewLike) {
 
-            ReviewLike::query()->create(['review_id' => $review->id, 'user_id' => $uid]);
+            $reviewLike = ReviewLike::query()->create(['review_id' => $review->id, 'user_id' => $uid]);
 
         } else {
             $isFirstTime = false;

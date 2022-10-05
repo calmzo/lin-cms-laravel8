@@ -2,9 +2,6 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-
 class Report extends BaseModel
 {
-    use BooleanSoftDeletes, HasFactory;
 }

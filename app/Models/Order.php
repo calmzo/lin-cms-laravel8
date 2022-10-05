@@ -2,12 +2,8 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-
 class Order extends BaseModel
 {
-    use BooleanSoftDeletes, HasFactory;
-
     public $fillable = [
         'user_id', 'item_id', 'item_type', 'item_info', 'amount', 'subject', 'sn', 'promotion_id', 'promotion_type',
         'promotion_info', 'client_type', 'client_ip', 'status'

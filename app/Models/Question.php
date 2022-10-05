@@ -3,12 +3,9 @@
 namespace App\Models;
 
 use App\Caches\MaxQuestionId;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Question extends BaseModel
 {
-    use BooleanSoftDeletes, HasFactory;
-
     protected static function booted()
     {
         //处理 Question「created」事件
