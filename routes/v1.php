@@ -194,5 +194,6 @@ Route::prefix('question')->group(function () {
 Route::prefix('index')->group(function () {
     //
     Route::get('slides', [IndexController::class, 'getSlides']);
+    Route::get('articles', [IndexController::class, 'getArticles']);
 
 });
