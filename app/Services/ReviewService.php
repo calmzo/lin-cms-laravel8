@@ -7,6 +7,7 @@ use App\Exceptions\NotFoundException;
 use App\Services\Logic\Review\ReviewCreateService;
 use App\Services\Logic\Review\ReviewDeleteService;
 use App\Services\Logic\Review\ReviewInfoService;
+use App\Services\Logic\Review\ReviewLikeService;
 use App\Services\Logic\Review\ReviewUpdateService;
 
 class ReviewService
@@ -50,6 +51,18 @@ class ReviewService
     {
         $service = new ReviewDeleteService();
         return $service->handle($id);
+    }
+
+    public function likeReview($id)
+    {
+        $service = new ReviewLikeService();
+
+        $data = $service->handle($id);
+
+        $msg = $data['action'] == 'do' ? '点赞成功' : '取消点赞成功';
+
+
+        return ['data' => $data, 'msg' => $msg];
     }
 
 }

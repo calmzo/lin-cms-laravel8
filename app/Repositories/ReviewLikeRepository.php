@@ -9,6 +9,6 @@ class ReviewLikeRepository extends BaseRepository
 
     public function findReviewLike($reviewId, $userId)
     {
-        return ReviewLike::query()->where('review_id', $reviewId)->where('user_id', $userId)->first();
+        return ReviewLike::withTrashed()->where('review_id', $reviewId)->where('user_id', $userId)->first();
     }
 }

@@ -47,5 +47,12 @@ class ReviewController extends BaseController
         return $this->success([], '删除评价成功');
     }
 
+    public function likeReview($id)
+    {
+        $service = new ReviewService();
+        $res = $service->likeReview($id);
+        return $this->success($res);
+    }
+
 
 }

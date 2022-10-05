@@ -13,7 +13,7 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
 
 class User extends BaseModel implements JWTSubject, AuthenticatableContract, AuthorizableContract
 {
-    use HasFactory, Notifiable, Authenticatable, Authorizable, BooleanSoftDeletes;
+    use HasFactory, Notifiable, Authenticatable, Authorizable;
 
     public $fillable = [
         'id',
