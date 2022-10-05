@@ -16,6 +16,7 @@ use App\Http\Controllers\V1\UserConsoleController;
 use App\Http\Controllers\V1\ReviewController;
 use App\Http\Controllers\V1\QuestionController;
 use App\Http\Controllers\V1\IndexController;
+use App\Http\Controllers\V1\LiveController;
 
 /*
 |--------------------------------------------------------------------------
@@ -204,4 +205,9 @@ Route::prefix('index')->group(function () {
     Route::get('courses/free', [IndexController::class, 'getFreeCourses']);
     Route::get('courses/vip', [IndexController::class, 'getVipCourses']);
 
+});
+
+Route::prefix('live')->group(function () {
+    //
+    Route::get('', [LiveController::class, 'getLives']);
 });

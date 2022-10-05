@@ -375,3 +375,14 @@ function array_column_unique($rows, $columnKey, $indexKey = null)
 
     return array_unique($result);
 }
+
+/**
+ * 数组转对象
+ *
+ * @param array $array
+ * @return object
+ */
+function kg_array_object($array)
+{
+    return json_decode(json_encode($array));
+}
