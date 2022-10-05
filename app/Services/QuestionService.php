@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Enums\QuestionEnums;
 use App\Exceptions\NotFoundException;
+use App\Services\Logic\Question\CategoryListService;
 use App\Services\Logic\Question\QuestionInfoService;
 use App\Services\Logic\Question\QuestionListService;
 
@@ -32,6 +33,17 @@ class QuestionService
         $pager = $service->handle($params);
 
         return $pager;
+
+    }
+
+
+    public function getCategories()
+    {
+        $service = new CategoryListService();
+
+        $categories = $service->handle();
+
+        return ['categories' => $categories];
 
     }
 }
