@@ -5,9 +5,9 @@ namespace App\Caches;
 use App\Models\Course;
 
 /**
- * 简版推荐课程
+ * 简版新上课程
  */
-class IndexSimpleFeaturedCourseListCache extends Cache
+class IndexSimpleNewCourseListCache extends Cache
 {
 
     protected $lifetime = 1 * 86400;
@@ -19,7 +19,7 @@ class IndexSimpleFeaturedCourseListCache extends Cache
 
     public function getKey($id = null)
     {
-        return 'index_simple_featured_course_list';
+        return 'index_simple_new_course_list';
     }
 
     public function getContent($id = null)
@@ -68,7 +68,6 @@ class IndexSimpleFeaturedCourseListCache extends Cache
     protected function findCourses($limit = 8)
     {
         return Course::query()
-            ->where('featured', 1)
             ->where('published', 1)
             ->orderByDesc('id')
             ->limit($limit)

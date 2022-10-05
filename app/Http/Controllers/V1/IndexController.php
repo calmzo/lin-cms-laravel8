@@ -7,6 +7,7 @@ use App\Caches\IndexFlashSaleListCache;
 use App\Caches\IndexLiveListCache;
 use App\Caches\IndexQuestionListCache;
 use App\Caches\IndexSimpleFeaturedCourseListCache;
+use App\Caches\IndexSimpleNewCourseListCache;
 use App\Caches\IndexSlideListCache;
 use App\Caches\IndexTeacherListCache;
 
@@ -78,6 +79,16 @@ class IndexController extends BaseController
     public function getFeaturedCourses()
     {
         $cache = new IndexSimpleFeaturedCourseListCache();
+
+        $courses = $cache->get();
+
+        return $this->success(['courses' => $courses]);
+
+    }
+
+    public function getNewCourses()
+    {
+        $cache = new IndexSimpleNewCourseListCache();
 
         $courses = $cache->get();
 
