@@ -2,19 +2,20 @@
 
 namespace App\Validators;
 
-use App\Caches\Chapter as ChapterCache;
-use App\Caches\MaxChapterId as MaxChapterIdCache;
-use App\Exceptions\BadRequest as BadRequestException;
-use App\Models\Chapter as ChapterModel;
-use App\Models\Course as CourseModel;
-use App\Repos\Chapter as ChapterRepo;
+use App\Caches\ChapterCache;
+use App\Caches\MaxChapterIdCache;
+use App\Enums\CourseEnums;
+use App\Exceptions\BadRequestException;
+use App\Repositories\ChapterRepository;
+use App\Utils\CodeResponse;
+use App\Models\Chapter;
 
 class ChapterValidator extends BaseValidator
 {
 
     /**
      * @param int $id
-     * @return ChapterModel
+     * @return Chapter
      * @throws BadRequestException
      */
     public function checkChapterCache($id)
@@ -26,7 +27,7 @@ class ChapterValidator extends BaseValidator
         $chapter = $chapterCache->get($id);
 
         if (!$chapter) {
-            throw new BadRequestException('chapter.not_found');
+            throw new BadRequestException(CodeResponse::NOT_FOUND_EXCEPTION, 'chapter.not_found');
         }
 
         return $chapter;
@@ -36,12 +37,12 @@ class ChapterValidator extends BaseValidator
     {
         $this->checkId($id);
 
-        $chapterRepo = new ChapterRepo();
+        $chapterRepo = new ChapterRepository();
 
         $chapterVod = $chapterRepo->findChapterVod($id);
 
         if (!$chapterVod) {
-            throw new BadRequestException('chapter.vod_not_found');
+            throw new BadRequestException(CodeResponse::NOT_FOUND_EXCEPTION, 'chapter.vod_not_found');
         }
 
         return $chapterVod;
@@ -51,12 +52,12 @@ class ChapterValidator extends BaseValidator
     {
         $this->checkId($id);
 
-        $chapterRepo = new ChapterRepo();
+        $chapterRepo = new ChapterRepository();
 
         $chapterLive = $chapterRepo->findChapterLive($id);
 
         if (!$chapterLive) {
-            throw new BadRequestException('chapter.live_not_found');
+            throw new BadRequestException(CodeResponse::NOT_FOUND_EXCEPTION, 'chapter.live_not_found');
         }
 
         return $chapterLive;
@@ -66,12 +67,12 @@ class ChapterValidator extends BaseValidator
     {
         $this->checkId($id);
 
-        $chapterRepo = new ChapterRepo();
+        $chapterRepo = new ChapterRepository();
 
         $chapterRead = $chapterRepo->findChapterRead($id);
 
         if (!$chapterRead) {
-            throw new BadRequestException('chapter.read_not_found');
+            throw new BadRequestException(CodeResponse::NOT_FOUND_EXCEPTION, 'chapter.read_not_found');
         }
 
         return $chapterRead;
@@ -81,12 +82,12 @@ class ChapterValidator extends BaseValidator
     {
         $this->checkId($id);
 
-        $chapterRepo = new ChapterRepo();
+        $chapterRepo = new ChapterRepository();
 
         $chapter = $chapterRepo->findById($id);
 
         if (!$chapter) {
-            throw new BadRequestException('chapter.not_found');
+            throw new BadRequestException(CodeResponse::NOT_FOUND_EXCEPTION, 'chapter.not_found');
         }
 
         return $chapter;
@@ -101,7 +102,7 @@ class ChapterValidator extends BaseValidator
         $maxId = $maxIdCache->get();
 
         if ($id < 1 || $id > $maxId) {
-            throw new BadRequestException('chapter.not_found');
+            throw new BadRequestException(CodeResponse::NOT_FOUND_EXCEPTION, 'chapter.not_found');
         }
     }
 
@@ -114,12 +115,12 @@ class ChapterValidator extends BaseValidator
 
     public function checkParent($id)
     {
-        $chapterRepo = new ChapterRepo();
+        $chapterRepo = new ChapterRepository();
 
         $chapter = $chapterRepo->findById($id);
 
         if (!$chapter) {
-            throw new BadRequestException('chapter.parent_not_found');
+            throw new BadRequestException(CodeResponse::NOT_FOUND_EXCEPTION, 'chapter.parent_not_found');
         }
 
         return $chapter;
@@ -169,7 +170,7 @@ class ChapterValidator extends BaseValidator
     public function checkFreeStatus($status)
     {
         if (!in_array($status, [0, 1])) {
-            throw new BadRequestException('chapter.invalid_free_status');
+            throw new BadRequestException(CodeResponse::NOT_FOUND_EXCEPTION, 'chapter.invalid_free_status');
         }
 
         return $status;
@@ -178,46 +179,45 @@ class ChapterValidator extends BaseValidator
     public function checkPublishStatus($status)
     {
         if (!in_array($status, [0, 1])) {
-            throw new BadRequestException('course.invalid_publish_status');
+            throw new BadRequestException(CodeResponse::NOT_FOUND_EXCEPTION, 'course.invalid_publish_status');
         }
 
         return $status;
     }
 
-    public function checkPublishAbility(ChapterModel $chapter)
+    public function checkPublishAbility(Chapter $chapter)
     {
         $attrs = $chapter->attrs;
 
-        if ($chapter->model == CourseModel::MODEL_VOD) {
+        if ($chapter->model == CourseEnums::MODEL_VOD) {
             if ($attrs['duration'] == 0) {
-                throw new BadRequestException('chapter.vod_not_ready');
+                throw new BadRequestException(CodeResponse::NOT_FOUND_EXCEPTION, 'chapter.vod_not_ready');
             }
-        } elseif ($chapter->model == CourseModel::MODEL_LIVE) {
+        } elseif ($chapter->model == CourseEnums::MODEL_LIVE) {
             if ($attrs['start_time'] == 0) {
-                throw new BadRequestException('chapter.live_time_empty');
+                throw new BadRequestException(CodeResponse::NOT_FOUND_EXCEPTION, 'chapter.live_time_empty');
             }
-        } elseif ($chapter->model == CourseModel::MODEL_READ) {
+        } elseif ($chapter->model == CourseEnums::MODEL_READ) {
             if ($attrs['word_count'] == 0) {
-                throw new BadRequestException('chapter.read_not_ready');
+                throw new BadRequestException(CodeResponse::NOT_FOUND_EXCEPTION, 'chapter.read_not_ready');
             }
-        } elseif ($chapter->model == CourseModel::MODEL_OFFLINE) {
+        } elseif ($chapter->model == CourseEnums::MODEL_OFFLINE) {
             if ($attrs['start_time'] == 0) {
-                throw new BadRequestException('chapter.offline_time_empty');
+                throw new BadRequestException(CodeResponse::NOT_FOUND_EXCEPTION, 'chapter.offline_time_empty');
             }
         }
     }
 
-    public function checkDeleteAbility(ChapterModel $chapter)
+    public function checkDeleteAbility(Chapter $chapter)
     {
-        $chapterRepo = new ChapterRepo();
+        $chapterRepo = new ChapterRepository();
 
         $chapters = $chapterRepo->findAll([
-            'parent_id' => $chapter->id,
-            'deleted' => 0,
+            'parent_id' => $chapter->id
         ]);
 
         if ($chapters->count() > 0) {
-            throw new BadRequestException('chapter.child_existed');
+            throw new BadRequestException(CodeResponse::NOT_FOUND_EXCEPTION, 'chapter.child_existed');
         }
     }
 

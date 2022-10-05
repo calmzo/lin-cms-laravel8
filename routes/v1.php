@@ -210,4 +210,5 @@ Route::prefix('index')->group(function () {
 Route::prefix('live')->group(function () {
     //
     Route::get('', [LiveController::class, 'getLives']);
+    Route::get('{id}/chats', [LiveController::class, 'getLiveChats']);
 });

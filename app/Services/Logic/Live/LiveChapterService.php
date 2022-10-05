@@ -1,18 +1,13 @@
 <?php
-/**
- * @copyright Copyright (c) 2021 深圳市酷瓜软件有限公司
- * @license https://opensource.org/licenses/GPL-2.0
- * @link https://www.koogua.com
- */
 
 namespace App\Services\Logic\Live;
 
-use App\Services\Logic\ChapterTrait;
-use App\Services\Logic\Service as LogicService;
-use App\Validators\Live as LiveValidator;
+use App\Services\Logic\LogicService;
+use App\Traits\ChapterTrait;
+use App\Validators\LiveValidator;
 use GatewayClient\Gateway;
 
-class LiveChapter extends LogicService
+class LiveChapterService extends LogicService
 {
 
     use ChapterTrait;
@@ -25,7 +20,7 @@ class LiveChapter extends LogicService
 
         $redis->expire($key, 3 * 3600);
 
-        $items = $redis->lRange($key, 0, 15);
+        $items = $redis->lrange($key, 0, 15);
 
         $result = [];
 
@@ -133,10 +128,10 @@ class LiveChapter extends LogicService
 
         $key = $this->getRecentChatKey($id);
 
-        $redis->lPush($key, $encodeMessage);
+        $redis->lpush($key, $encodeMessage);
 
-        if ($redis->lLen($key) % 20 == 0) {
-            $redis->lTrim($key, 0, 15);
+        if ($redis->llen($key) % 20 == 0) {
+            $redis->ltrim($key, 0, 15);
         }
 
         return $message;
@@ -144,9 +139,9 @@ class LiveChapter extends LogicService
 
     protected function getRegisterAddress()
     {
-        $config = $this->getConfig();
+        $config = config('websocket');
 
-        return $config->path('websocket.register_address');
+        return $config['register_address'] ?? '';
     }
 
     protected function getRecentChatKey($id)

@@ -386,3 +386,31 @@ function kg_array_object($array)
 {
     return json_decode(json_encode($array));
 }
+
+/**
+ * uniqid封装
+ *
+ * @param string $prefix
+ * @param bool $more
+ * @return string
+ */
+function kg_uniqid($prefix = '', $more = false)
+{
+    $prefix = $prefix ?: rand(1000, 9999);
+
+    return uniqid($prefix, $more);
+}
+
+
+/**
+ * json_encode(不转义斜杠和中文)
+ *
+ * @param mixed $data
+ * @return false|string
+ */
+function kg_json_encode($data)
+{
+    $options = JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_PRESERVE_ZERO_FRACTION;
+
+    return json_encode($data, $options);
+}
