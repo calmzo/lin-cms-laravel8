@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\V1;
 
 use App\Caches\IndexArticleListCache;
+use App\Caches\IndexQuestionListCache;
 use App\Caches\IndexSlideListCache;
 
 class IndexController extends BaseController
@@ -27,6 +28,16 @@ class IndexController extends BaseController
         $articles = $cache->get();
 
         return $this->success(['articles' => $articles]);
+
+    }
+
+    public function getQuestions()
+    {
+        $cache = new IndexQuestionListCache();
+
+        $questions = $cache->get();
+
+        return $this->success(['questions' => $questions]);
 
     }
 }
