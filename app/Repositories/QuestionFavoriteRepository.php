@@ -29,4 +29,9 @@ class QuestionFavoriteRepository extends BaseRepository
         return $query->paginate($limit, ['*'], 'page', $page);
     }
 
+    public function findQuestionFavorite($questionId, $userId)
+    {
+        return QuestionFavorite::withTrashed()->where('question_id', $questionId)->where('user_id', $userId)->first();
+    }
+
 }

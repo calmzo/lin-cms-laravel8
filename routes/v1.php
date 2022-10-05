@@ -14,6 +14,7 @@ use App\Http\Controllers\V1\ReportController;
 use App\Http\Controllers\V1\UserController;
 use App\Http\Controllers\V1\UserConsoleController;
 use App\Http\Controllers\V1\ReviewController;
+use App\Http\Controllers\V1\QuestionController;
 
 /*
 |--------------------------------------------------------------------------
@@ -173,4 +174,9 @@ Route::prefix('review')->group(function () {
     Route::put('{id}', [ReviewController::class, 'updateReview']);
     Route::delete('{id}', [ReviewController::class, 'deleteReview']);
     Route::post('like/{id}', [ReviewController::class, 'likeReview']);
+});
+
+Route::prefix('question')->group(function () {
+    //
+    Route::get('{id}', [QuestionController::class, 'getQuestion']);
 });

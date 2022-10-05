@@ -2,14 +2,25 @@
 
 namespace App\Services;
 
-use App\Models\Question;
+use App\Enums\QuestionEnums;
+use App\Exceptions\NotFoundException;
+use App\Services\Logic\Question\QuestionInfoService;
 
 class QuestionService
 {
-    public function findByIds($ids, $columns = '*')
+    public function getQuestion($id)
     {
-        return Question::query()
-            ->whereIn('id', $ids)
-            ->get($columns);
+        $service = new QuestionInfoService();
+
+        $question = $service->handle($id);
+
+        $approved = $question['published'] == QuestionEnums::PUBLISH_APPROVED;
+        $owned = $question['me']['owned'] == 1;
+
+        if (!$approved && !$owned) {
+            throw new NotFoundException();
+        }
+        return ['question' => $question];
+
     }
 }

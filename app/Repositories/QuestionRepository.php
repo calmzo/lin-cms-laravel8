@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Enums\QuestionEnums;
+use App\Models\Answer;
 use App\Models\Question;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
@@ -132,6 +133,14 @@ class QuestionRepository extends BaseRepository
         return Question::query()
             ->whereIn('id', $ids)
             ->get($columns);
+    }
+
+    public function findUserAnswers($questionId, $userId)
+    {
+        return Answer::query()
+            ->where('question_id', $questionId)
+            ->where('user_id', $userId)
+            ->get();
     }
 
 }

@@ -2,6 +2,7 @@
 
 namespace App\Builders;
 
+use App\Repositories\QuestionRepository;
 use App\Services\QuestionService;
 use App\Services\UserService;
 
@@ -34,7 +35,7 @@ class AnswerListBuilder
     {
         $ids = array_column_unique($answers, 'question_id');
 
-        $questionRepo = new QuestionService();
+        $questionRepo = new QuestionRepository();
 
         $questions = $questionRepo->findByIds($ids, ['id', 'title']);
         return $questions->keyBy('id')->toArray();

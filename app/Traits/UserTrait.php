@@ -35,7 +35,7 @@ trait UserTrait
 
         $result = $user->toArray();
 
-        $result['avatar'] = kg_cos_user_avatar_url($user->avatar);
+//        $result['avatar'] = kg_cos_user_avatar_url($user->avatar);
 
         return $result;
     }

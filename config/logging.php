@@ -191,6 +191,13 @@ return [
             'level' => 'debug',
             'days' => 14,
         ],
+
+        'question' => [
+            'driver' => 'daily',
+            'path' => storage_path('logs/question/question.log'),
+            'level' => 'debug',
+            'days' => 14,
+        ],
     ],
 
 ];
