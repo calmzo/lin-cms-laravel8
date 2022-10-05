@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\V1;
 
 use App\Services\QuestionService;
+use App\Validates\Question\AnswerListValidate;
+use App\Validates\Question\CommentListValidate;
 use App\Validates\Question\QuestionListValidate;
 
 class QuestionController extends BaseController
@@ -30,9 +32,17 @@ class QuestionController extends BaseController
         return $service->getCategories();
     }
 
-    public function getAnswers($pager)
+    public function getAnswers($id, AnswerListValidate $answerListValidate)
     {
+        $params = $answerListValidate->check();
         $service = new QuestionService();
-        return $service->getAnswers($pager);
+        return $service->getAnswers($id, $params);
+    }
+
+    public function getComments($id, CommentListValidate $commentListValidate)
+    {
+        $params = $commentListValidate->check();
+        $service = new QuestionService();
+        return $service->getComments($id, $params);
     }
 }

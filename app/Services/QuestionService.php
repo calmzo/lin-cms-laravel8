@@ -6,6 +6,7 @@ use App\Enums\QuestionEnums;
 use App\Exceptions\NotFoundException;
 use App\Services\Logic\Question\AnswerListService;
 use App\Services\Logic\Question\CategoryListService;
+use App\Services\Logic\Question\CommentListService;
 use App\Services\Logic\Question\QuestionInfoService;
 use App\Services\Logic\Question\QuestionListService;
 
@@ -48,11 +49,21 @@ class QuestionService
 
     }
 
-    public function getAnswers($id)
+    public function getAnswers($id, $params)
     {
         $service = new AnswerListService();
 
-        $pager = $service->handle($id);
+        $pager = $service->handle($id, $params);
+
+        return $pager;
+
+    }
+
+    public function getComments($id, $params)
+    {
+        $service = new CommentListService();
+
+        $pager = $service->handle($id, $params);
 
         return $pager;
 

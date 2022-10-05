@@ -15,7 +15,7 @@ class AnswerListService extends LogicService
 
     use QuestionTrait;
 
-    public function handle($id)
+    public function handle($id, $params)
     {
         $question = $this->checkQuestion($id);
         $params['question_id'] = $question->id;
