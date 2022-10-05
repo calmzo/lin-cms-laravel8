@@ -8,6 +8,8 @@ class CourseRating extends BaseModel
 {
     use BooleanSoftDeletes, HasFactory;
 
+    protected $primaryKey = 'course_id';
+
     public $fillable = [
         'course_id',
         'rating',
