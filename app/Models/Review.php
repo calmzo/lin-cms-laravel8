@@ -13,8 +13,8 @@ class Review extends BaseModel
     ];
     protected static function booted()
     {
-        //处理 Review「creating」事件
-        static::creating(function ($review) {
+        //处理 Review「saving」事件
+        static::saving(function ($review) {
             $review->rating = self::getAvgRating($review);
         });
     }
