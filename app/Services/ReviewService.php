@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Enums\ReviewEnums;
 use App\Exceptions\NotFoundException;
 use App\Services\Logic\Review\ReviewCreateService;
+use App\Services\Logic\Review\ReviewDeleteService;
 use App\Services\Logic\Review\ReviewInfoService;
 use App\Services\Logic\Review\ReviewUpdateService;
 
@@ -43,6 +44,12 @@ class ReviewService
         $service = new ReviewInfoService();
         $review = $service->handle($id);
         return $review;
+    }
+
+    public function deleteReview($id)
+    {
+        $service = new ReviewDeleteService();
+        return $service->handle($id);
     }
 
 }

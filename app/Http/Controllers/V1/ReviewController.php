@@ -40,5 +40,12 @@ class ReviewController extends BaseController
         return $this->success($review);
     }
 
+    public function deleteReview($id)
+    {
+        $service = new ReviewService();
+        $service->deleteReview($id);
+        return $this->success([], '删除评价成功');
+    }
+
 
 }

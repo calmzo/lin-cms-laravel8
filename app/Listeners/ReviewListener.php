@@ -18,15 +18,15 @@ class ReviewListener
         //
     }
 
-    /**
-     * 添加文章加积分
-     * @param $event
-     */
     public function afterCreate($event)
     {
         Log::channel('review')->info('监听添加事件');
     }
 
+    public function afterDelete($event)
+    {
+        Log::channel('review')->info('监听删除事件');
+    }
 
 
     public function subscribe($events)
@@ -34,6 +34,10 @@ class ReviewListener
         $events->listen(
             'App\Events\ReviewAfterCreateEvent',
             [ReviewListener::class, 'afterCreate']
+        );
+        $events->listen(
+            'App\Events\ReviewAfterDeleteEvent',
+            [ReviewListener::class, 'afterDelete']
         );
 
     }
