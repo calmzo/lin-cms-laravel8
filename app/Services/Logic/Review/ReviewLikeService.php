@@ -62,7 +62,7 @@ class ReviewLikeService extends LogicService
 
             $this->incrReviewLikeCount($review);
 
-            $this->handleLikeNotice($review, $user);
+//            $this->handleLikeNotice($review, $user);
 
             ReviewAfterLikeEvent::dispatch($review);
 
