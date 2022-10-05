@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 class LiveController extends BaseController
 {
     //
-    protected $only = [];
+    protected $only = ['bindUser', 'sendMsg'];
 
     public function getLives(LiveListValidate $listValidate)
     {
