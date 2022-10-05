@@ -15,7 +15,7 @@ class CreateQuestionLike extends Migration
     {
         Schema::create('question_like', function (Blueprint $table) {
             $table->id();
-            $table->integer('question_id')->unsigned()->default(0)->comment('评价编号');
+            $table->integer('question_id')->unsigned()->default(0)->comment('问题编号');
             $table->integer('user_id')->unsigned()->default(0)->comment('用户编号');
             $table->timestamp('create_time')->comment('创建时间');
             $table->timestamp('update_time')->comment('更新时间');
