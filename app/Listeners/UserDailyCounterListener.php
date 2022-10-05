@@ -61,6 +61,11 @@ class UserDailyCounterListener
         $this->counter->hIncrBy($event->user->id, 'review_like_count');
     }
 
+    public function incrQuestionLikeCount($event)
+    {
+        $this->counter->hIncrBy($event->user->id, 'question_like_count');
+    }
+
 
     /**
      * 为事件订阅者注册监听器
@@ -98,6 +103,11 @@ class UserDailyCounterListener
         $events->listen(
             'App\Events\UserDailyCounterIncrReviewLikeCountEvent',
             [UserDailyCounterListener::class, 'incrReviewLikeCount']
+        );
+
+        $events->listen(
+            'App\Events\UserDailyCounterIncrQuestionLikeCountEvent',
+            [UserDailyCounterListener::class, 'incrQuestionLikeCount']
         );
     }
 }
