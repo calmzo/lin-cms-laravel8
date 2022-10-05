@@ -181,4 +181,5 @@ Route::prefix('question')->group(function () {
     Route::get('{id}/info', [QuestionController::class, 'getQuestion']);
     Route::get('', [QuestionController::class, 'getQuestions']);
     Route::get('categories', [QuestionController::class, 'getCategories']);
+    Route::get('{id}/answers', [QuestionController::class, 'getAnswers']);
 });

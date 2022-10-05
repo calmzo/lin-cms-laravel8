@@ -29,4 +29,10 @@ class QuestionController extends BaseController
         $service = new QuestionService();
         return $service->getCategories();
     }
+
+    public function getAnswers($pager)
+    {
+        $service = new QuestionService();
+        return $service->getAnswers($pager);
+    }
 }
