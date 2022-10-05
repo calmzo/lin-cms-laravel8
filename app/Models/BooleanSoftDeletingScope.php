@@ -24,7 +24,7 @@ class BooleanSoftDeletingScope implements Scope
      */
     public function apply(Builder $builder, Model $model)
     {
-        $builder->whereNull($model->getQualifiedDeletedAtColumn());
+        $builder->where($model->getQualifiedDeletedAtColumn(), 0);
 //        $builder->whereNull($model->getQualifiedDeletedAtColumn());
     }
 
@@ -44,7 +44,7 @@ class BooleanSoftDeletingScope implements Scope
             $column = $this->getDeletedAtColumn($builder);
 
             return $builder->update([
-                $column => now(),
+                $column => 1,
             ]);
         });
     }
@@ -107,9 +107,7 @@ class BooleanSoftDeletingScope implements Scope
         $builder->macro('withoutTrashed', function (Builder $builder) {
             $model = $builder->getModel();
 
-            $builder->withoutGlobalScope($this)->whereNull(
-                $model->getQualifiedDeletedAtColumn()
-            );
+            $builder->withoutGlobalScope($this)->where($model->getQualifiedDeletedAtColumn(), 0);
 
             return $builder;
         });
