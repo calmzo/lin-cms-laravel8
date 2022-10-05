@@ -28,6 +28,16 @@ class ReviewListener
         Log::channel('review')->info('监听删除事件');
     }
 
+    public function afterLike($event)
+    {
+        Log::channel('review')->info('监听点赞事件');
+    }
+
+    public function afterUndoLike($event)
+    {
+        Log::channel('review')->info('监听取消点赞事件');
+    }
+
 
     public function subscribe($events)
     {
@@ -39,6 +49,17 @@ class ReviewListener
             'App\Events\ReviewAfterDeleteEvent',
             [ReviewListener::class, 'afterDelete']
         );
+
+        $events->listen(
+            'App\Events\ReviewAfterLikeEvent',
+            [ReviewListener::class, 'afterLike']
+        );
+
+        $events->listen(
+            'App\Events\ReviewAfterUndoLikeEvent',
+            [ReviewListener::class, 'afterUndoLike']
+        );
+
 
     }
 }
