@@ -38,6 +38,16 @@ class QuestionListener
         Log::channel('question')->info('监听取消收藏事件');
     }
 
+    public function afterLike($event)
+    {
+        Log::channel('question')->info('监听点赞事件');
+    }
+
+    public function afterUndoLike($event)
+    {
+        Log::channel('question')->info('监听取消点赞事件');
+    }
+
 
     public function subscribe($events)
     {
@@ -59,6 +69,16 @@ class QuestionListener
         $events->listen(
             'App\Events\QuestionAfterUndoFavoriteEvent',
             [QuestionListener::class, 'afterUndoFavorite']
+        );
+
+        $events->listen(
+            'App\Events\QuestionAfterLikeEvent',
+            [QuestionListener::class, 'afterLike']
+        );
+
+        $events->listen(
+            'App\Events\QuestionAfterUndoLikeEvent',
+            [QuestionListener::class, 'afterUndoLike']
         );
 
 
