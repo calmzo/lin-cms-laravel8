@@ -151,7 +151,7 @@ class ArticleService
 
         $msg = $article->closed == 1 ? '关闭评论成功' : '开启评论成功';
 
-        return $msg;
+        return ['msg' => $msg];
     }
 
     public function privateArticle($id)
@@ -162,18 +162,18 @@ class ArticleService
 
         $msg = $article->private == 1 ? '开启仅我可见成功' : '关闭仅我可见成功';
 
-        return $msg;
+        return ['msg' => $msg];
     }
 
     public function favoriteArticle($id)
     {
         $service = new ArticleFavoriteService();
 
-        $article = $service->handle($id);
+        $data = $article = $service->handle($id);
 
         $msg = $article['action'] == 'do' ? '收藏成功' : '取消收藏成功';
 
-        return $msg;
+        return ['data' => $data, 'msg' => $msg];
     }
 
     public function likeArticle($id)
@@ -184,7 +184,7 @@ class ArticleService
 
         $msg = $data['action'] == 'do' ? '点赞成功' : '取消点赞成功';
 
-        return $msg;
+        return ['data' => $data, 'msg' => $msg];
     }
 
     public function getXmTags($id)
