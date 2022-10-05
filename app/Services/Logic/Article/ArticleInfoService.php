@@ -100,14 +100,14 @@ class ArticleInfoService extends LogicService
 
             $like = $likeRepo->findArticleLike($article->id, $user->id);
 
-            if ($like) {
+            if ($like && $like->deleted == 0) {
                 $me['liked'] = 1;
             }
             $favoriteRepo = new ArticleFavoriteRepository();
 
             $favorite = $favoriteRepo->findArticleFavorite($article->id, $user->id);
 
-            if ($favorite) {
+            if ($favorite && $favorite->deleted == 0) {
                 $me['favorited'] = 1;
             }
         }

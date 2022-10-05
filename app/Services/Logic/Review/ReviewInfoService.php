@@ -85,7 +85,7 @@ class ReviewInfoService extends LogicService
 
             $like = $likeRepo->findReviewLike($review->id, $user->id);
 
-            if ($like) {
+            if ($like && $like->deleted == 0) {
                 $me['liked'] = 1;
             }
         }
