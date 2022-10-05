@@ -6,6 +6,7 @@ use App\Caches\IndexArticleListCache;
 use App\Caches\IndexLiveListCache;
 use App\Caches\IndexQuestionListCache;
 use App\Caches\IndexSlideListCache;
+use App\Caches\IndexTeacherListCache;
 
 class IndexController extends BaseController
 {
@@ -49,6 +50,16 @@ class IndexController extends BaseController
         $lives = $cache->get();
 
         return $this->success(['lives' => $lives]);
+
+    }
+
+    public function getTeachers()
+    {
+        $cache = new IndexTeacherListCache();
+
+        $teachers = $cache->get();
+
+        return $this->success(['teachers' => $teachers]);
 
     }
 }

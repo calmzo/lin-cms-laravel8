@@ -197,5 +197,6 @@ Route::prefix('index')->group(function () {
     Route::get('articles', [IndexController::class, 'getArticles']);
     Route::get('questions', [IndexController::class, 'getQuestions']);
     Route::get('lives', [IndexController::class, 'getLives']);
+    Route::get('teachers', [IndexController::class, 'getTeachers']);
 
 });
