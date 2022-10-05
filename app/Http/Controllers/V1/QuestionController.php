@@ -52,4 +52,11 @@ class QuestionController extends BaseController
         $service->deleteQuestion($id);
         return $this->success();
     }
+
+    public function favoriteQuestion($id)
+    {
+        $service = new QuestionService();
+        $res = $service->favoriteQuestion($id);
+        return $this->success($res);
+    }
 }

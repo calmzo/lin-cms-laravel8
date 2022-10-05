@@ -8,6 +8,7 @@ use App\Services\Logic\Question\AnswerListService;
 use App\Services\Logic\Question\CategoryListService;
 use App\Services\Logic\Question\CommentListService;
 use App\Services\Logic\Question\QuestionDeleteService;
+use App\Services\Logic\Question\QuestionFavoriteService;
 use App\Services\Logic\Question\QuestionInfoService;
 use App\Services\Logic\Question\QuestionListService;
 
@@ -77,6 +78,18 @@ class QuestionService
         $question = $service->handle($id);
 
         return $question;
+
+    }
+
+    public function favoriteQuestion($id)
+    {
+        $service = new QuestionFavoriteService();
+
+        $data = $service->handle($id);
+
+        $msg = $data['action'] == 'do' ? '收藏成功' : '取消收藏成功';
+
+        return ['data' => $data, 'msg' => $msg];
 
     }
 }
