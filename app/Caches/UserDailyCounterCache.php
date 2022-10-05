@@ -2,7 +2,7 @@
 
 namespace App\Caches;
 
-class UserDailyCounter extends Cache
+class UserDailyCounterCache extends Cache
 {
 
     protected $lifetime = 1 * 86400;
