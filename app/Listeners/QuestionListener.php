@@ -28,6 +28,16 @@ class QuestionListener
         Log::channel('question')->info('监听问题删除事件');
     }
 
+    public function afterFavorite($event)
+    {
+        Log::channel('question')->info('监听收藏删除事件');
+    }
+
+    public function afterUndoFavorite($event)
+    {
+        Log::channel('question')->info('监听取消收藏事件');
+    }
+
 
     public function subscribe($events)
     {
@@ -40,5 +50,17 @@ class QuestionListener
             'App\Events\QuestionAfterDeleteEvent',
             [QuestionListener::class, 'afterDelete']
         );
+
+        $events->listen(
+            'App\Events\QuestionAfterFavoriteEvent',
+            [QuestionListener::class, 'afterFavorite']
+        );
+
+        $events->listen(
+            'App\Events\QuestionAfterUndoFavoriteEvent',
+            [QuestionListener::class, 'afterUndoFavorite']
+        );
+
+
     }
 }
