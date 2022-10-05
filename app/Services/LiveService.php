@@ -38,4 +38,15 @@ class LiveService extends BaseService
 
     }
 
+
+    public function bindUser($id, $clientId)
+    {
+        $service = new LiveChapterService();
+
+        $service->bindUser($id, $clientId);
+
+        return true;
+
+    }
+
 }

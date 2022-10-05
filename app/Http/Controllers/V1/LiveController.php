@@ -4,6 +4,7 @@ namespace App\Http\Controllers\V1;
 
 use App\Services\LiveService;
 use App\Validates\Live\LiveListValidate;
+use Illuminate\Http\Request;
 
 class LiveController extends BaseController
 {
@@ -36,6 +37,14 @@ class LiveController extends BaseController
     {
         $service = new LiveService();
         $res = $service->getLiveStatus($id);
+        return $this->success($res);
+    }
+
+    public function bindUser($id, Request $request)
+    {
+        $clientId = $request->post('client_id');
+        $service = new LiveService();
+        $res = $service->bindUser($id, $clientId);
         return $this->success($res);
     }
 }

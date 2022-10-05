@@ -213,4 +213,5 @@ Route::prefix('live')->group(function () {
     Route::get('{id}/chats', [LiveController::class, 'getLiveChats']);
     Route::get('{id}/stats', [LiveController::class, 'getLiveStats']);
     Route::get('{id}/status', [LiveController::class, 'getLiveStatus']);
+    Route::post('{id}/user/bind', [LiveController::class, 'bindUser']);
 });

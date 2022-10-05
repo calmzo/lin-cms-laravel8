@@ -3,6 +3,7 @@
 namespace App\Services\Logic\Live;
 
 use App\Services\Logic\LogicService;
+use App\Services\Token\AccountLoginTokenService;
 use App\Traits\ChapterTrait;
 use App\Validators\LiveValidator;
 use GatewayClient\Gateway;
@@ -59,20 +60,17 @@ class LiveChapterService extends LogicService
         ];
     }
 
-    public function bindUser($id)
+    public function bindUser($id, $clientId)
     {
-        $clientId = $this->request->getPost('client_id', 'string');
 
         $chapter = $this->checkChapter($id);
 
-        $user = $this->getCurrentUser();
-
+        $user = AccountLoginTokenService::user();
         $groupName = $this->getGroupName($chapter->id);
 
         Gateway::$registerAddress = $this->getRegisterAddress();
 
         Gateway::joinGroup($clientId, $groupName);
-
         if ($user->id > 0) {
 
             Gateway::bindUid($clientId, $user->id);
