@@ -202,5 +202,6 @@ Route::prefix('index')->group(function () {
     Route::get('courses/featured', [IndexController::class, 'getFeaturedCourses']);
     Route::get('courses/new', [IndexController::class, 'getNewCourses']);
     Route::get('courses/free', [IndexController::class, 'getFreeCourses']);
+    Route::get('courses/vip', [IndexController::class, 'getVipCourses']);
 
 });

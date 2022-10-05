@@ -9,6 +9,7 @@ use App\Caches\IndexQuestionListCache;
 use App\Caches\IndexSimpleFeaturedCourseListCache;
 use App\Caches\IndexSimpleFreeCourseListCache;
 use App\Caches\IndexSimpleNewCourseListCache;
+use App\Caches\IndexSimpleVipCourseListCache;
 use App\Caches\IndexSlideListCache;
 use App\Caches\IndexTeacherListCache;
 
@@ -100,6 +101,16 @@ class IndexController extends BaseController
     public function getFreeCourses()
     {
         $cache = new IndexSimpleFreeCourseListCache();
+
+        $courses = $cache->get();
+
+        return $this->success(['courses' => $courses]);
+
+    }
+
+    public function getVipCourses()
+    {
+        $cache = new IndexSimpleVipCourseListCache();
 
         $courses = $cache->get();
 
