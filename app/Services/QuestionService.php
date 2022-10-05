@@ -10,6 +10,7 @@ use App\Services\Logic\Question\CommentListService;
 use App\Services\Logic\Question\QuestionDeleteService;
 use App\Services\Logic\Question\QuestionFavoriteService;
 use App\Services\Logic\Question\QuestionInfoService;
+use App\Services\Logic\Question\QuestionLikeService;
 use App\Services\Logic\Question\QuestionListService;
 
 class QuestionService
@@ -88,6 +89,18 @@ class QuestionService
         $data = $service->handle($id);
 
         $msg = $data['action'] == 'do' ? '收藏成功' : '取消收藏成功';
+
+        return ['data' => $data, 'msg' => $msg];
+
+    }
+
+    public function likeQuestion($id)
+    {
+        $service = new QuestionLikeService();
+
+        $data = $service->handle($id);
+
+        $msg = $data['action'] == 'do' ? '点赞成功' : '取消点赞成功';
 
         return ['data' => $data, 'msg' => $msg];
 

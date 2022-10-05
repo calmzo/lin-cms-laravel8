@@ -185,5 +185,6 @@ Route::prefix('question')->group(function () {
     Route::get('{id}/comments', [QuestionController::class, 'getComments']);
     Route::delete('{id}', [QuestionController::class, 'deleteQuestion']);
     Route::post('{id}/favorite', [QuestionController::class, 'favoriteQuestion']);
+    Route::post('{id}/like', [QuestionController::class, 'likeQuestion']);
 
 });

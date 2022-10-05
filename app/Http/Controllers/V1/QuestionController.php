@@ -59,4 +59,11 @@ class QuestionController extends BaseController
         $res = $service->favoriteQuestion($id);
         return $this->success($res);
     }
+
+    public function likeQuestion($id)
+    {
+        $service = new QuestionService();
+        $res = $service->likeQuestion($id);
+        return $this->success($res);
+    }
 }
