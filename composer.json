@@ -19,6 +19,7 @@
         "laravel/tinker": "^2.0",
         "larva/laravel-ip2region": "^1.0",
         "owner888/phpspider": "^2.1",
+        "predis/predis": "^2.0",
         "rap2hpoutre/laravel-log-viewer": "^2.2",
         "symfony/psr-http-message-bridge": "^2.1",
         "taxusorg/xunsearch-laravel": "^3.0",
