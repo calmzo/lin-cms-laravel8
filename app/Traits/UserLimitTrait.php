@@ -2,7 +2,7 @@
 
 namespace App\Traits;
 
-use App\Caches\UserDailyCounter;
+use App\Caches\UserDailyCounterCache;
 use App\Exceptions\BadRequestException;
 use App\Models\User;
 use App\Utils\CodeResponse;
@@ -14,7 +14,7 @@ trait UserLimitTrait
 
     public function __construct()
     {
-        $this->counter = new UserDailyCounter();
+        $this->counter = new UserDailyCounterCache();
     }
 
 
