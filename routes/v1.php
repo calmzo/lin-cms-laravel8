@@ -15,6 +15,7 @@ use App\Http\Controllers\V1\UserController;
 use App\Http\Controllers\V1\UserConsoleController;
 use App\Http\Controllers\V1\ReviewController;
 use App\Http\Controllers\V1\QuestionController;
+use App\Http\Controllers\V1\IndexController;
 
 /*
 |--------------------------------------------------------------------------
@@ -186,5 +187,12 @@ Route::prefix('question')->group(function () {
     Route::delete('{id}', [QuestionController::class, 'deleteQuestion']);
     Route::post('{id}/favorite', [QuestionController::class, 'favoriteQuestion']);
     Route::post('{id}/like', [QuestionController::class, 'likeQuestion']);
+
+});
+
+
+Route::prefix('index')->group(function () {
+    //
+    Route::get('slides', [IndexController::class, 'getSlides']);
 
 });
