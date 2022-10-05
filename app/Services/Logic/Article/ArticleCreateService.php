@@ -4,7 +4,7 @@ namespace App\Services\Logic\Article;
 
 use App\Enums\ArticleEnums;
 use App\Events\ArticleAfterCreateEvent;
-use App\Events\IncrArticleCountEvent;
+use App\Events\UserDailyCounterIncrArticleCountEvent;
 use App\Models\Article;
 use App\Models\User;
 use App\Repositories\UserRepository;
@@ -47,7 +47,7 @@ class ArticleCreateService extends LogicService
 
     protected function incrUserDailyArticleCount(User $user)
     {
-        IncrArticleCountEvent::dispatch($user);
+        UserDailyCounterIncrArticleCountEvent::dispatch($user);
     }
 
     protected function recountUserArticles(User $user)

@@ -11,7 +11,6 @@ use App\Enums\PointGiftRedeemEnums;
 use App\Enums\QuestionEnums;
 use App\Enums\RefundEnums;
 use App\Enums\ReviewEnums;
-use App\Events\IncrOrderCountEvent;
 use App\Models\Answer;
 use App\Models\Article;
 use App\Models\Comment;

@@ -2,7 +2,7 @@
 
 namespace App\Services\Logic\Report;
 
-use App\Events\IncrReportCountEvent;
+use App\Events\UserDailyCounterIncrReportCountEvent;
 use App\Events\ReportAfterCreateEvent;
 use App\Models\Report;
 use App\Models\User;
@@ -55,7 +55,7 @@ class ReportCreateService extends LogicService
 
     protected function incrUserDailyReportCount(User $user)
     {
-        IncrReportCountEvent::dispatch($user);
+        UserDailyCounterIncrReportCountEvent::dispatch($user);
     }
 
 }

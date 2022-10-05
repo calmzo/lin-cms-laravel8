@@ -5,7 +5,7 @@ namespace App\Services\Logic\Article;
 
 use App\Events\ArticleAfterLikeEvent;
 use App\Events\ArticleAfterUndoLikeEvent;
-use App\Events\IncrArticleLikeCountEvent;
+use App\Events\UserDailyCounterIncrArticleLikeCountEvent;
 use App\Lib\Notice\ArticleLiked;
 use App\Validators\ArticleValidator;
 use App\Models\Article;
@@ -103,7 +103,7 @@ class ArticleLikeService extends LogicService
 
     protected function incrUserDailyArticleLikeCount(User $user)
     {
-        IncrArticleLikeCountEvent::dispatch($user);
+        UserDailyCounterIncrArticleLikeCountEvent::dispatch($user);
     }
 
     protected function handleArticleLikedNotice(Article $article, User $sender)

@@ -3,7 +3,7 @@
 namespace App\Services;
 
 use App\Enums\OrderEnums;
-use App\Events\IncrOrderCountEvent;
+use App\Events\UserDailyCounterIncrOrderCountEvent;
 use App\Models\Course;
 use App\Models\User;
 use App\Models\Order;
@@ -207,7 +207,7 @@ class OrderService
      */
     protected function incrUserDailyOrderCount(User $user)
     {
-        IncrOrderCountEvent::dispatch($user);
+        UserDailyCounterIncrOrderCountEvent::dispatch($user);
     }
 
 }

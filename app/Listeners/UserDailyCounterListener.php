@@ -71,7 +71,7 @@ class UserDailyCounterListener
     public function subscribe($events)
     {
         $events->listen(
-            'App\Events\IncrOrderCountEvent',
+            'App\Events\UserDailyCounterIncrOrderCountEvent',
             [UserDailyCounterListener::class, 'incrOrderCount']
         );
 
@@ -81,17 +81,17 @@ class UserDailyCounterListener
         );
 
         $events->listen(
-            'App\Events\IncrArticleCountEvent',
+            'App\Events\UserDailyCounterIncrArticleCountEvent',
             [UserDailyCounterListener::class, 'incrArticleCount']
         );
 
         $events->listen(
-            'App\Events\IncrArticleLikeCountEvent',
+            'App\Events\UserDailyCounterIncrArticleLikeCountEvent',
             [UserDailyCounterListener::class, 'incrArticleLikeCount']
         );
 
         $events->listen(
-            'App\Events\IncrReportCountEvent',
+            'App\Events\UserDailyCounterIncrReportCountEvent',
             [UserDailyCounterListener::class, 'incrReportCount']
         );
 
