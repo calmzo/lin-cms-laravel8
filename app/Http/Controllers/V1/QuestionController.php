@@ -45,4 +45,11 @@ class QuestionController extends BaseController
         $service = new QuestionService();
         return $service->getComments($id, $params);
     }
+
+    public function deleteQuestion($id)
+    {
+        $service = new QuestionService();
+        $service->deleteQuestion($id);
+        return $this->success();
+    }
 }

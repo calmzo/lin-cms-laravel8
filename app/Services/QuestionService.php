@@ -7,6 +7,7 @@ use App\Exceptions\NotFoundException;
 use App\Services\Logic\Question\AnswerListService;
 use App\Services\Logic\Question\CategoryListService;
 use App\Services\Logic\Question\CommentListService;
+use App\Services\Logic\Question\QuestionDeleteService;
 use App\Services\Logic\Question\QuestionInfoService;
 use App\Services\Logic\Question\QuestionListService;
 
@@ -66,6 +67,16 @@ class QuestionService
         $pager = $service->handle($id, $params);
 
         return $pager;
+
+    }
+
+
+    public function deleteQuestion($id)
+    {
+        $service = new QuestionDeleteService();
+        $question = $service->handle($id);
+
+        return $question;
 
     }
 }

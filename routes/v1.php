@@ -183,4 +183,5 @@ Route::prefix('question')->group(function () {
     Route::get('categories', [QuestionController::class, 'getCategories']);
     Route::get('{id}/answers', [QuestionController::class, 'getAnswers']);
     Route::get('{id}/comments', [QuestionController::class, 'getComments']);
+    Route::delete('{id}', [QuestionController::class, 'deleteQuestion']);
 });

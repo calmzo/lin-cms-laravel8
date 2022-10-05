@@ -3,8 +3,10 @@
 namespace App\Repositories;
 
 use App\Enums\ArticleEnums;
+use App\Enums\QuestionEnums;
 use App\Models\Article;
 use App\Models\Notification;
+use App\Models\Question;
 use App\Models\User;
 use App\Models\UserBalance;
 
@@ -62,5 +64,10 @@ class UserRepository extends BaseRepository
     public function countUnreadNotifications($userId)
     {
         return Notification::query()->where('receiver_id', $userId)->where('viewed', 0)->count();
+    }
+
+    public function countQuestions($userId)
+    {
+        return Question::query()->where('user_id', $userId)->where('published', QuestionEnums::PUBLISH_APPROVED)->count();
     }
 }

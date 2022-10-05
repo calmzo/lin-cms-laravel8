@@ -4,6 +4,7 @@ namespace App\Validators;
 
 use App\Caches\MaxQuestionIdCache;
 use App\Caches\Question as QuestionCache;
+use App\Enums\QuestionEnums;
 use App\Exceptions\BadRequestException;
 use App\Models\Question;
 use App\Models\Question as QuestionModel;
@@ -42,7 +43,7 @@ class QuestionValidator extends BaseValidator
 
         $question = $questionRepo->findById($id);
         if (!$question) {
-            throw new BadRequestException(CodeResponse::NOT_FOUND_EXCEPTION,'question.not_found');
+            throw new BadRequestException(CodeResponse::NOT_FOUND_EXCEPTION, 'question.not_found');
         }
 
         return $question;
@@ -143,14 +144,14 @@ class QuestionValidator extends BaseValidator
         }
     }
 
-    public function checkIfAllowDelete(QuestionModel $question)
+    public function checkIfAllowDelete(Question $question)
     {
-        $approved = $question->published == QuestionModel::PUBLISH_APPROVED;
+        $approved = $question->published == QuestionEnums::PUBLISH_APPROVED;
 
         $answered = $question->answer_count > 0;
 
         if ($approved && $answered) {
-            throw new BadRequestException('question.delete_not_allowed');
+            throw new BadRequestException(CodeResponse::NOT_FOUND_EXCEPTION, 'question.delete_not_allowed');
         }
     }
 
