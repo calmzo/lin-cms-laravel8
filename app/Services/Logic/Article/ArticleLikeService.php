@@ -13,14 +13,12 @@ use App\Models\User;
 use App\Repositories\ArticleLikeRepository;
 use App\Services\Logic\LogicService;
 use App\Services\Token\AccountLoginTokenService;
-use App\Traits\UserLimitTrait;
 use App\Models\ArticleLike;
 use App\Services\Logic\Point\History\ArticleLikedService;
+use App\Validators\UserLimitValidator;
 
 class ArticleLikeService extends LogicService
 {
-
-    use UserLimitTrait;
 
     public function handle($id)
     {
@@ -29,8 +27,8 @@ class ArticleLikeService extends LogicService
 
         $user = AccountLoginTokenService::user();
 
-        $this->checkDailyArticleLikeLimit($user);
-
+        $validator = new UserLimitValidator();
+        $validator->checkDailyArticleLikeLimit($user);
         $likeRepo = new ArticleLikeRepository();
 
         $articleLike = $likeRepo->findArticleLike($article->id, $user->id);

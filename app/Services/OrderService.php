@@ -11,12 +11,12 @@ use App\Models\Vip;
 use App\Services\Token\AccountLoginTokenService;
 use App\Traits\ClientTrait;
 use App\Traits\OrderTrait;
-use App\Traits\UserLimitTrait;
+use App\Validators\UserLimitValidator;
 
 class OrderService
 {
 
-    use UserLimitTrait, OrderTrait, ClientTrait;
+    use OrderTrait, ClientTrait;
 
     /**
      * @var float 订单金额
@@ -27,8 +27,8 @@ class OrderService
     {
         $userId = AccountLoginTokenService::userId();
         $user = User::query()->find($userId);
-        IncrOrderCountEvent::dispatch($user);
-        $this->checkDailyOrderLimit($user);
+        $validator = new UserLimitValidator();
+        $validator->checkDailyOrderLimit($user);
         $order = $this->findUserLastPendingOrder($userId, $params['item_id'], $params['item_type']);
         /**
          * 存在新鲜的未支付订单直接返回（减少订单记录）

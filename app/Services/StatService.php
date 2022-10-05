@@ -27,7 +27,6 @@ use App\Models\Vip;
 use App\Services\Token\AccountLoginTokenService;
 use App\Traits\ClientTrait;
 use App\Traits\OrderTrait;
-use App\Traits\UserLimitTrait;
 
 class StatService
 {

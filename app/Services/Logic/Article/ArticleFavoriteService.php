@@ -11,13 +11,11 @@ use App\Models\User;
 use App\Repositories\ArticleFavoriteRepository;
 use App\Services\Logic\LogicService;
 use App\Services\Token\AccountLoginTokenService;
-use App\Traits\UserLimitTrait;
 use App\Models\ArticleFavorite;
+use App\Validators\UserLimitValidator;
 
 class ArticleFavoriteService extends LogicService
 {
-
-    use UserLimitTrait;
 
     public function handle($id)
     {
@@ -27,8 +25,8 @@ class ArticleFavoriteService extends LogicService
 
         $user = AccountLoginTokenService::user();
 
-        $this->checkFavoriteLimit($user);
-
+        $validator = new UserLimitValidator();
+        $validator->checkFavoriteLimit($user);
         $favoriteRepo = new ArticleFavoriteRepository();
 
         $favorite = $favoriteRepo->findArticleFavorite($article->id, $user->id);

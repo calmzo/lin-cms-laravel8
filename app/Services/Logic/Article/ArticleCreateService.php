@@ -12,17 +12,18 @@ use App\Services\Logic\LogicService;
 use App\Services\Logic\Point\History\ArticlePostPointHistoryService;
 use App\Services\Token\AccountLoginTokenService;
 use App\Traits\ArticleDataTrait;
-use App\Traits\UserLimitTrait;
+use App\Validators\UserLimitValidator;
 
 class ArticleCreateService extends LogicService
 {
 
-    use ArticleDataTrait, UserLimitTrait;
+    use ArticleDataTrait;
 
     public function handle($params)
     {
         $user = AccountLoginTokenService::user();
-        $this->checkDailyArticleLimit($user);
+        $validator = new UserLimitValidator();
+        $validator->checkDailyArticleLimit($user);
         $data = $this->handleParamsData($params);
 
         $article = Article::query()->create($data);

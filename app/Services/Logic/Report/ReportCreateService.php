@@ -9,16 +9,15 @@ use App\Models\User;
 use App\Services\Logic\LogicService;
 use App\Services\Token\AccountLoginTokenService;
 use App\Traits\ClientTrait;
-use App\Traits\UserLimitTrait;
 use App\Traits\ReportCountTrait;
 use App\Validators\ReportValidator;
+use App\Validators\UserLimitValidator;
 
 class ReportCreateService extends LogicService
 {
 
     use ClientTrait;
     use ReportCountTrait;
-    use UserLimitTrait;
 
     public function handle($params)
     {
@@ -30,8 +29,8 @@ class ReportCreateService extends LogicService
 
         $user = AccountLoginTokenService::user();
 
-        $this->checkDailyReportLimit($user);
-
+        $validator = new UserLimitValidator();
+        $validator->checkDailyReportLimit($user);
         $validator = new ReportValidator();
 
         $item = $validator->checkItem($itemId, $itemType);

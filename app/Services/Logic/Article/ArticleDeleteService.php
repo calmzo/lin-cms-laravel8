@@ -12,12 +12,11 @@ use App\Services\Logic\LogicService;
 use App\Services\Sync\ArticleIndexSync;
 use App\Services\Token\AccountLoginTokenService;
 use App\Traits\ArticleDataTrait;
-use App\Traits\UserLimitTrait;
 
 class ArticleDeleteService extends LogicService
 {
 
-    use ArticleDataTrait, UserLimitTrait;
+    use ArticleDataTrait;
 
     public function handle($id)
     {

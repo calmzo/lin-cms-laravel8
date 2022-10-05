@@ -18,14 +18,6 @@ class UserLimitValidator extends BaseValidate
         $this->counter = new UserDailyCounterCache();
     }
 
-    public function checkFavoriteLimit(User $user)
-    {
-        $limit = $user->vip ? 1000 : 500;
-
-        if ($user->favorite_count > $limit) {
-            throw new BadRequestException(CodeResponse::NOT_FOUND_EXCEPTION, 'user_limit.reach_favorite_limit');
-        }
-    }
 
     public function checkDailyReportLimit(User $user)
     {
