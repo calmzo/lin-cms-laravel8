@@ -49,4 +49,13 @@ class LiveService extends BaseService
 
     }
 
+    public function sendMsg($id, $content)
+    {
+        $service = new LiveChapterService();
+
+        $message = $service->sendMessage($id, $content);
+        return ['message' => $message];
+
+    }
+
 }

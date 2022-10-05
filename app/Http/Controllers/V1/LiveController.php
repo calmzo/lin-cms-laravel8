@@ -47,4 +47,12 @@ class LiveController extends BaseController
         $res = $service->bindUser($id, $clientId);
         return $this->success($res);
     }
+
+    public function sendMsg($id, Request $request)
+    {
+        $content = $request->post('content');
+        $service = new LiveService();
+        $res = $service->sendMsg($id, $content);
+        return $this->success($res);
+    }
 }

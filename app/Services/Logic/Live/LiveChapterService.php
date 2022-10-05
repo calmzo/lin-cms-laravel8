@@ -89,17 +89,11 @@ class LiveChapterService extends LogicService
         }
     }
 
-    public function sendMessage($id)
+    public function sendMessage($id, $content)
     {
         $chapter = $this->checkChapter($id);
 
-        $user = $this->getLoginUser();
-
-        $content = $this->request->getPost('content', ['trim', 'striptags']);
-
-        $validator = new LiveValidator();
-
-        $validator->checkMessage($content);
+        $user = AccountLoginTokenService::user();
 
         Gateway::$registerAddress = $this->getRegisterAddress();
 
