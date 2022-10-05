@@ -179,4 +179,5 @@ Route::prefix('review')->group(function () {
 Route::prefix('question')->group(function () {
     //
     Route::get('{id}', [QuestionController::class, 'getQuestion']);
+    Route::get('', [QuestionController::class, 'getQuestions']);
 });

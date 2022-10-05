@@ -11,7 +11,7 @@ use App\Services\Logic\LogicService;
 class QuestionListService extends LogicService
 {
 
-    public function handle()
+    public function handle($params)
     {
         $params['published'] = QuestionEnums::PUBLISH_APPROVED;
 

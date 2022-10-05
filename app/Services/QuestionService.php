@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Enums\QuestionEnums;
 use App\Exceptions\NotFoundException;
 use App\Services\Logic\Question\QuestionInfoService;
+use App\Services\Logic\Question\QuestionListService;
 
 class QuestionService
 {
@@ -21,6 +22,16 @@ class QuestionService
             throw new NotFoundException();
         }
         return ['question' => $question];
+
+    }
+
+    public function getQuestions($params)
+    {
+        $service = new QuestionListService();
+
+        $pager = $service->handle($params);
+
+        return $pager;
 
     }
 }
