@@ -233,4 +233,5 @@ Route::prefix('course')->group(function () {
     Route::get('categories', [CourseController::class, 'getCategories']);
     Route::get('{id}/chapters', [CourseController::class, 'getCourseChapters']);
     Route::get('{id}/packages', [CourseController::class, 'getCoursePackages']);
+    Route::get('{id}/consults', [CourseController::class, 'getCourseConsults']);
 });
