@@ -31,4 +31,12 @@ class CourseController extends BaseController
         $result = $service->getCategories();
         return $this->success($result);
     }
+
+
+    public function getCourseChapters($id)
+    {
+        $service = new CourseService();
+        $result = $service->getCourseChapters($id);
+        return $this->success($result);
+    }
 }

@@ -5,6 +5,7 @@ namespace App\Repositories;
 use App\Enums\CourseUserEnums;
 use App\Enums\ReviewEnums;
 use App\Models\Chapter;
+use App\Models\ChapterUser;
 use App\Models\Course;
 use App\Models\CourseRating;
 use App\Models\CourseUser;
@@ -215,4 +216,12 @@ class CourseRepository extends BaseRepository
         return CourseRating::query()->where('course_id', $courseId)->first();
     }
 
+    public function findUserLearnings($courseId, $userId, $planId)
+    {
+        return ChapterUser::query()
+            ->where('course_id', $courseId)
+            ->where('user_id', $userId)
+            ->where('plan_id', $planId)
+            ->get();
+    }
 }
