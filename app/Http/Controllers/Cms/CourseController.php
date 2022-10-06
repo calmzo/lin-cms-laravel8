@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Cms;
 
-use App\Services\CourseService;
+use App\Services\Admin\CourseService;
 use App\Services\Admin\CategoryService;
 
 
