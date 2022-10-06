@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Exceptions\NotFoundException;
+use App\Services\Logic\Course\CategoryListService;
 use App\Services\Logic\Course\CourseInfoService;
 use App\Services\Logic\Course\CourseListService;
 
@@ -28,6 +29,17 @@ class CourseService
             throw new NotFoundException();
         }
         return ['course' => $course];
+
+    }
+
+
+    public function getCategories()
+    {
+
+        $service = new CategoryListService();
+
+        $categories = $service->handle();
+        return ['categories' => $categories];
 
     }
 }

@@ -230,4 +230,5 @@ Route::prefix('course')->group(function () {
     //
     Route::get('list', [CourseController::class, 'getCourses']);
     Route::get('{id}/info', [CourseController::class, 'getCourse']);
+    Route::get('categories', [CourseController::class, 'getCategories']);
 });
