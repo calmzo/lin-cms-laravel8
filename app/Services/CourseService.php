@@ -7,6 +7,7 @@ use App\Services\Logic\Course\CategoryListService;
 use App\Services\Logic\Course\ChapterListService;
 use App\Services\Logic\Course\CourseInfoService;
 use App\Services\Logic\Course\CourseListService;
+use App\Services\Logic\Course\PackageListService;
 
 class CourseService
 {
@@ -51,6 +52,16 @@ class CourseService
 
         $chapters = $service->handle($id);
         return ['chapters' => $chapters];
+
+    }
+
+    public function getCoursePackages($id)
+    {
+
+        $service = new PackageListService();
+
+        $packages = $service->handle($id);
+        return ['packages' => $packages];
 
     }
 }

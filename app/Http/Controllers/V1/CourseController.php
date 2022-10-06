@@ -39,4 +39,12 @@ class CourseController extends BaseController
         $result = $service->getCourseChapters($id);
         return $this->success($result);
     }
+
+
+    public function getCoursePackages($id)
+    {
+        $service = new CourseService();
+        $result = $service->getCoursePackages($id);
+        return $this->success($result);
+    }
 }

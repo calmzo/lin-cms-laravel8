@@ -9,6 +9,7 @@ use App\Models\ChapterUser;
 use App\Models\Course;
 use App\Models\CourseRating;
 use App\Models\CourseUser;
+use App\Models\Package;
 use App\Models\Review;
 use App\Models\User;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
@@ -222,6 +223,16 @@ class CourseRepository extends BaseRepository
             ->where('course_id', $courseId)
             ->where('user_id', $userId)
             ->where('plan_id', $planId)
+            ->get();
+    }
+
+    public function findPackages($courseId)
+    {
+        return Package::query()
+            ->where('published', 1)
+            ->whereHas('courses', function ($q) use ($courseId){
+                $q->where('course_id', $courseId);
+            })
             ->get();
     }
 }

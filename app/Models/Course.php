@@ -138,4 +138,10 @@ class Course extends BaseModel
         }
         return $value;
     }
+    public function packages()
+    {
+        return $this->belongsToMany(Package::class, 'course_package', 'course_id', 'package_id');
+    }
+
+
 }
