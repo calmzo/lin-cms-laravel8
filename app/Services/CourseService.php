@@ -2,13 +2,32 @@
 
 namespace App\Services;
 
-use App\Enums\CourseEnums;
+use App\Exceptions\NotFoundException;
+use App\Services\Logic\Course\CourseInfoService;
+use App\Services\Logic\Course\CourseListService;
 
 class CourseService
 {
 
-    public function getModelTypes()
+    public function getCourses($params)
     {
-        return CourseEnums::modelTypes();
+        $service = new CourseListService();
+
+        $pager = $service->handle($params);
+        return $pager;
+    }
+
+    public function getCourse($id)
+    {
+
+        $service = new CourseInfoService();
+
+        $course = $service->handle($id);
+
+        if ($course['published'] == 0) {
+            throw new NotFoundException();
+        }
+        return ['course' => $course];
+
     }
 }

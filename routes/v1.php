@@ -18,6 +18,7 @@ use App\Http\Controllers\V1\QuestionController;
 use App\Http\Controllers\V1\IndexController;
 use App\Http\Controllers\V1\LiveController;
 use App\Http\Controllers\V1\HelpController;
+use App\Http\Controllers\V1\CourseController;
 
 /*
 |--------------------------------------------------------------------------
@@ -222,4 +223,11 @@ Route::prefix('help')->group(function () {
     //
     Route::get('list', [HelpController::class, 'getHelps']);
     Route::get('{id}/info', [HelpController::class, 'getHelp']);
+});
+
+
+Route::prefix('course')->group(function () {
+    //
+    Route::get('list', [CourseController::class, 'getCourses']);
+    Route::get('{id}/info', [CourseController::class, 'getCourse']);
 });

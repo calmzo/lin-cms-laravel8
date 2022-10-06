@@ -14,7 +14,7 @@ class CourseUserRepository extends BaseRepository
 
     public function findCourseUser($courseId, $userId)
     {
-        return CourseUser::query()->where('course_id', $courseId)->where('user_id', $userId)->first();
+        return CourseUser::withTrashed()->where('course_id', $courseId)->where('user_id', $userId)->first();
     }
 
     public function findCourseStudent($courseId, $userId)
@@ -31,6 +31,15 @@ class CourseUserRepository extends BaseRepository
             ->where('user_id', $userId)
             ->where('role_type', $roleType)
             ->first();
+    }
+
+    public function findByTeacherIds($teacherIds)
+    {
+        $roleType = CourseUserEnums::ROLE_TEACHER;
+        return CourseUser::query()
+            ->whereIn('user_id', $teacherIds)
+            ->where('role_type', $roleType)
+            ->get();
     }
 
 }

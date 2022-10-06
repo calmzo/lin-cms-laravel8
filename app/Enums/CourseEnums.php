@@ -44,4 +44,19 @@ class CourseEnums extends BaseEnums
         ];
         return self::getDesc($list, $key);
     }
+
+    public static function sortTypes($key = null)
+    {
+        $list = [
+            'score' => '综合',
+            'rating' => '好评',
+            'latest' => '最新',
+            'popular' => '最热',
+            'featured' => '推荐',
+            'free' => '免费',
+        ];
+        return self::getDesc($list, $key);
+    }
+
+
 }

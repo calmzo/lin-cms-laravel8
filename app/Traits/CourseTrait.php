@@ -75,7 +75,7 @@ trait CourseTrait
                 CourseUserEnums::SOURCE_POINT_REDEEM,
                 CourseUserEnums::SOURCE_LUCKY_REDEEM,
             ];
-
+            $case1 = $courseUser->deleted == 0;
             $case2 = $courseUser->expiry_time > time();
             $case3 = in_array($courseUser->source_type, $sourceTypes);
 

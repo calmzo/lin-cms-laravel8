@@ -29,4 +29,8 @@ class CourseFavoriteRepository extends BaseRepository
         return $query->paginate($limit, ['*'], 'page', $page);
     }
 
+    public function findCourseFavorite($courseId, $userId)
+    {
+        return CourseFavorite::withTrashed()->where('course_id', $courseId)->where('user_id', $userId)->first();
+    }
 }
