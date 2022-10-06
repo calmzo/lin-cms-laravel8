@@ -55,4 +55,12 @@ class CourseController extends BaseController
         $result = $service->getCourseConsults($id, $params);
         return $this->successPaginate($result);
     }
+
+    public function getCourseReviews($id, Request $request)
+    {
+        $params = $request->all();
+        $service = new CourseService();
+        $result = $service->getCourseReviews($id, $params);
+        return $this->successPaginate($result);
+    }
 }

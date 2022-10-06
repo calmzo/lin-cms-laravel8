@@ -9,6 +9,7 @@ use App\Services\Logic\Course\ConsultListService;
 use App\Services\Logic\Course\CourseInfoService;
 use App\Services\Logic\Course\CourseListService;
 use App\Services\Logic\Course\PackageListService;
+use App\Services\Logic\Course\ReviewListService;
 
 class CourseService
 {
@@ -70,6 +71,16 @@ class CourseService
     {
 
         $service = new ConsultListService();
+
+        $pager = $service->handle($id, $params);
+        return $pager;
+
+    }
+
+    public function getCourseReviews($id, $params)
+    {
+
+        $service = new ReviewListService();
 
         $pager = $service->handle($id, $params);
         return $pager;
