@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 class CourseController extends BaseController
 {
     //
-    protected $only = ['getCourse'];
+    protected $only = ['getCourse', 'favoriteCourse'];
 
     public function getCourses(Request $request)
     {
@@ -61,6 +61,13 @@ class CourseController extends BaseController
         $params = $request->all();
         $service = new CourseService();
         $result = $service->getCourseReviews($id, $params);
+        return $this->successPaginate($result);
+    }
+
+    public function favoriteCourse($id)
+    {
+        $service = new CourseService();
+        $result = $service->favoriteCourse($id);
         return $this->successPaginate($result);
     }
 }

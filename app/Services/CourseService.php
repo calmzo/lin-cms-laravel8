@@ -6,6 +6,7 @@ use App\Exceptions\NotFoundException;
 use App\Services\Logic\Course\CategoryListService;
 use App\Services\Logic\Course\ChapterListService;
 use App\Services\Logic\Course\ConsultListService;
+use App\Services\Logic\Course\CourseFavoriteService;
 use App\Services\Logic\Course\CourseInfoService;
 use App\Services\Logic\Course\CourseListService;
 use App\Services\Logic\Course\PackageListService;
@@ -84,6 +85,18 @@ class CourseService
 
         $pager = $service->handle($id, $params);
         return $pager;
+
+    }
+
+    public function favoriteCourse($id)
+    {
+
+        $service = new CourseFavoriteService();
+
+        $data = $service->handle($id);
+
+        $msg = $data['action'] == 'do' ? '收藏成功' : '取消收藏成功';
+        return ['data' => $data, 'msg' => $msg];
 
     }
 }

@@ -235,4 +235,5 @@ Route::prefix('course')->group(function () {
     Route::get('{id}/packages', [CourseController::class, 'getCoursePackages']);
     Route::get('{id}/consults', [CourseController::class, 'getCourseConsults']);
     Route::get('{id}/reviews', [CourseController::class, 'getCourseReviews']);
+    Route::post('{id}/favorite', [CourseController::class, 'favoriteCourse']);
 });
