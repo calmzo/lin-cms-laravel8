@@ -6,6 +6,7 @@ use App\Enums\AnswerEnums;
 use App\Exceptions\NotFoundException;
 use App\Services\Logic\Answer\AnswerCreateService;
 use App\Services\Logic\Answer\AnswerInfoService;
+use App\Services\Logic\Answer\CommentListService;
 
 class AnswerService extends BaseService
 {
@@ -36,6 +37,14 @@ class AnswerService extends BaseService
         $answer = $service->handle($answer->id);
 
         return ['answer' => $answer];
+    }
+
+    public function getComments($id, $params)
+    {
+        $service = new CommentListService();
+
+        $pager = $service->handle($id, $params);
+        return $pager;
     }
 
 }
