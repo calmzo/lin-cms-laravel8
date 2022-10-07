@@ -2,7 +2,7 @@
 
 use Illuminate\Pagination\LengthAwarePaginator;
 use Larva\Ip2Region\Ip2Region;
-
+use App\Lib\Purifier as HtmlPurifier;
 /**
  * 权限数组格式化函数
  * @param array $permissions
@@ -272,7 +272,7 @@ function static_path($path = '')
  */
 function cache_path($path = '')
 {
-    return storage_path('cache') . trim_path($path);
+    return storage_path('framework/cache') . trim_path($path);
 }
 
 /**
@@ -414,3 +414,28 @@ function kg_json_encode($data)
 
     return json_encode($data, $options);
 }
+
+/**
+ * 获取字符长度
+ *
+ * @param string $str
+ * @return int
+ */
+function kg_strlen($str)
+{
+    return mb_strlen($str, 'utf-8');
+}
+
+/**
+ * 清理html内容
+ *
+ * @param string $content
+ * @return string
+ */
+function kg_clean_html($content)
+{
+    $purifier = new HtmlPurifier();
+
+    return $purifier->clean($content);
+}
+
