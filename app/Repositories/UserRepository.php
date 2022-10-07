@@ -2,8 +2,10 @@
 
 namespace App\Repositories;
 
+use App\Enums\AnswerEnums;
 use App\Enums\ArticleEnums;
 use App\Enums\QuestionEnums;
+use App\Models\Answer;
 use App\Models\Article;
 use App\Models\Notification;
 use App\Models\Question;
@@ -69,5 +71,11 @@ class UserRepository extends BaseRepository
     public function countQuestions($userId)
     {
         return Question::query()->where('user_id', $userId)->where('published', QuestionEnums::PUBLISH_APPROVED)->count();
+    }
+
+    public function countAnswers($userId)
+    {
+        return Answer::query()->where('user_id', $userId)->where('published', AnswerEnums::PUBLISH_APPROVED)->count();
+
     }
 }

@@ -1,16 +1,12 @@
 <?php
-/**
- * @copyright Copyright (c) 2021 深圳市酷瓜软件有限公司
- * @license https://opensource.org/licenses/GPL-2.0
- * @link https://www.koogua.com
- */
 
 namespace App\Services\Logic\Answer;
 
-use App\Models\Answer as AnswerModel;
-use App\Models\User as UserModel;
-use App\Traits\Client as ClientTrait;
-use App\Validators\Answer as AnswerValidator;
+use App\Enums\AnswerEnums;
+use App\Models\Answer;
+use App\Models\User;
+use App\Traits\ClientTrait;
+use App\Validators\AnswerValidator;
 
 trait AnswerDataTrait
 {
@@ -25,24 +21,23 @@ trait AnswerDataTrait
         $data['client_ip'] = $this->getClientIp();
 
         $validator = new AnswerValidator();
-
         $data['content'] = $validator->checkContent($post['content']);
 
         return $data;
     }
 
-    protected function getPublishStatus(UserModel $user)
+    protected function getPublishStatus(User $user)
     {
-        return $user->answer_count > 2 ? AnswerModel::PUBLISH_APPROVED : AnswerModel::PUBLISH_PENDING;
+        return $user->answer_count > 2 ? AnswerEnums::PUBLISH_APPROVED : AnswerEnums::PUBLISH_PENDING;
     }
 
-    protected function saveDynamicAttrs(AnswerModel $answer)
+    protected function saveDynamicAttrs(Answer $answer)
     {
         $answer->cover = kg_parse_first_content_image($answer->content);
 
         $answer->summary = kg_parse_summary($answer->content);
 
-        $answer->update();
+        $answer->save();
     }
 
 }

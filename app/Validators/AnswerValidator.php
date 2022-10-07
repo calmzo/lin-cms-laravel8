@@ -3,10 +3,15 @@
 namespace App\Validators;
 
 use App\Caches\MaxAnswerIdCache;
+use App\Enums\AnswerEnums;
+use App\Enums\ReasonEnums;
 use App\Exceptions\BadRequestException;
-use App\Models\Answer;
 use App\Repositories\AnswerRepository;
+use App\Repositories\QuestionRepository;
 use App\Utils\CodeResponse;
+use App\Models\Question;
+use App\Models\Answer;
+use App\Models\User;
 
 class AnswerValidator extends BaseValidator
 {
@@ -46,18 +51,15 @@ class AnswerValidator extends BaseValidator
         return $validator->checkQuestion($id);
     }
 
-    public function checkContent($content)
+    public function checkContent($value)
     {
-        $value = $this->filter->sanitize($content, ['trim']);
-
         $length = kg_strlen($value);
-
         if ($length < 10) {
-            throw new BadRequestException('answer.content_too_short');
+            throw new BadRequestException(CodeResponse::NOT_FOUND_EXCEPTION, 'answer.content_too_short');
         }
 
         if ($length > 30000) {
-            throw new BadRequestException('answer.content_too_long');
+            throw new BadRequestException(CodeResponse::NOT_FOUND_EXCEPTION, 'answer.content_too_long');
         }
 
         return kg_clean_html($value);
@@ -65,7 +67,7 @@ class AnswerValidator extends BaseValidator
 
     public function checkPublishStatus($status)
     {
-        if (!array_key_exists($status, AnswerModel::publishTypes())) {
+        if (!array_key_exists($status, AnswerEnums::publishTypes())) {
             throw new BadRequestException('answer.invalid_publish_status');
         }
 
@@ -74,33 +76,33 @@ class AnswerValidator extends BaseValidator
 
     public function checkRejectReason($reason)
     {
-        if (!array_key_exists($reason, ReasonModel::answerRejectOptions())) {
+        if (!array_key_exists($reason, ReasonEnums::answerRejectOptions())) {
             throw new BadRequestException('answer.invalid_reject_reason');
         }
     }
 
-    public function checkIfAllowAnswer(QuestionModel $question, UserModel $user)
+    public function checkIfAllowAnswer(Question $question, User $user)
     {
         $allowed = true;
 
-        $questionRepo = new QuestionRepo();
+        $questionRepo = new QuestionRepository();
 
         $answers = $questionRepo->findUserAnswers($question->id, $user->id);
 
-        if ($answers->count() > 0) {
-            $allowed = false;
-        }
-
-        if ($question->closed == 1 || $question->solved == 1) {
-            $allowed = false;
-        }
+//        if ($answers->count() > 0) {
+//            $allowed = false;
+//        }
+//
+//        if ($question->closed == 1 || $question->solved == 1) {
+//            $allowed = false;
+//        }
 
         if (!$allowed) {
-            throw new BadRequestException('answer.post_not_allowed');
+            throw new BadRequestException(CodeResponse::NOT_FOUND_EXCEPTION, 'answer.post_not_allowed');
         }
     }
 
-    public function checkIfAllowEdit(AnswerModel $answer)
+    public function checkIfAllowEdit(Answer $answer)
     {
         if ($answer->accepted == 1) {
             throw new BadRequestException('answer.edit_not_allowed');

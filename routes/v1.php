@@ -242,4 +242,5 @@ Route::prefix('course')->group(function () {
 Route::prefix('answer')->group(function () {
     //
     Route::get('{id}/info', [AnswerController::class, 'getAnswer']);
+    Route::post('create', [AnswerController::class, 'createAnswer']);
 });

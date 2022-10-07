@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Enums\AnswerEnums;
 use App\Exceptions\NotFoundException;
+use App\Services\Logic\Answer\AnswerCreateService;
 use App\Services\Logic\Answer\AnswerInfoService;
 
 class AnswerService extends BaseService
@@ -20,6 +21,19 @@ class AnswerService extends BaseService
         if (!$approved && !$owned) {
             throw new NotFoundException();
         }
+
+        return ['answer' => $answer];
+    }
+
+    public function createAnswer($params)
+    {
+        $service = new AnswerCreateService();
+
+        $answer = $service->handle($params);
+
+        $service = new AnswerInfoService();
+
+        $answer = $service->handle($answer->id);
 
         return ['answer' => $answer];
     }
