@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Enums\AnswerEnums;
 use App\Exceptions\NotFoundException;
+use App\Services\Logic\Answer\AnswerAcceptService;
 use App\Services\Logic\Answer\AnswerCreateService;
 use App\Services\Logic\Answer\AnswerDeleteService;
 use App\Services\Logic\Answer\AnswerInfoService;
@@ -65,6 +66,16 @@ class AnswerService extends BaseService
         $service->handle($id);
 
         return true;
+    }
+
+    public function acceptAnswer($id)
+    {
+        $service = new AnswerAcceptService();
+
+        $data = $service->handle($id);
+        $msg = $data['action'] == 'do' ? '采纳成功' : '取消采纳成功';
+
+        return ['data' => $data, 'msg' => $msg];
     }
 
 }

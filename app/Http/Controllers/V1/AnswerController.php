@@ -50,4 +50,11 @@ class AnswerController extends BaseController
         return $this->success();
     }
 
+    public function acceptAnswer($id)
+    {
+        $service = new AnswerService();
+        $res = $service->acceptAnswer($id);
+        return $this->success($res);
+    }
+
 }
