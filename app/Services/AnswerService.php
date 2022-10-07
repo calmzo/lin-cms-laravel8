@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Enums\AnswerEnums;
 use App\Exceptions\NotFoundException;
 use App\Services\Logic\Answer\AnswerCreateService;
+use App\Services\Logic\Answer\AnswerDeleteService;
 use App\Services\Logic\Answer\AnswerInfoService;
 use App\Services\Logic\Answer\AnswerUpdateService;
 use App\Services\Logic\Answer\CommentListService;
@@ -55,6 +56,15 @@ class AnswerService extends BaseService
 
         $pager = $service->handle($id, $params);
         return $pager;
+    }
+
+    public function deleteAnswer($id)
+    {
+        $service = new AnswerDeleteService();
+
+        $service->handle($id);
+
+        return true;
     }
 
 }

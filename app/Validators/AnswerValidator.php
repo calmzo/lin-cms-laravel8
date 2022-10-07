@@ -116,10 +116,10 @@ class AnswerValidator extends BaseValidator
         }
     }
 
-    public function checkIfAllowDelete(AnswerModel $answer)
+    public function checkIfAllowDelete(Answer $answer)
     {
         if ($answer->accepted == 1) {
-            throw new BadRequestException('answer.delete_not_allowed');
+            throw new BadRequestException(CodeResponse::NOT_FOUND_EXCEPTION, 'answer.delete_not_allowed');
         }
     }
 

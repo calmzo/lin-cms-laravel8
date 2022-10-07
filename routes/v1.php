@@ -245,5 +245,6 @@ Route::prefix('answer')->group(function () {
     Route::post('create', [AnswerController::class, 'createAnswer']);
     Route::get('{id}/comments', [AnswerController::class, 'getComments']);
     Route::put('{id}/update', [AnswerController::class, 'updateAnswer']);
+    Route::delete('{id}/delete', [AnswerController::class, 'deleteAnswer']);
 
 });

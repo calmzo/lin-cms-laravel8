@@ -43,4 +43,11 @@ class AnswerController extends BaseController
         return $this->success($answer);
     }
 
+    public function deleteAnswer($id)
+    {
+        $service = new AnswerService();
+        $service->deleteAnswer($id);
+        return $this->success();
+    }
+
 }
