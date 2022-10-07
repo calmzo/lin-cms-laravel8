@@ -6,6 +6,7 @@ use App\Enums\AnswerEnums;
 use App\Exceptions\NotFoundException;
 use App\Services\Logic\Answer\AnswerCreateService;
 use App\Services\Logic\Answer\AnswerInfoService;
+use App\Services\Logic\Answer\AnswerUpdateService;
 use App\Services\Logic\Answer\CommentListService;
 
 class AnswerService extends BaseService
@@ -35,6 +36,15 @@ class AnswerService extends BaseService
         $service = new AnswerInfoService();
 
         $answer = $service->handle($answer->id);
+
+        return ['answer' => $answer];
+    }
+
+    public function updateAnswer($id, $params)
+    {
+        $service = new AnswerUpdateService();
+
+        $answer = $service->handle($id, $params);
 
         return ['answer' => $answer];
     }

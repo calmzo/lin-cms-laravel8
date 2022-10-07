@@ -105,14 +105,14 @@ class AnswerValidator extends BaseValidator
     public function checkIfAllowEdit(Answer $answer)
     {
         if ($answer->accepted == 1) {
-            throw new BadRequestException('answer.edit_not_allowed');
+            throw new BadRequestException(CodeResponse::NOT_FOUND_EXCEPTION, 'answer.edit_not_allowed');
         }
 
-        $case1 = $answer->published == AnswerModel::PUBLISH_APPROVED;
-        $case2 = time() - $answer->create_time > 3600;
+        $case1 = $answer->published == AnswerEnums::PUBLISH_APPROVED;
+        $case2 = time() - strtotime($answer->create_time) > 3600;
 
         if ($case1 && $case2) {
-            throw new BadRequestException('answer.edit_not_allowed');
+            throw new BadRequestException(CodeResponse::NOT_FOUND_EXCEPTION, 'answer.edit_not_allowed');
         }
     }
 

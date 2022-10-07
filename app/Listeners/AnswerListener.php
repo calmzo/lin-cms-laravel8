@@ -23,12 +23,21 @@ class AnswerListener
         Log::channel('answer')->info('监听答案创建事件');
     }
 
+    public function afterUpdate($event)
+    {
+        Log::channel('answer')->info('监听答案修改事件');
+    }
+
 
     public function subscribe($events)
     {
         $events->listen(
             'App\Events\AnswerAfterCreateEvent',
             [AnswerListener::class, 'afterCreate']
+        );
+        $events->listen(
+            'App\Events\AnswerAfterUpdateEvent',
+            [AnswerListener::class, 'afterUpdate']
         );
     }
 }

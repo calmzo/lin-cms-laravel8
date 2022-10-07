@@ -26,6 +26,14 @@ class AnswerController extends BaseController
         return $this->success($answer);
     }
 
+    public function updateAnswer($id, AnswerFormValidate $answerFormValidate)
+    {
+        $params = $answerFormValidate->check();
+        $service = new AnswerService();
+        $answer = $service->updateAnswer($id, $params);
+        return $this->success($answer);
+    }
+
 
     public function getComments($id, Request $request)
     {

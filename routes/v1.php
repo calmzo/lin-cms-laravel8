@@ -244,4 +244,6 @@ Route::prefix('answer')->group(function () {
     Route::get('{id}/info', [AnswerController::class, 'getAnswer']);
     Route::post('create', [AnswerController::class, 'createAnswer']);
     Route::get('{id}/comments', [AnswerController::class, 'getComments']);
+    Route::put('{id}/update', [AnswerController::class, 'updateAnswer']);
+
 });
