@@ -13,4 +13,10 @@ class AnswerLikeRepository extends BaseRepository
             ->get();
     }
 
+    public function findAnswerLike($answerId, $userId)
+    {
+        return AnswerLike::withTrashed()->where('answer_id', $answerId)->where('user_id', $userId)->first();
+    }
+
+
 }

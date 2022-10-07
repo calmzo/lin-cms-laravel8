@@ -19,6 +19,7 @@ use App\Http\Controllers\V1\IndexController;
 use App\Http\Controllers\V1\LiveController;
 use App\Http\Controllers\V1\HelpController;
 use App\Http\Controllers\V1\CourseController;
+use App\Http\Controllers\V1\AnswerController;
 
 /*
 |--------------------------------------------------------------------------
@@ -236,4 +237,9 @@ Route::prefix('course')->group(function () {
     Route::get('{id}/consults', [CourseController::class, 'getCourseConsults']);
     Route::get('{id}/reviews', [CourseController::class, 'getCourseReviews']);
     Route::post('{id}/favorite', [CourseController::class, 'favoriteCourse']);
+});
+
+Route::prefix('answer')->group(function () {
+    //
+    Route::get('{id}/info', [AnswerController::class, 'getAnswer']);
 });
