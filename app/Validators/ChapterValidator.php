@@ -85,7 +85,6 @@ class ChapterValidator extends BaseValidator
         $chapterRepo = new ChapterRepository();
 
         $chapter = $chapterRepo->findById($id);
-
         if (!$chapter) {
             throw new BadRequestException(CodeResponse::NOT_FOUND_EXCEPTION, 'chapter.not_found');
         }
@@ -101,9 +100,9 @@ class ChapterValidator extends BaseValidator
 
         $maxId = $maxIdCache->get();
 
-        if ($id < 1 || $id > $maxId) {
-            throw new BadRequestException(CodeResponse::NOT_FOUND_EXCEPTION, 'chapter.not_found');
-        }
+//        if ($id < 1 || $id > $maxId) {
+//            throw new BadRequestException(CodeResponse::NOT_FOUND_EXCEPTION, 'chapter.not_found');
+//        }
     }
 
     public function checkCourse($id)

@@ -105,7 +105,6 @@ class CommonValidator
     public static function date($str, $format = 'Y-m-d')
     {
         $date = date($format, strtotime($str));
-
         return $str == $date;
     }
 

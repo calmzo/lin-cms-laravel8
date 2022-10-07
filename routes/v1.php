@@ -20,6 +20,7 @@ use App\Http\Controllers\V1\LiveController;
 use App\Http\Controllers\V1\HelpController;
 use App\Http\Controllers\V1\CourseController;
 use App\Http\Controllers\V1\AnswerController;
+use App\Http\Controllers\V1\ChapterController;
 
 /*
 |--------------------------------------------------------------------------
@@ -248,5 +249,16 @@ Route::prefix('answer')->group(function () {
     Route::delete('{id}/delete', [AnswerController::class, 'deleteAnswer']);
     Route::post('{id}/accept', [AnswerController::class, 'acceptAnswer']);
     Route::post('{id}/like', [AnswerController::class, 'likeAnswer']);
+
+});
+
+Route::prefix('chapter')->group(function () {
+    //
+    Route::get('{id}/comments', [ChapterController::class, 'getComments']);
+    Route::get('{id}/consults', [ChapterController::class, 'getConsults']);
+    Route::get('{id}/resources', [ChapterController::class, 'getResources']);
+    Route::get('{id}/info', [ChapterController::class, 'getChapter']);
+    Route::post('{id}/like', [ChapterController::class, 'likeChapter']);
+    Route::post('{id}/learning', [ChapterController::class, 'learningChapter']);
 
 });
