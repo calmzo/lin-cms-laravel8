@@ -28,6 +28,11 @@ class AnswerListener
         Log::channel('answer')->info('监听答案修改事件');
     }
 
+    public function afterDelete($event)
+    {
+        Log::channel('answer')->info('监听答案删除事件');
+    }
+
 
     public function subscribe($events)
     {
@@ -38,6 +43,10 @@ class AnswerListener
         $events->listen(
             'App\Events\AnswerAfterUpdateEvent',
             [AnswerListener::class, 'afterUpdate']
+        );
+        $events->listen(
+            'App\Events\AnswerAfterDeleteEvent',
+            [AnswerListener::class, 'afterDelete']
         );
     }
 }
