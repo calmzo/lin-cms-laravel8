@@ -43,6 +43,16 @@ class AnswerListener
         Log::channel('answer')->info('监听答案取消采纳事件');
     }
 
+    public function afterLike($event)
+    {
+        Log::channel('answer')->info('监听答案点赞事件');
+    }
+
+    public function afterUndoLike($event)
+    {
+        Log::channel('answer')->info('监听答案取消点赞事件');
+    }
+
 
     public function subscribe($events)
     {
@@ -61,6 +71,14 @@ class AnswerListener
         $events->listen(
             'App\Events\AnswerAfterUndoAcceptEvent',
             [AnswerListener::class, 'afterUndoAccept']
+        );
+        $events->listen(
+            'App\Events\AnswerAfterLikeEvent',
+            [AnswerListener::class, 'afterLike']
+        );
+        $events->listen(
+            'App\Events\AnswerAfterUndoLikeEvent',
+            [AnswerListener::class, 'afterUndoLike']
         );
     }
 }
