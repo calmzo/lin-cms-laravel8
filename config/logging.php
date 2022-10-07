@@ -205,6 +205,12 @@ return [
             'level' => 'debug',
             'days' => 14,
         ],
+        'live' => [
+            'driver' => 'daily',
+            'path' => storage_path('logs/live/live.log'),
+            'level' => 'debug',
+            'days' => 14,
+        ],
     ],
 
 ];
