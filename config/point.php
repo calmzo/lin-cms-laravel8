@@ -35,6 +35,12 @@ return [
             'limit' => 1
         ],
 
+        'answer_post' => [
+            'enabled' => 1,
+            'point' => 600,
+            'limit' => 1
+        ],
+
 
     ],
 ];
