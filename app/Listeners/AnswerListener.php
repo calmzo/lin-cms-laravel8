@@ -33,6 +33,16 @@ class AnswerListener
         Log::channel('answer')->info('监听答案删除事件');
     }
 
+    public function afterAccept($event)
+    {
+        Log::channel('answer')->info('监听答案采纳事件');
+    }
+
+    public function afterUndoAccept($event)
+    {
+        Log::channel('answer')->info('监听答案取消采纳事件');
+    }
+
 
     public function subscribe($events)
     {
@@ -45,8 +55,12 @@ class AnswerListener
             [AnswerListener::class, 'afterUpdate']
         );
         $events->listen(
-            'App\Events\AnswerAfterDeleteEvent',
-            [AnswerListener::class, 'afterDelete']
+            'App\Events\AnswerAfterAcceptEvent',
+            [AnswerListener::class, 'afterAccept']
+        );
+        $events->listen(
+            'App\Events\AnswerAfterUndoAcceptEvent',
+            [AnswerListener::class, 'afterUndoAccept']
         );
     }
 }
