@@ -49,7 +49,7 @@ class AnswerCreateService extends LogicService
 
             $question->last_answer_id = $answer->id;
             $question->last_replier_id = $answer->user_id;
-            $question->last_reply_time = $answer->create_time;
+            $question->last_reply_time = strtotime($answer->create_time);
 
             $question->save();
 
