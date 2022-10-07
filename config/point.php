@@ -47,6 +47,12 @@ return [
             'limit' => 1
         ],
 
+        'answer_liked' => [
+            'enabled' => 1,
+            'point' => 800,
+            'limit' => 1
+        ],
+
 
     ],
 ];
