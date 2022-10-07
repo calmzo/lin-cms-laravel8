@@ -247,5 +247,6 @@ Route::prefix('answer')->group(function () {
     Route::put('{id}/update', [AnswerController::class, 'updateAnswer']);
     Route::delete('{id}/delete', [AnswerController::class, 'deleteAnswer']);
     Route::post('{id}/accept', [AnswerController::class, 'acceptAnswer']);
+    Route::post('{id}/like', [AnswerController::class, 'likeAnswer']);
 
 });

@@ -57,4 +57,12 @@ class AnswerController extends BaseController
         return $this->success($res);
     }
 
+
+    public function likeAnswer($id)
+    {
+        $service = new AnswerService();
+        $res = $service->likeAnswer($id);
+        return $this->success($res);
+    }
+
 }

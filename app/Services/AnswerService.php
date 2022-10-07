@@ -8,6 +8,7 @@ use App\Services\Logic\Answer\AnswerAcceptService;
 use App\Services\Logic\Answer\AnswerCreateService;
 use App\Services\Logic\Answer\AnswerDeleteService;
 use App\Services\Logic\Answer\AnswerInfoService;
+use App\Services\Logic\Answer\AnswerLikeService;
 use App\Services\Logic\Answer\AnswerUpdateService;
 use App\Services\Logic\Answer\CommentListService;
 
@@ -74,6 +75,17 @@ class AnswerService extends BaseService
 
         $data = $service->handle($id);
         $msg = $data['action'] == 'do' ? '采纳成功' : '取消采纳成功';
+
+        return ['data' => $data, 'msg' => $msg];
+    }
+
+    public function likeAnswer($id)
+    {
+        $service = new AnswerLikeService();
+
+        $data = $service->handle($id);
+
+        $msg = $data['action'] == 'do' ? '点赞成功' : '取消点赞成功';
 
         return ['data' => $data, 'msg' => $msg];
     }

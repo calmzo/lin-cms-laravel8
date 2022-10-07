@@ -4,5 +4,8 @@ namespace App\Models;
 
 class AnswerLike extends BaseModel
 {
-    public $fillable = [];
+    public $fillable = [
+        'answer_id',
+        'user_id',
+    ];
 }
