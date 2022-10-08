@@ -80,6 +80,10 @@ class UserDailyCounterListener
     {
         $this->counter->hIncrBy($event->user->id, 'chapter_like_count');
     }
+    public function incrCommentCount($event)
+    {
+        $this->counter->hIncrBy($event->user->id, 'comment_count');
+    }
 
 
     /**
@@ -136,6 +140,10 @@ class UserDailyCounterListener
         $events->listen(
             'App\Events\UserDailyCounterIncrChapterLikeCountEvent',
             [UserDailyCounterListener::class, 'incrChapterLikeCount']
+        );
+        $events->listen(
+            'App\Events\UserDailyCounterIncrCommentCountEvent',
+            [UserDailyCounterListener::class, 'incrCommentCount']
         );
     }
 }
