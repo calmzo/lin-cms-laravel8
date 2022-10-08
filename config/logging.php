@@ -211,6 +211,12 @@ return [
             'level' => 'debug',
             'days' => 14,
         ],
+        'comment' => [
+            'driver' => 'daily',
+            'path' => storage_path('logs/comment/comment.log'),
+            'level' => 'debug',
+            'days' => 14,
+        ],
     ],
 
 ];
