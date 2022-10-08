@@ -3,6 +3,7 @@
 namespace App\Validators;
 
 use App\Enums\CommentEnums;
+use App\Enums\ReasonEnums;
 use App\Exceptions\BadRequestException;
 use App\Repositories\CommentRepository;
 use App\Repositories\UserRepository;
@@ -79,16 +80,16 @@ class CommentValidator extends BaseValidator
 
     public function checkContent($content)
     {
-        $value = $this->filter->sanitize($content, ['trim', 'string']);
+        $value = $content;
 
         $length = kg_strlen($value);
 
         if ($length < 1) {
-            throw new BadRequestException('comment.content_too_short');
+            throw new BadRequestException(CodeResponse::NOT_FOUND_EXCEPTION, 'comment.content_too_short');
         }
 
         if ($length > 1000) {
-            throw new BadRequestException('comment.content_too_long');
+            throw new BadRequestException(CodeResponse::NOT_FOUND_EXCEPTION, 'comment.content_too_long');
         }
 
         return $value;
@@ -96,15 +97,15 @@ class CommentValidator extends BaseValidator
 
     public function checkRejectReason($reason)
     {
-        if (!array_key_exists($reason, ReasonModel::commentRejectOptions())) {
-            throw new BadRequestException('comment.invalid_reject_reason');
+        if (!array_key_exists($reason, ReasonEnums::commentRejectOptions())) {
+            throw new BadRequestException(CodeResponse::NOT_FOUND_EXCEPTION, 'comment.invalid_reject_reason');
         }
     }
 
     public function checkPublishStatus($status)
     {
-        if (!array_key_exists($status, CommentModel::publishTypes())) {
-            throw new BadRequestException('comment.invalid_publish_status');
+        if (!array_key_exists($status, CommentEnums::publishTypes())) {
+            throw new BadRequestException(CodeResponse::NOT_FOUND_EXCEPTION, 'comment.invalid_publish_status');
         }
 
         return $status;

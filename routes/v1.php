@@ -21,6 +21,7 @@ use App\Http\Controllers\V1\HelpController;
 use App\Http\Controllers\V1\CourseController;
 use App\Http\Controllers\V1\AnswerController;
 use App\Http\Controllers\V1\ChapterController;
+use App\Http\Controllers\V1\CommentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -260,5 +261,13 @@ Route::prefix('chapter')->group(function () {
     Route::get('{id}/info', [ChapterController::class, 'getChapter']);
     Route::post('{id}/like', [ChapterController::class, 'likeChapter']);
     Route::post('{id}/learning', [ChapterController::class, 'learningChapter']);
+
+});
+
+Route::prefix('comment')->group(function () {
+    //
+    Route::get('{id}/replies', [CommentController::class, 'getReplies']);
+    Route::get('{id}/info', [CommentController::class, 'getComment']);
+    Route::post('create', [CommentController::class, 'createComment']);
 
 });
