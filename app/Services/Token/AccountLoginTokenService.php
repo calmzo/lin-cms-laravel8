@@ -2,6 +2,7 @@
 
 namespace App\Services\Token;
 
+use App\Repositories\UserRepository;
 use Illuminate\Support\Facades\Auth;
 
 class AccountLoginTokenService
@@ -30,6 +31,12 @@ class AccountLoginTokenService
     public static function userId()
     {
         return Auth::guard('api')->user()->getAuthIdentifier();
+    }
+
+    public static function userModel()
+    {
+        $uid = self::userId();
+        return (new UserRepository())->findById($uid);
     }
 
     /**
