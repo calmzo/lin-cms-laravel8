@@ -52,6 +52,11 @@ return [
             'point' => 800,
             'limit' => 1
         ],
+        'comment_post' => [
+            'enabled' => 1,
+            'point' => 900,
+            'limit' => 1
+        ],
 
 
     ],
