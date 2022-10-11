@@ -24,6 +24,7 @@ use App\Http\Controllers\V1\ChapterController;
 use App\Http\Controllers\V1\CommentController;
 use App\Http\Controllers\V1\FlashSaleController;
 use App\Http\Controllers\V1\PageController;
+use App\Http\Controllers\V1\RefundController;
 
 /*
 |--------------------------------------------------------------------------
@@ -287,5 +288,11 @@ Route::prefix('flash/sale')->group(function () {
 Route::prefix('page')->group(function () {
     //
     Route::get('{id}/info', [PageController::class, 'getPage']);
+
+});
+
+Route::prefix('refund')->group(function () {
+    //
+    Route::get('confirm', [RefundController::class, 'getConfirm']);
 
 });

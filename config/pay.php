@@ -24,6 +24,7 @@ return [
             // 选填-默认为正常模式。可选为： MODE_NORMAL, MODE_SANDBOX, MODE_SERVICE
             'mode' => env('APP_ENV') == 'prod' ? Pay::MODE_NORMAL : Pay::MODE_SANDBOX,
         ],
+        'service_rate' => 5
     ],
     'wechat' => [
         'default' => [
@@ -62,6 +63,7 @@ return [
             // 选填-默认为正常模式。可选为： MODE_NORMAL, MODE_SERVICE
             'mode' => Pay::MODE_NORMAL,
         ],
+        'service_rate' => 5
     ],
     'http' => [ // optional
         'timeout' => 5.0,

@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Models\Order;
+use App\Models\Trade;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 class OrderRepository extends BaseRepository
@@ -80,6 +81,11 @@ class OrderRepository extends BaseRepository
         }
 
         return $query->paginate($count, ['*'], 'page', $page);
+    }
+
+    public function findLastTrade($orderId)
+    {
+        return Trade::query()->where('order_id', $orderId)->latest('id')->first();
     }
 
 }
