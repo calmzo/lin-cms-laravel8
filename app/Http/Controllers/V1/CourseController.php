@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 class CourseController extends BaseController
 {
     //
-    protected $only = ['getCourse', 'favoriteCourse'];
+    protected $only = ['getCourse', 'favoriteCourse', 'favoriteCourse'];
 
     public function getCourses(Request $request)
     {

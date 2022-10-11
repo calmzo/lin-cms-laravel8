@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 class FlashSaleController extends BaseController
 {
     //
-    protected $only = [];
+    protected $only = ['createOrder'];
 
     public function getFlashSales()
     {
