@@ -85,6 +85,11 @@ class UserDailyCounterListener
         $this->counter->hIncrBy($event->user->id, 'comment_count');
     }
 
+    public function incrCommentLikeCount($event)
+    {
+        $this->counter->hIncrBy($event->user->id, 'comment_like_count');
+    }
+
 
     /**
      * 为事件订阅者注册监听器
@@ -144,6 +149,10 @@ class UserDailyCounterListener
         $events->listen(
             'App\Events\UserDailyCounterIncrCommentCountEvent',
             [UserDailyCounterListener::class, 'incrCommentCount']
+        );
+        $events->listen(
+            'App\Events\UserDailyCounterIncrCommentLikeCountEvent',
+            [UserDailyCounterListener::class, 'incrCommentLikeCount']
         );
     }
 }
