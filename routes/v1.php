@@ -270,5 +270,6 @@ Route::prefix('comment')->group(function () {
     Route::get('{id}/info', [CommentController::class, 'getComment']);
     Route::post('create', [CommentController::class, 'createComment']);
     Route::post('{id}/reply', [CommentController::class, 'replyComment']);
+    Route::delete('{id}/delete', [CommentController::class, 'deleteComment']);
 
 });

@@ -28,6 +28,11 @@ class CommentListener
         Log::channel('comment')->info('监听评论回复事件');
     }
 
+    public function afterDelete($event)
+    {
+        Log::channel('comment')->info('监听评论删除事件');
+    }
+
 
     public function subscribe($events)
     {
@@ -39,6 +44,11 @@ class CommentListener
         $events->listen(
             'App\Events\CommentAfterReplyEvent',
             [CommentListener::class, 'afterReply']
+        );
+
+        $events->listen(
+            'App\Events\CommentAfterDeleteEvent',
+            [CommentListener::class, 'afterDelete']
         );
     }
 }

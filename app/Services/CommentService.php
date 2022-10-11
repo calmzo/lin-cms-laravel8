@@ -4,6 +4,7 @@ namespace App\Services;
 
 
 use App\Services\Logic\Comment\CommentCreateService;
+use App\Services\Logic\Comment\CommentDeleteService;
 use App\Services\Logic\Comment\CommentInfoService;
 use App\Services\Logic\Comment\CommentListService;
 use App\Services\Logic\Comment\CommentReplyService;
@@ -64,6 +65,15 @@ class CommentService extends BaseService
         $comment = $service->handle($comment->id);
 
         return ['comment' => $comment];
+    }
+
+    public function deleteComment($id)
+    {
+        $service = new CommentDeleteService();
+
+        $service->handle($id);
+
+        return true;
     }
 
 

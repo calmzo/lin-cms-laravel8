@@ -1,17 +1,14 @@
 <?php
-/**
- * @copyright Copyright (c) 2021 深圳市酷瓜软件有限公司
- * @license https://opensource.org/licenses/GPL-2.0
- * @link https://www.koogua.com
- */
 
 namespace App\Services\Logic\Comment;
 
+use App\Events\CommentAfterDeleteEvent;
 use App\Services\Logic\CommentTrait;
-use App\Services\Logic\Service as LogicService;
-use App\Validators\Comment as CommentValidator;
+use App\Services\Logic\LogicService;
+use App\Services\Token\AccountLoginTokenService;
+use App\Validators\CommentValidator;
 
-class CommentDelete extends LogicService
+class CommentDeleteService extends LogicService
 {
 
     use CommentTrait;
@@ -21,15 +18,13 @@ class CommentDelete extends LogicService
     {
         $comment = $this->checkComment($id);
 
-        $user = $this->getLoginUser();
+        $user = AccountLoginTokenService::userModel();
 
         $validator = new CommentValidator();
 
-        $validator->checkOwner($user->id, $comment->owner_id);
+        $validator->checkOwner($user->id, $comment->user_id);
 
-        $comment->deleted = 1;
-
-        $comment->update();
+        $comment->delete();
 
         if ($comment->parent_id > 0) {
             $parent = $validator->checkParent($comment->parent_id);
@@ -40,8 +35,7 @@ class CommentDelete extends LogicService
 
         $this->decrItemCommentCount($item);
         $this->decrUserCommentCount($user);
-
-        $this->eventsManager->fire('Comment:afterDelete', $this, $comment);
+        CommentAfterDeleteEvent::dispatch($comment);
     }
 
 }

@@ -42,4 +42,11 @@ class CommentController extends BaseController
         return $this->success($res);
     }
 
+    public function deleteComment($id)
+    {
+        $service = new CommentService();
+        $service->deleteComment($id);
+        return $this->success();
+    }
+
 }
