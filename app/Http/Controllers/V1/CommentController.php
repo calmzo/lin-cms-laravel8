@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 class CommentController extends BaseController
 {
     //
-    protected $only = ['getComment'];
+    protected $except = ['getReplies'];
 
     public function getReplies($id, Request $request)
     {
@@ -32,6 +32,14 @@ class CommentController extends BaseController
         $service = new CommentService();
         $pager = $service->createComment($params);
         return $this->success($pager);
+    }
+
+    public function replyComment($id, Request $request)
+    {
+        $params = $request->all();
+        $service = new CommentService();
+        $res = $service->replyComment($id, $params);
+        return $this->success($res);
     }
 
 }

@@ -9,8 +9,8 @@ use App\Models\Comment;
 use App\Models\Question;
 use App\Lib\Notice\System\AnswerCommentedNotice;
 use App\Lib\Notice\System\ArticleCommentedNotice;
-use App\Services\Logic\Notice\System\CommentRepliedNotice;
-use App\Services\Logic\Notice\System\QuestionCommentedNotice;
+use App\Lib\Notice\System\CommentRepliedNotice;
+use App\Lib\Notice\System\QuestionCommentedNotice;
 use App\Services\Logic\Point\History\CommentPostPointHistory;
 
 trait AfterCreateTrait

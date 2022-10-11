@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Logic\Notice\System;
+namespace App\Lib\Notice\System;
 
 use App\Enums\NotificationEnums;
 use App\Models\Comment;

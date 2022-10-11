@@ -1,19 +1,17 @@
 <?php
-/**
- * @copyright Copyright (c) 2021 深圳市酷瓜软件有限公司
- * @license https://opensource.org/licenses/GPL-2.0
- * @link https://www.koogua.com
- */
 
 namespace App\Services\Logic\Comment;
 
-use App\Models\Comment as CommentModel;
+use App\Enums\CommentEnums;
+use App\Events\CommentAfterReplyEvent;
+use App\Models\Comment;
 use App\Services\Logic\CommentTrait;
-use App\Services\Logic\Service as LogicService;
-use App\Validators\Comment as CommentValidator;
-use App\Validators\UserLimit as UserLimitValidator;
+use App\Services\Logic\LogicService;
+use App\Services\Token\AccountLoginTokenService;
+use App\Validators\CommentValidator;
+use App\Validators\UserLimitValidator;
 
-class CommentReply extends LogicService
+class CommentReplyService extends LogicService
 {
 
     use AfterCreateTrait;
@@ -21,12 +19,9 @@ class CommentReply extends LogicService
     use CommentTrait;
     use CountTrait;
 
-    public function handle($id)
+    public function handle($id, $post)
     {
-        $post = $this->request->getPost();
-
-        $user = $this->getLoginUser();
-
+        $user = AccountLoginTokenService::userModel();
         $comment = $this->checkComment($id);
 
         $validator = new UserLimitValidator();
@@ -38,11 +33,10 @@ class CommentReply extends LogicService
         $validator = new CommentValidator();
 
         $data = $this->handlePostData($post);
-
         $data['parent_id'] = $parent->id;
         $data['item_id'] = $comment->item_id;
         $data['item_type'] = $comment->item_type;
-        $data['owner_id'] = $user->id;
+        $data['user_id'] = $user->id;
         $data['published'] = $this->getPublishStatus($user);
 
         $item = $validator->checkItem($comment->item_id, $comment->item_type);
@@ -53,16 +47,14 @@ class CommentReply extends LogicService
         if ($comment->parent_id > 0) {
             $parent = $validator->checkParent($comment->parent_id);
             $data['parent_id'] = $parent->id;
-            $data['to_user_id'] = $comment->owner_id;
+            $data['to_user_id'] = $comment->user_id;
         }
 
-        $reply = new CommentModel();
-
-        $reply->create($data);
+        $reply = Comment::query()->create($data);
 
         $this->incrUserDailyCommentCount($user);
 
-        if ($reply->published == CommentModel::PUBLISH_APPROVED) {
+        if ($reply->published == CommentEnums::PUBLISH_APPROVED) {
             $this->incrCommentReplyCount($parent);
             $this->incrItemCommentCount($item);
             $this->incrUserCommentCount($user);
@@ -70,8 +62,7 @@ class CommentReply extends LogicService
             $this->handleCommentPostPoint($reply);
         }
 
-        $this->eventsManager->fire('Comment:afterReply', $this, $reply);
-
+        CommentAfterReplyEvent::dispatch($reply);
         return $reply;
     }
 

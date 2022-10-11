@@ -23,12 +23,22 @@ class CommentListener
         Log::channel('comment')->info('监听评论创建事件');
     }
 
+    public function afterReply($event)
+    {
+        Log::channel('comment')->info('监听评论回复事件');
+    }
+
 
     public function subscribe($events)
     {
         $events->listen(
             'App\Events\CommentAfterCreateEvent',
             [CommentListener::class, 'afterCreate']
+        );
+
+        $events->listen(
+            'App\Events\CommentAfterReplyEvent',
+            [CommentListener::class, 'afterReply']
         );
     }
 }
