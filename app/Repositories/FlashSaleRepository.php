@@ -15,4 +15,10 @@ class FlashSaleRepository extends BaseRepository
             ->get();
     }
 
+    public function findById($id)
+    {
+        return FlashSale::query()->find($id);
+    }
+
+
 }

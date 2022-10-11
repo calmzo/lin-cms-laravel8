@@ -22,6 +22,7 @@ use App\Http\Controllers\V1\CourseController;
 use App\Http\Controllers\V1\AnswerController;
 use App\Http\Controllers\V1\ChapterController;
 use App\Http\Controllers\V1\CommentController;
+use App\Http\Controllers\V1\FlashSaleController;
 
 /*
 |--------------------------------------------------------------------------
@@ -272,5 +273,12 @@ Route::prefix('comment')->group(function () {
     Route::post('{id}/reply', [CommentController::class, 'replyComment']);
     Route::delete('{id}/delete', [CommentController::class, 'deleteComment']);
     Route::post('{id}/like', [CommentController::class, 'likeComment']);
+
+});
+
+Route::prefix('flash/sale')->group(function () {
+    //
+    Route::get('list', [FlashSaleController::class, 'getFlashSales']);
+    Route::post('order', [FlashSaleController::class, 'createOrder']);
 
 });

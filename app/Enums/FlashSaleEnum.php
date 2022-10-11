@@ -15,9 +15,13 @@ class FlashSaleEnum extends BaseEnums
      * @param null $key
      * @return array|mixed|string
      */
-    public static function definition($key = null)
+    public static function itemTypes($key = null)
     {
-        $list = [];
+        $list = [
+            self::ITEM_COURSE => '课程',
+            self::ITEM_PACKAGE => '套餐',
+            self::ITEM_VIP => '会员',
+        ];
         return self::getDesc($list, $key);
     }
 
