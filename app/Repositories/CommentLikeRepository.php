@@ -13,4 +13,9 @@ class CommentLikeRepository extends BaseRepository
             ->where('user_id', $userId)
             ->get();
     }
+
+    public function findCommentLike($commentId, $userId)
+    {
+        return CommentLike::withTrashed()->where('comment_id', $commentId)->where('user_id', $userId)->first();
+    }
 }

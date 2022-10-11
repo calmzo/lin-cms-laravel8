@@ -33,6 +33,16 @@ class CommentListener
         Log::channel('comment')->info('监听评论删除事件');
     }
 
+    public function afterLike($event)
+    {
+        Log::channel('comment')->info('监听评论点赞事件');
+    }
+
+    public function afterUndoLike($event)
+    {
+        Log::channel('comment')->info('监听评论取消点赞事件');
+    }
+
 
     public function subscribe($events)
     {
@@ -50,5 +60,16 @@ class CommentListener
             'App\Events\CommentAfterDeleteEvent',
             [CommentListener::class, 'afterDelete']
         );
+
+        $events->listen(
+            'App\Events\CommentAfterLikeEvent',
+            [CommentListener::class, 'afterLike']
+        );
+
+        $events->listen(
+            'App\Events\CommentAfterUndoLikeEvent',
+            [CommentListener::class, 'afterUndoLike']
+        );
+
     }
 }

@@ -2,10 +2,10 @@
 
 namespace App\Services;
 
-
 use App\Services\Logic\Comment\CommentCreateService;
 use App\Services\Logic\Comment\CommentDeleteService;
 use App\Services\Logic\Comment\CommentInfoService;
+use App\Services\Logic\Comment\CommentLikeService;
 use App\Services\Logic\Comment\CommentListService;
 use App\Services\Logic\Comment\CommentReplyService;
 use App\Services\Logic\Comment\ReplyListService;
@@ -76,5 +76,16 @@ class CommentService extends BaseService
         return true;
     }
 
+
+    public function likeComment($id)
+    {
+        $service = new CommentLikeService();
+
+        $data = $service->handle($id);
+
+        $msg = $data['action'] == 'do' ? '点赞成功' : '取消点赞成功';
+
+        return ['data' => $data, 'msg' => $msg];
+    }
 
 }

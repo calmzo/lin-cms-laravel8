@@ -4,5 +4,7 @@ namespace App\Models;
 
 class CommentLike extends BaseModel
 {
-    public $fillable = [];
+    public $fillable = [
+        'comment_id', 'user_id'
+    ];
 }

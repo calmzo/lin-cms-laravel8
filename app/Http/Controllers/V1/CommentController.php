@@ -49,4 +49,11 @@ class CommentController extends BaseController
         return $this->success();
     }
 
+    public function likeComment($id)
+    {
+        $service = new CommentService();
+        $res = $service->likeComment($id);
+        return $this->success($res);
+    }
+
 }
