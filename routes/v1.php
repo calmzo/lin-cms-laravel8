@@ -23,6 +23,7 @@ use App\Http\Controllers\V1\AnswerController;
 use App\Http\Controllers\V1\ChapterController;
 use App\Http\Controllers\V1\CommentController;
 use App\Http\Controllers\V1\FlashSaleController;
+use App\Http\Controllers\V1\PageController;
 
 /*
 |--------------------------------------------------------------------------
@@ -280,5 +281,11 @@ Route::prefix('flash/sale')->group(function () {
     //
     Route::get('list', [FlashSaleController::class, 'getFlashSales']);
     Route::post('order', [FlashSaleController::class, 'createOrder']);
+
+});
+
+Route::prefix('page')->group(function () {
+    //
+    Route::get('{id}/info', [PageController::class, 'getPage']);
 
 });
