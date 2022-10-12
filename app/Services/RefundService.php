@@ -10,6 +10,7 @@ use App\Repositories\CourseRepository;
 use App\Repositories\CourseUserRepository;
 use App\Repositories\OrderRepository;
 use App\Services\Logic\Refund\RefundConfirmService;
+use App\Services\Logic\Refund\RefundCreateService;
 use App\Services\Logic\Refund\RefundInfoService;
 
 class RefundService extends BaseService
@@ -37,6 +38,21 @@ class RefundService extends BaseService
 
         return ['refund' => $refund];
     }
+
+    public function createRefund()
+    {
+
+        $service = new RefundCreateService();
+
+        $refund = $service->handle();
+
+        $service = new RefundInfoService();
+
+        $refund = $service->handle($refund->sn);
+
+        return ['refund' => $refund];
+    }
+
 
     public function preview(Order $order)
     {

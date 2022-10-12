@@ -28,7 +28,7 @@ class Refund extends BaseModel
         static::created(function ($refund) {
             //更新订单状态
             $status = new RefundStatus();
-            $status->refund = $refund->getAttribute('id');
+            $status->refund_id = $refund->getAttribute('id');
             $status->save();
         });
 

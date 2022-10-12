@@ -2,7 +2,9 @@
 
 namespace App\Repositories;
 
+use App\Enums\OrderEnums;
 use App\Models\Order;
+use App\Models\Refund;
 use App\Models\Trade;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
@@ -83,9 +85,48 @@ class OrderRepository extends BaseRepository
         return $query->paginate($count, ['*'], 'page', $page);
     }
 
+    /**
+     * @param $orderId
+     * @return \Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Model|\Illuminate\Database\Query\Builder|object|null
+     */
     public function findLastTrade($orderId)
     {
         return Trade::query()->where('order_id', $orderId)->latest('id')->first();
     }
 
+    /**
+     * @param $orderId
+     * @return \Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Model|object|null
+     */
+    public function findLastRefund($orderId)
+    {
+        return Refund::query()->where('order_id', $orderId)->orderByDesc('id')->first();
+    }
+
+    public function findUserLastDeliveringOrder($userId, $itemId, $itemType)
+    {
+        $status = OrderEnums::STATUS_DELIVERING;
+
+        return $this->findUserLastStatusOrder($userId, $itemId, $itemType, $status);
+    }
+
+    public function findUserLastStatusOrder($userId, $itemId, $itemType, $status)
+    {
+        return Order::query()
+            ->where('user_id', $userId)
+            ->where('item_id', $itemId)
+            ->where('item_type', $itemType)
+            ->where('status', $status)
+            ->orderByDesc('id')
+            ->first();
+    }
+
+
+
+    public function findUserLastFinishedOrder($userId, $itemId, $itemType)
+    {
+        $status = OrderEnums::STATUS_FINISHED;
+
+        return $this->findUserLastStatusOrder($userId, $itemId, $itemType, $status);
+    }
 }

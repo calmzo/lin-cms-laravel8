@@ -45,11 +45,11 @@ class RefundValidator extends BaseValidator
     public function checkAmount($orderAmount, $refundAmount)
     {
         if ($orderAmount <= 0 || $refundAmount <= 0) {
-            throw new BadRequestException('refund.invalid_amount');
+            throw new BadRequestException(CodeResponse::NOT_FOUND_EXCEPTION, 'refund.invalid_amount');
         }
 
         if ($refundAmount > $orderAmount) {
-            throw new BadRequestException('refund.invalid_amount');
+            throw new BadRequestException(CodeResponse::NOT_FOUND_EXCEPTION, 'refund.invalid_amount');
         }
 
         return (float)$refundAmount;
@@ -82,16 +82,16 @@ class RefundValidator extends BaseValidator
 
     public function checkApplyNote($note)
     {
-        $value = $this->filter->sanitize($note, ['trim', 'string']);
+        $value = $note;
 
         $length = kg_strlen($value);
 
         if ($length < 2) {
-            throw new BadRequestException('refund.apply_note_too_short');
+            throw new BadRequestException(CodeResponse::NOT_FOUND_EXCEPTION, 'refund.apply_note_too_short');
         }
 
         if ($length > 255) {
-            throw new BadRequestException('refund.apply_note_too_long');
+            throw new BadRequestException(CodeResponse::NOT_FOUND_EXCEPTION, 'refund.apply_note_too_long');
         }
 
         return $value;

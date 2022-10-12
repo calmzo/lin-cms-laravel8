@@ -4,6 +4,10 @@ namespace App\Models;
 
 class Task extends BaseModel
 {
+    public $fillable = [
+        'item_id', 'item_type', 'item_info', 'priority', 'status'
+    ];
+
     public function order()
     {
         return $this->hasOne(Order::class, 'id', 'item_id');

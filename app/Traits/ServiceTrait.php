@@ -25,5 +25,14 @@ trait ServiceTrait
         return Redis::connection();
     }
 
+    /**
+     * @return array|\Illuminate\Contracts\Foundation\Application|\Illuminate\Foundation\Application|\Illuminate\Http\Request|\Laravel\Lumen\Application|string|\think\App|\think\facade\Request|null
+     */
+    public function getRequest()
+    {
+        return request();
+    }
+
+
 
 }

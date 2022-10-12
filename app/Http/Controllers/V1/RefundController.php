@@ -25,4 +25,11 @@ class RefundController extends BaseController
         $question = $service->getRefund($sn);
         return $this->success($question);
     }
+
+    public function createRefund()
+    {
+        $service = new RefundService();
+        $question = $service->createRefund();
+        return $this->success($question);
+    }
 }

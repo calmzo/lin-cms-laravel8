@@ -3,17 +3,16 @@
 namespace App\Validators;
 
 use App\Enums\OrderEnums;
+use App\Enums\RefundEnums;
+use App\Enums\TradeEnums;
 use App\Exceptions\BadRequestException;
-use App\Models\Order as OrderModel;
-use App\Models\Refund as RefundModel;
-use App\Models\Trade as TradeModel;
-use App\Repos\Course as CourseRepo;
-use App\Repos\Order as OrderRepo;
-use App\Repos\Package as PackageRepo;
-use App\Repos\Reward as RewardRepo;
-use App\Repos\Vip as VipRepo;
+use App\Models\Order;
+use App\Models\Refund;
+use App\Models\Trade;
 use App\Repositories\CourseRepository;
 use App\Repositories\OrderRepository;
+use App\Repositories\PackageRepository;
+use App\Repositories\VipRepository;
 use App\Utils\CodeResponse;
 
 class OrderValidator extends BaseValidator
@@ -76,12 +75,12 @@ class OrderValidator extends BaseValidator
 
     public function checkPackage($itemId)
     {
-        $packageRepo = new PackageRepo();
+        $packageRepo = new PackageRepository();
 
         $package = $packageRepo->findById($itemId);
 
         if (!$package || $package->published == 0) {
-            throw new BadRequestException('order.item_not_found');
+            throw new BadRequestException(CodeResponse::NOT_FOUND_EXCEPTION, 'order.item_not_found');
         }
 
         return $package;
@@ -89,12 +88,12 @@ class OrderValidator extends BaseValidator
 
     public function checkVip($itemId)
     {
-        $vipRepo = new VipRepo();
+        $vipRepo = new VipRepository();
 
         $vip = $vipRepo->findById($itemId);
 
-        if (!$vip || $vip->deleted == 1) {
-            throw new BadRequestException('order.item_not_found');
+        if (!$vip) {
+            throw new BadRequestException(CodeResponse::NOT_FOUND_EXCEPTION, 'order.item_not_found');
         }
 
         return $vip;
@@ -135,90 +134,90 @@ class OrderValidator extends BaseValidator
         return $status;
     }
 
-    public function checkIfAllowPay(OrderModel $order)
+    public function checkIfAllowPay(Order $order)
     {
-        if ($order->status != OrderModel::STATUS_PENDING) {
-            throw new BadRequestException('order.pay_not_allowed');
+        if ($order->status != OrderEnums::STATUS_PENDING) {
+            throw new BadRequestException(CodeResponse::NOT_FOUND_EXCEPTION, 'order.pay_not_allowed');
         }
     }
 
-    public function checkIfAllowCancel(OrderModel $order)
+    public function checkIfAllowCancel(Order $order)
     {
-        if ($order->status != OrderModel::STATUS_PENDING) {
-            throw new BadRequestException('order.cancel_not_allowed');
+        if ($order->status != OrderEnums::STATUS_PENDING) {
+            throw new BadRequestException(CodeResponse::NOT_FOUND_EXCEPTION, 'order.cancel_not_allowed');
         }
     }
 
-    public function checkIfAllowRefund(OrderModel $order)
+    public function checkIfAllowRefund(Order $order)
     {
-        if ($order->status != OrderModel::STATUS_FINISHED) {
-            throw new BadRequestException('order.refund_not_allowed');
+        if ($order->status != OrderEnums::STATUS_FINISHED) {
+            throw new BadRequestException(CodeResponse::NOT_FOUND_EXCEPTION, 'order.refund_not_allowed');
         }
 
         $types = [
-            OrderModel::ITEM_COURSE,
-            OrderModel::ITEM_PACKAGE,
+            OrderEnums::ITEM_COURSE,
+            OrderEnums::ITEM_PACKAGE,
         ];
 
         if (!in_array($order->item_type, $types)) {
-            throw new BadRequestException('order.refund_item_unsupported');
+            throw new BadRequestException(CodeResponse::NOT_FOUND_EXCEPTION, 'order.refund_item_unsupported');
         }
 
-        $orderRepo = new OrderRepo();
+        $orderRepo = new OrderRepository();
 
         $trade = $orderRepo->findLastTrade($order->id);
 
-        if ($trade->status != TradeModel::STATUS_FINISHED) {
-            throw new BadRequestException('order.refund_not_allowed');
+        if ($trade->status != TradeEnums::STATUS_FINISHED) {
+            throw new BadRequestException(CodeResponse::NOT_FOUND_EXCEPTION, 'order.refund_not_allowed');
         }
 
         $refund = $orderRepo->findLastRefund($order->id);
 
         $scopes = [
-            RefundModel::STATUS_PENDING,
-            RefundModel::STATUS_APPROVED,
+            RefundEnums::STATUS_PENDING,
+            RefundEnums::STATUS_APPROVED,
         ];
 
         if ($refund && in_array($refund->status, $scopes)) {
-            throw new BadRequestException('order.refund_apply_existed');
+            throw new BadRequestException(CodeResponse::NOT_FOUND_EXCEPTION, 'order.refund_apply_existed');
         }
     }
 
     public function checkIfBoughtCourse($userId, $courseId)
     {
-        $orderRepo = new OrderRepo();
+        $orderRepo = new OrderRepository();
 
-        $itemType = OrderModel::ITEM_COURSE;
+        $itemType = OrderEnums::ITEM_COURSE;
 
         $order = $orderRepo->findUserLastDeliveringOrder($userId, $courseId, $itemType);
 
         if ($order) {
-            throw new BadRequestException('order.is_delivering');
+            throw new BadRequestException(CodeResponse::NOT_FOUND_EXCEPTION, 'order.is_delivering');
         }
 
         $order = $orderRepo->findUserLastFinishedOrder($userId, $courseId, $itemType);
 
         if ($order && $order->item_info['course']['study_expiry_time'] > time()) {
-            throw new BadRequestException('order.has_bought_course');
+            throw new BadRequestException(CodeResponse::NOT_FOUND_EXCEPTION, 'order.has_bought_course');
         }
     }
 
     public function checkIfBoughtPackage($userId, $packageId)
     {
-        $orderRepo = new OrderRepo();
+        $orderRepo = new OrderRepository();
 
-        $itemType = OrderModel::ITEM_PACKAGE;
+        $itemType = OrderEnums::ITEM_PACKAGE;
 
         $order = $orderRepo->findUserLastDeliveringOrder($userId, $packageId, $itemType);
 
         if ($order) {
-            throw new BadRequestException('order.is_delivering');
+            throw new BadRequestException(CodeResponse::NOT_FOUND_EXCEPTION, 'order.is_delivering');
         }
 
         $order = $orderRepo->findUserLastFinishedOrder($userId, $packageId, $itemType);
 
         if ($order) {
-            throw new BadRequestException('order.has_bought_package');
+            throw new BadRequestException(CodeResponse::NOT_FOUND_EXCEPTION, 'order.has_bought_package');
         }
     }
 
