@@ -2,8 +2,10 @@
 
 namespace App\Repositories;
 
+use App\Enums\TaskEnums;
 use App\Models\Refund;
 use App\Models\RefundStatus;
+use App\Models\Task;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 class RefundRepository extends BaseRepository
@@ -55,5 +57,10 @@ class RefundRepository extends BaseRepository
         }
 
         return $query->paginate($count, ['*'], 'page', $page);
+    }
+
+    public function findLastRefundTask($refundId)
+    {
+        return Task::query()->where('item_id', $refundId)->where('item_type', TaskEnums::TYPE_REFUND)->orderByDesc('id')->first();
     }
 }

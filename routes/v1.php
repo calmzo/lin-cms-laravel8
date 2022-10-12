@@ -296,5 +296,6 @@ Route::prefix('refund')->group(function () {
     Route::get('confirm', [RefundController::class, 'getConfirm']);
     Route::get('info', [RefundController::class, 'getRefund']);
     Route::post('create', [RefundController::class, 'createRefund']);
+    Route::post('cancel', [RefundController::class, 'cancelRefund']);
 
 });

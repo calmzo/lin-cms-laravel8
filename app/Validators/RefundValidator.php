@@ -4,7 +4,7 @@ namespace App\Validators;
 
 use App\Enums\RefundEnums;
 use App\Exceptions\BadRequestException;
-use App\Models\Refund as RefundModel;
+use App\Models\Refund;
 use App\Repositories\RefundRepository;
 use App\Utils\CodeResponse;
 
@@ -69,12 +69,12 @@ class RefundValidator extends BaseValidator
     public function checkReviewStatus($status)
     {
         $list = [
-            RefundModel::STATUS_APPROVED,
-            RefundModel::STATUS_REFUSED,
+            RefundEnums::STATUS_APPROVED,
+            RefundEnums::STATUS_REFUSED,
         ];
 
         if (!in_array($status, $list)) {
-            throw new BadRequestException('refund.invalid_status');
+            throw new BadRequestException(CodeResponse::NOT_FOUND_EXCEPTION, 'refund.invalid_status');
         }
 
         return $status;
@@ -114,15 +114,15 @@ class RefundValidator extends BaseValidator
         return $value;
     }
 
-    public function checkIfAllowCancel(RefundModel $refund)
+    public function checkIfAllowCancel(Refund $refund)
     {
         $scopes = [
-            RefundModel::STATUS_PENDING,
-            RefundModel::STATUS_APPROVED,
+            RefundEnums::STATUS_PENDING,
+            RefundEnums::STATUS_APPROVED,
         ];
 
         if (!in_array($refund->status, $scopes)) {
-            throw new BadRequestException('refund.cancel_not_allowed');
+            throw new BadRequestException(CodeResponse::NOT_FOUND_EXCEPTION, 'refund.cancel_not_allowed');
         }
     }
 

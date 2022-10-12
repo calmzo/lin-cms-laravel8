@@ -9,6 +9,7 @@ use App\Models\Order;
 use App\Repositories\CourseRepository;
 use App\Repositories\CourseUserRepository;
 use App\Repositories\OrderRepository;
+use App\Services\Logic\Refund\RefundCancelService;
 use App\Services\Logic\Refund\RefundConfirmService;
 use App\Services\Logic\Refund\RefundCreateService;
 use App\Services\Logic\Refund\RefundInfoService;
@@ -49,6 +50,21 @@ class RefundService extends BaseService
         $service = new RefundInfoService();
 
         $refund = $service->handle($refund->sn);
+
+        return ['refund' => $refund];
+    }
+
+    public function cancelRefund()
+    {
+
+        $sn = $this->getRequest()->input('sn');
+        $service = new RefundCancelService();
+
+        $service->handle($sn);
+
+        $service = new RefundInfoService();
+
+        $refund = $service->handle($sn);
 
         return ['refund' => $refund];
     }
