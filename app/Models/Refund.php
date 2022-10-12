@@ -16,20 +16,8 @@ class Refund extends BaseModel
         //处理 Refund「saved」事件
         static::saved(function ($refund) {
             //更新订单状态
-            if ($refund->isDirty('status')) {
-                $status = new RefundStatus();
-                $status->refund_id = $refund->getAttribute('id');
-                $status->status = $refund->getAttribute('status');
-                $status->save();
-            }
-        });
+            RefundStatus::query()->create(['refund_id' => $refund->getAttribute('id'), 'status' => $refund->getAttribute('status')]);
 
-        //处理 Refund「created」事件
-        static::created(function ($refund) {
-            //更新订单状态
-            $status = new RefundStatus();
-            $status->refund_id = $refund->getAttribute('id');
-            $status->save();
         });
 
         //处理 Refund「creating」事件
