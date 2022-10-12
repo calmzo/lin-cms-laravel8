@@ -4,11 +4,13 @@ namespace App\Services;
 
 use App\Enums\OrderEnums;
 use App\Enums\TradeEnums;
+use App\Exceptions\Token\ForbiddenException;
 use App\Models\Order;
 use App\Repositories\CourseRepository;
 use App\Repositories\CourseUserRepository;
 use App\Repositories\OrderRepository;
 use App\Services\Logic\Refund\RefundConfirmService;
+use App\Services\Logic\Refund\RefundInfoService;
 
 class RefundService extends BaseService
 {
@@ -23,6 +25,18 @@ class RefundService extends BaseService
         return ['confirm' => $confirm];
     }
 
+    public function getRefund($sn)
+    {
+
+        $service = new RefundInfoService();
+
+        $refund = $service->handle($sn);
+        if ($refund['me']['owned'] == 0) {
+            throw new ForbiddenException();
+        }
+
+        return ['refund' => $refund];
+    }
 
     public function preview(Order $order)
     {

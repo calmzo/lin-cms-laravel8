@@ -21,19 +21,19 @@ class Order extends BaseModel
         static::saved(function ($order) {
             //更新订单状态
             if ($order->isDirty('status')) {
-                $orderStatus = new OrderStatus();
-                $orderStatus->order_id = $order->getAttribute('id');
-                $orderStatus->status = $order->getAttribute('status');
-                $orderStatus->save();
+                $status = new OrderStatus();
+                $status->order_id = $order->getAttribute('id');
+                $status->status = $order->getAttribute('status');
+                $status->save();
             }
         });
 
         //处理 Order「created」事件
         static::created(function ($order) {
             //更新订单状态
-            $orderStatus = new OrderStatus();
-            $orderStatus->order_id = $order->getAttribute('id');
-            $orderStatus->save();
+            $status = new OrderStatus();
+            $status->order_id = $order->getAttribute('id');
+            $status->save();
         });
 
         //处理 Order「creating」事件

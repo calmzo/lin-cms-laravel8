@@ -294,5 +294,6 @@ Route::prefix('page')->group(function () {
 Route::prefix('refund')->group(function () {
     //
     Route::get('confirm', [RefundController::class, 'getConfirm']);
+    Route::get('info', [RefundController::class, 'getRefund']);
 
 });

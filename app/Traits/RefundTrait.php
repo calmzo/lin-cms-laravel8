@@ -6,6 +6,7 @@ use App\Enums\RefundEnums;
 use App\Exceptions\BadRequestException;
 use App\Models\Refund;
 use App\Utils\CodeResponse;
+use App\Validators\RefundValidator;
 
 trait RefundTrait
 {
@@ -24,6 +25,13 @@ trait RefundTrait
         }
 
         return $trade;
+    }
+
+    public function checkRefundBySn($sn)
+    {
+        $validator = new RefundValidator();
+
+        return $validator->checkRefundBySn($sn);
     }
 
     /**

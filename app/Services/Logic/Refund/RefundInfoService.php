@@ -1,21 +1,20 @@
 <?php
-/**
- * @copyright Copyright (c) 2021 深圳市酷瓜软件有限公司
- * @license https://opensource.org/licenses/GPL-2.0
- * @link https://www.koogua.com
- */
 
 namespace App\Services\Logic\Refund;
 
-use App\Models\Refund as RefundModel;
-use App\Models\User as UserModel;
-use App\Repos\Order as OrderRepo;
-use App\Repos\Refund as RefundRepo;
-use App\Services\Logic\RefundTrait;
-use App\Services\Logic\Service as LogicService;
-use App\Services\Logic\UserTrait;
+use App\Enums\RefundEnums;
+use App\Exceptions\NotFoundException;
+use App\Models\Refund;
+use App\Models\User;
+use App\Repositories\OrderRepository;
+use App\Repositories\RefundRepository;
+use App\Services\Logic\LogicService;
+use App\Services\Token\AccountLoginTokenService;
+use App\Traits\RefundTrait;
+use App\Traits\UserTrait;
+use App\Utils\CodeResponse;
 
-class RefundInfo extends LogicService
+class RefundInfoService extends LogicService
 {
 
     use RefundTrait;
@@ -25,16 +24,16 @@ class RefundInfo extends LogicService
     {
         $refund = $this->checkRefundBySn($sn);
 
-        $user = $this->getLoginUser();
+        $user = AccountLoginTokenService::userModel();
 
         return $this->handleRefund($refund, $user);
     }
 
-    protected function handleRefund(RefundModel $refund, UserModel $user)
+    protected function handleRefund(Refund $refund, User $user)
     {
         $statusHistory = $this->handleStatusHistory($refund->id);
         $order = $this->handleOrderInfo($refund->order_id);
-        $owner = $this->handleShallowUserInfo($refund->owner_id);
+        $owner = $this->handleShallowUserInfo($refund->user_id);
         $me = $this->handleMeInfo($refund, $user);
 
         return [
@@ -56,10 +55,12 @@ class RefundInfo extends LogicService
 
     protected function handleOrderInfo($orderId)
     {
-        $orderRepo = new OrderRepo();
+        $orderRepo = new OrderRepository();
 
         $order = $orderRepo->findById($orderId);
-
+        if (is_null($order)) {
+            throw new NotFoundException(CodeResponse::NOT_FOUND_EXCEPTION, 'order.not_found');
+        }
         return [
             'id' => $order->id,
             'sn' => $order->sn,
@@ -70,7 +71,7 @@ class RefundInfo extends LogicService
 
     protected function handleStatusHistory($refundId)
     {
-        $refundRepo = new RefundRepo();
+        $refundRepo = new RefundRepository();
 
         $records = $refundRepo->findStatusHistory($refundId);
 
@@ -90,20 +91,20 @@ class RefundInfo extends LogicService
         return $result;
     }
 
-    protected function handleMeInfo(RefundModel $refund, UserModel $user)
+    protected function handleMeInfo(Refund $refund, User $user)
     {
         $result = [
             'owned' => 0,
             'allow_cancel' => 0,
         ];
 
-        if ($user->id == $refund->owner_id) {
+        if ($user->id == $refund->user_id) {
             $result['owned'] = 1;
         }
 
         $statusTypes = [
-            RefundModel::STATUS_PENDING,
-            RefundModel::STATUS_APPROVED,
+            RefundEnums::STATUS_PENDING,
+            RefundEnums::STATUS_APPROVED,
         ];
 
         if (in_array($refund->status, $statusTypes)) {

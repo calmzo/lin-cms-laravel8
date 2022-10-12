@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Models\Refund;
+use App\Models\RefundStatus;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 class RefundRepository extends BaseRepository
@@ -11,6 +12,16 @@ class RefundRepository extends BaseRepository
     public function findById($id)
     {
         return Refund::query()->find($id);
+    }
+
+    public function findBySn($sn)
+    {
+        return Refund::query()->where('sn', $sn)->first();
+    }
+
+    public function findStatusHistory($refundId)
+    {
+        return RefundStatus::query()->where('refund_id', $refundId)->get();
     }
 
     public function paginate($where = [], $sort = 'latest', $page = 1, $count = 15): LengthAwarePaginator

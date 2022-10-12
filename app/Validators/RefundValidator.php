@@ -31,12 +31,12 @@ class RefundValidator extends BaseValidator
 
     public function checkRefundBySn($sn)
     {
-        $refundRepo = new RefundRepo();
+        $refundRepo = new RefundRepository();
 
         $refund = $refundRepo->findBySn($sn);
 
         if (!$refund) {
-            throw new BadRequestException('refund.not_found');
+            throw new BadRequestException(CodeResponse::NOT_FOUND_EXCEPTION, 'refund.not_found');
         }
 
         return $refund;
