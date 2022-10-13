@@ -9,6 +9,7 @@ use App\Repositories\AnswerRepository;
 use App\Services\Logic\LogicService;
 use App\Services\Token\AccountLoginTokenService;
 use App\Traits\QuestionTrait;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class AnswerListService extends LogicService
 {
@@ -31,6 +32,10 @@ class AnswerListService extends LogicService
         return $this->handleAnswers($pager);
     }
 
+    /**
+     * @param $paginate LengthAwarePaginator
+     * @return object
+     */
     protected function handleAnswers($paginate)
     {
         if ($paginate->total() == 0) {

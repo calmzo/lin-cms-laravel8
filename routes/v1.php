@@ -25,6 +25,7 @@ use App\Http\Controllers\V1\CommentController;
 use App\Http\Controllers\V1\FlashSaleController;
 use App\Http\Controllers\V1\PageController;
 use App\Http\Controllers\V1\RefundController;
+use App\Http\Controllers\V1\VipController;
 
 /*
 |--------------------------------------------------------------------------
@@ -297,5 +298,12 @@ Route::prefix('refund')->group(function () {
     Route::get('info', [RefundController::class, 'getRefund']);
     Route::post('create', [RefundController::class, 'createRefund']);
     Route::post('cancel', [RefundController::class, 'cancelRefund']);
+
+});
+
+Route::prefix('vip')->group(function () {
+    //
+    Route::get('courses', [VipController::class, 'getCourses']);
+    Route::get('users', [VipController::class, 'getUsers']);
 
 });

@@ -11,9 +11,57 @@ use App\Models\Notification;
 use App\Models\Question;
 use App\Models\User;
 use App\Models\UserBalance;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 class UserRepository extends BaseRepository
 {
+    public function paginate($where = [], $sort = 'latest', $page = 1, $count = 15): LengthAwarePaginator
+    {
+        $query = User::query();
+
+        if (!empty($where['id'])) {
+            $query->where('id', $where['id']);
+        }
+
+        if (!empty($where['name'])) {
+            $query->where('name', 'like', '%'.$where['name'].'%');
+        }
+
+        if (!empty($where['edu_role'])) {
+            if (is_array($where['edu_role'])) {
+                $query->whereIn('edu_role', $where['edu_role']);
+            } else {
+                $query->where('edu_role', $where['edu_role']);
+            }
+        }
+
+        if (!empty($where['admin_role'])) {
+            if (is_array($where['admin_role'])) {
+                $query->whereIn('admin_role', $where['admin_role']);
+            } else {
+                $query->where('admin_role', $where['admin_role']);
+            }
+        }
+
+        if (isset($where['vip'])) {
+            $query->where('vip', $where['vip']);
+        }
+
+        if (isset($where['locked'])) {
+            $query->where('locked', $where['locked']);
+        }
+
+        switch ($sort) {
+            default:
+                $query->orderByDesc('id');
+                break;
+        }
+
+        return $query->paginate($count, ['*'], 'page', $page);
+
+    }
+
+
     public function countUsers()
     {
         return User::query()->count();
