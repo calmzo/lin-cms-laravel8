@@ -10,6 +10,7 @@ use App\Console\Commands\NoticeTaskCommand;
 use App\Console\Commands\RefundTaskCommand;
 use App\Console\Commands\ServerMonitorTaskCommand;
 use App\Console\Commands\UnlockUserTaskCommand;
+use App\Console\Commands\VodEventTakCommand;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -21,9 +22,9 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        Commands\RepositoryMakeCommand::class,
-        CloseTradeCommand::class,
         DeliverTaskCommand::class,
+        VodEventTakCommand::class,
+        CloseTradeCommand::class,
         RefundTaskCommand::class,
         CleanLogTaskCommand::class,
         CloseOrderTaskCommand::class,
@@ -36,13 +37,14 @@ class Kernel extends ConsoleKernel
     /**
      * Define the application's command schedule.
      *
-     * @param  \Illuminate\Console\Scheduling\Schedule  $schedule
+     * @param \Illuminate\Console\Scheduling\Schedule $schedule
      * @return void
      */
     protected function schedule(Schedule $schedule)
     {
+        $schedule->command('deliver_task')->everyMinute();
+        $schedule->command('vod_event_task')->everyFiveMinutes();
 //        $schedule->command('close_trade')->everyMinute();
-//        $schedule->command('deliver_task')->everyMinute();
 //        $schedule->command('refund_task')->everyMinute();
 //        $schedule->command('command:clean_log_task')->monthly();
 //        $schedule->command('command:close_order')->daily();
@@ -58,7 +60,7 @@ class Kernel extends ConsoleKernel
      */
     protected function commands()
     {
-        $this->load(__DIR__.'/Commands');
+        $this->load(__DIR__ . '/Commands');
 
         require base_path('routes/console.php');
     }

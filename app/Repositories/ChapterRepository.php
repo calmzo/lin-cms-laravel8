@@ -58,4 +58,12 @@ class ChapterRepository extends BaseRepository
         return ChapterRead::query()->where('chapter_id', $chapterId)->first();
     }
 
+    public function findByFileId($fileId)
+    {
+        $vod = ChapterVod::query()->where('file_id', $fileId)->first();
+
+        if (!$vod) return false;
+
+        return Chapter::query()->find($vod->chapter_id);
+    }
 }
