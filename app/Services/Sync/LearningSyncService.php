@@ -6,7 +6,7 @@ use App\Models\Learning;
 use App\Services\BaseService;
 use App\Traits\ClientTrait;
 
-class LearningSync extends BaseService
+class LearningSyncService extends BaseService
 {
 
     use ClientTrait;

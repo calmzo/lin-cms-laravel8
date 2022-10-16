@@ -42,4 +42,13 @@ class CourseUserRepository extends BaseRepository
             ->get();
     }
 
+    public function findPlanCourseUser($courseId, $userId, $planId)
+    {
+        return CourseUser::query()
+            ->where('course_id', $courseId)
+            ->where('user_id', $userId)
+            ->where('plan_id', $planId)
+            ->first();
+    }
+
 }

@@ -57,6 +57,11 @@ return [
             'point' => 900,
             'limit' => 3000
         ],
+        'chapter_study' => [
+            'enabled' => 1,
+            'point' => 900,
+            'limit' => 3000
+        ],
 
 
     ],

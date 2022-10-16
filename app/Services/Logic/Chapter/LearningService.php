@@ -7,7 +7,7 @@ use App\Models\Course;
 use App\Models\Learning;
 use App\Repositories\UserRepository;
 use \App\Services\Logic\LogicService;
-use App\Services\Sync\LearningSync;
+use App\Services\Sync\LearningSyncService;
 use App\Services\Token\AccountLoginTokenService;
 use App\Traits\ChapterTrait;
 use App\Validators\LearningValidator;
@@ -44,7 +44,7 @@ class LearningService extends LogicService
 
         $learning = new Learning($data);
 
-        $sync = new LearningSync();
+        $sync = new LearningSyncService();
 
         $sync->addItem($learning, $intervalTime);
     }

@@ -9,6 +9,7 @@ use App\Console\Commands\DeliverTaskCommand;
 use App\Console\Commands\NoticeTaskCommand;
 use App\Console\Commands\RefundTaskCommand;
 use App\Console\Commands\ServerMonitorTaskCommand;
+use App\Console\Commands\SyncLearningTaskCommand;
 use App\Console\Commands\UnlockUserTaskCommand;
 use App\Console\Commands\VodEventTakCommand;
 use Illuminate\Console\Scheduling\Schedule;
@@ -24,6 +25,7 @@ class Kernel extends ConsoleKernel
     protected $commands = [
         DeliverTaskCommand::class,
         VodEventTakCommand::class,
+        SyncLearningTaskCommand::class,
         CloseTradeCommand::class,
         RefundTaskCommand::class,
         CleanLogTaskCommand::class,
@@ -44,6 +46,7 @@ class Kernel extends ConsoleKernel
     {
         $schedule->command('deliver_task')->everyMinute();
         $schedule->command('vod_event_task')->everyFiveMinutes();
+        $schedule->command('sync_learning_task')->cron('*/7 * * * *');
 //        $schedule->command('close_trade')->everyMinute();
 //        $schedule->command('refund_task')->everyMinute();
 //        $schedule->command('command:clean_log_task')->monthly();
