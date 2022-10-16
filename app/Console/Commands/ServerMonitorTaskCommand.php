@@ -17,7 +17,7 @@ class ServerMonitorTaskCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'command:server_monitor_task';
+    protected $signature = 'server_monitor_task';
 
     /**
      * The console command description.

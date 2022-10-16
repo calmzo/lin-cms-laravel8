@@ -31,11 +31,11 @@ class Kernel extends ConsoleKernel
         SyncLearningTaskCommand::class,
         TeacherLiveNoticeTaskCommand::class,
         PointGiftDeliverTaskCommand::class,
+        ServerMonitorTaskCommand::class,
         CloseTradeCommand::class,
         RefundTaskCommand::class,
         CleanLogTaskCommand::class,
         CloseOrderTaskCommand::class,
-        ServerMonitorTaskCommand::class,
         NoticeTaskCommand::class,
         UnlockUserTaskCommand::class,
         //
@@ -54,11 +54,11 @@ class Kernel extends ConsoleKernel
         $schedule->command('sync_learning_task')->cron('*/7 * * * *');
         $schedule->command('teacher_live_notice_task')->cron('*/9 * * * *');
         $schedule->command('point_gift_deliver_task')->cron('*/11 * * * *');
+        $schedule->command('server_monitor_task')->cron('*/12 * * * *');
 //        $schedule->command('close_trade')->everyMinute();
 //        $schedule->command('refund_task')->everyMinute();
 //        $schedule->command('command:clean_log_task')->monthly();
 //        $schedule->command('command:close_order')->daily();
-//        $schedule->command('command:server_monitor_task')->daily();
 //        $schedule->command('command:notice_task')->daily();
         $schedule->command('command:unlock_user_task')->everySixHours();
     }
