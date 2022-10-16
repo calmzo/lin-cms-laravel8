@@ -42,4 +42,9 @@ class ChapterLiveRepository extends BaseRepository
         return $query->paginate($limit, ['*'], 'page', $page);
     }
 
+    public function findById($id)
+    {
+        return ChapterLive::query()->find($id);
+    }
+
 }

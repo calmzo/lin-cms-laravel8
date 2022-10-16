@@ -3,6 +3,8 @@
 namespace App\Lib\Notice\DingTalk;
 
 use App\Lib\Validators\CommonValidator;
+use App\Repositories\AccountRepository;
+use App\Repositories\CourseRepository;
 use GuzzleHttp\Client as HttpClient;
 use Illuminate\Support\Facades\Log;
 
@@ -186,6 +188,38 @@ class DingTalkNotice
         $result .= $content;
 
         return $result;
+    }
+
+    /**
+     * 给课程讲师发消息
+     *
+     * @param int $courseId
+     * @param string $content
+     * @return bool
+     */
+    public function atCourseTeacher($courseId, $content)
+    {
+        $courseRepo = new CourseRepository();
+
+        $course = $courseRepo->findById($courseId);
+
+        $accountRepo = new AccountRepository();
+
+        $account = $accountRepo->findById($course->teacher_id);
+
+        if (empty($account->phone)) return false;
+
+        $atMobiles = [$account->phone];
+
+        $atContent = $this->buildAtContent($content, $atMobiles);
+
+        $params = [
+            'msgtype' => 'text',
+            'text' => ['content' => $atContent],
+            'at' => ['atMobiles' => $atMobiles],
+        ];
+
+        return $this->send($params);
     }
 
 }
