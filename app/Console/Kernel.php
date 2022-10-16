@@ -55,7 +55,7 @@ class Kernel extends ConsoleKernel
         $schedule->command('teacher_live_notice_task')->cron('*/9 * * * *');
         $schedule->command('point_gift_deliver_task')->cron('*/11 * * * *');
         $schedule->command('server_monitor_task')->cron('*/12 * * * *');
-//        $schedule->command('close_trade')->everyMinute();
+        $schedule->command('close_trade')->cron('*/12 * * * *');
 //        $schedule->command('refund_task')->everyMinute();
 //        $schedule->command('command:clean_log_task')->monthly();
 //        $schedule->command('command:close_order')->daily();

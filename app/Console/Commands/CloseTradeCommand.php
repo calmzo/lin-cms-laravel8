@@ -24,7 +24,7 @@ class CloseTradeCommand extends Command
      *
      * @var string
      */
-    protected $description = 'Command description';
+    protected $description = '及哦啊已关闭任务';
 
     /**
      * Create a new command instance.
