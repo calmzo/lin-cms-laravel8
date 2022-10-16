@@ -7,6 +7,7 @@ use App\Console\Commands\CloseOrderTaskCommand;
 use App\Console\Commands\CloseTradeCommand;
 use App\Console\Commands\DeliverTaskCommand;
 use App\Console\Commands\NoticeTaskCommand;
+use App\Console\Commands\PointGiftDeliverTaskCommand;
 use App\Console\Commands\RefundTaskCommand;
 use App\Console\Commands\ServerMonitorTaskCommand;
 use App\Console\Commands\SyncLearningTaskCommand;
@@ -29,6 +30,7 @@ class Kernel extends ConsoleKernel
         VodEventTakCommand::class,
         SyncLearningTaskCommand::class,
         TeacherLiveNoticeTaskCommand::class,
+        PointGiftDeliverTaskCommand::class,
         CloseTradeCommand::class,
         RefundTaskCommand::class,
         CleanLogTaskCommand::class,
@@ -51,6 +53,7 @@ class Kernel extends ConsoleKernel
         $schedule->command('vod_event_task')->everyFiveMinutes();
         $schedule->command('sync_learning_task')->cron('*/7 * * * *');
         $schedule->command('teacher_live_notice_task')->cron('*/9 * * * *');
+        $schedule->command('point_gift_deliver_task')->cron('*/11 * * * *');
 //        $schedule->command('close_trade')->everyMinute();
 //        $schedule->command('refund_task')->everyMinute();
 //        $schedule->command('command:clean_log_task')->monthly();

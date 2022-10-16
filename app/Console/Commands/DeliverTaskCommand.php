@@ -9,8 +9,8 @@ use App\Models\Task;
 use App\Models\Order;
 use App\Models\User;
 use App\Models\Vip;
-use App\Services\Logic\Deliver\CourseDeliver;
-use App\Services\Logic\Deliver\VipDeliver;
+use App\Services\Logic\Deliver\CourseDeliverService;
+use App\Services\Logic\Deliver\VipDeliverService;
 use App\Services\Logic\Point\History\OrderConsumeService;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
@@ -123,7 +123,7 @@ class DeliverTaskCommand extends Command
         $course = Course::query()->find($order->item_id);
 
         $user = User::query()->find($order->user_id);
-        $service = new CourseDeliver();
+        $service = new CourseDeliverService();
 
         $service->handle($course, $user);
     }
@@ -135,7 +135,7 @@ class DeliverTaskCommand extends Command
 
         $user = User::query()->find($order->user_id);
 
-        $service = new VipDeliver();
+        $service = new VipDeliverService();
 
         $service->handle($vip, $user);
 

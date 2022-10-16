@@ -9,7 +9,7 @@ use App\Models\CourseUser;
 use App\Models\User;
 use App\Services\Logic\LogicService;
 
-class CourseDeliver extends LogicService
+class CourseDeliverService extends LogicService
 {
 
     public function handle(Course $course, User $user)

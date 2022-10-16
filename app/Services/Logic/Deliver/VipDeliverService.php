@@ -6,7 +6,7 @@ use App\Models\User;
 use App\Models\Vip;
 use App\Services\Logic\LogicService;
 
-class VipDeliver extends LogicService
+class VipDeliverService extends LogicService
 {
 
     public function handle(Vip $vip, User $user)
