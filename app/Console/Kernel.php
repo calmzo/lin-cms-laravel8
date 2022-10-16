@@ -3,6 +3,7 @@
 namespace App\Console;
 
 use App\Console\Commands\CleanLogTaskCommand;
+use App\Console\Commands\CloseFlashSaleOrderTaskCommand;
 use App\Console\Commands\CloseOrderTaskCommand;
 use App\Console\Commands\CloseTradeCommand;
 use App\Console\Commands\DeliverTaskCommand;
@@ -33,6 +34,7 @@ class Kernel extends ConsoleKernel
         PointGiftDeliverTaskCommand::class,
         ServerMonitorTaskCommand::class,
         CloseTradeCommand::class,
+        CloseFlashSaleOrderTaskCommand::class,
         RefundTaskCommand::class,
         CleanLogTaskCommand::class,
         CloseOrderTaskCommand::class,
@@ -56,6 +58,7 @@ class Kernel extends ConsoleKernel
         $schedule->command('point_gift_deliver_task')->cron('*/11 * * * *');
         $schedule->command('server_monitor_task')->cron('*/12 * * * *');
         $schedule->command('close_trade')->cron('*/12 * * * *');
+        $schedule->command('close_flash_sale_order')->everyFifteenMinutes();
 //        $schedule->command('refund_task')->everyMinute();
 //        $schedule->command('command:clean_log_task')->monthly();
 //        $schedule->command('command:close_order')->daily();
