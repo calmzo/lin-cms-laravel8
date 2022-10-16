@@ -19,7 +19,7 @@ class NoticeTaskCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'command:notice_task';
+    protected $signature = 'notice_task';
 
     /**
      * The console command description.

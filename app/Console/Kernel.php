@@ -35,10 +35,10 @@ class Kernel extends ConsoleKernel
         ServerMonitorTaskCommand::class,
         CloseTradeCommand::class,
         CloseFlashSaleOrderTaskCommand::class,
+        NoticeTaskCommand::class,
         RefundTaskCommand::class,
         CleanLogTaskCommand::class,
         CloseOrderTaskCommand::class,
-        NoticeTaskCommand::class,
         UnlockUserTaskCommand::class,
         //
     ];
@@ -59,10 +59,10 @@ class Kernel extends ConsoleKernel
         $schedule->command('server_monitor_task')->cron('*/12 * * * *');
         $schedule->command('close_trade')->cron('*/12 * * * *');
         $schedule->command('close_flash_sale_order')->everyFifteenMinutes();
+        $schedule->command('notice_task')->everyMinute();
 //        $schedule->command('refund_task')->everyMinute();
 //        $schedule->command('command:clean_log_task')->monthly();
 //        $schedule->command('command:close_order')->daily();
-//        $schedule->command('command:notice_task')->daily();
         $schedule->command('command:unlock_user_task')->everySixHours();
     }
 
