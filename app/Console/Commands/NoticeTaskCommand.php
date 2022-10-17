@@ -7,10 +7,15 @@ use App\Lib\Notice\DingTalk\ServerMonitorNotice;
 use App\Models\Task;
 use Illuminate\Console\Command;
 use App\Lib\Notice\AccountLogin as AccountLoginNotice;
+use App\Lib\Notice\LiveBegin as LiveBeginNotice;
+use App\Lib\Notice\PointGoodsDeliver as PointGoodsDeliverNotice;
+use App\Lib\Notice\DingTalk\ConsultCreate as ConsultCreateNotice;
+use App\Lib\Notice\DingTalk\TeacherLive as TeacherLiveNotice;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Log;
 use App\Lib\Notice\OrderFinish as OrderFinishNotice;
 use App\Lib\Notice\RefundFinish as RefundFinishNotice;
-use App\Services\Logic\Notice\ConsultReply as ConsultReplyNotice;
+use App\Lib\Notice\ConsultReply as ConsultReplyNotice;
 
 class NoticeTaskCommand extends Command
 {
@@ -46,7 +51,7 @@ class NoticeTaskCommand extends Command
     public function handle()
     {
         //
-        $tasks = $this->findTasks(300);
+        $tasks = $this->findTasks();
         if ($tasks->count() == 0) return;
         foreach ($tasks as $task) {
 
@@ -81,13 +86,13 @@ class NoticeTaskCommand extends Command
                         $this->handleServerMonitorNotice($task);
                         break;
                     case TaskEnums::TYPE_STAFF_NOTICE_CUSTOM_SERVICE:
-                        $this->handleCustomServiceNotice($task);
+//                        $this->handleCustomServiceNotice($task);
                         break;
                 }
 
                 $task->status = TaskEnums::STATUS_FINISHED;
 
-                $task->save();
+                $task->update();
 
             } catch (\Exception $e) {
 
@@ -98,7 +103,7 @@ class NoticeTaskCommand extends Command
                     $task->status = TaskEnums::STATUS_FAILED;
                 }
 
-                $task->save();
+                $task->update();
 
                 $logger = Log::channel('notice');
                 $logger->error('Notice Process Exception ' . json_encode([
@@ -202,7 +207,7 @@ class NoticeTaskCommand extends Command
 
         $status = TaskEnums::STATUS_PENDING;
 
-        $createTime = date('Y-m-d  H:i:s', strtotime('-1 days'));
+        $createTime = Carbon::now()->subDay();
 
         return Task::query()
             ->whereIn('item_type', $itemTypes)
