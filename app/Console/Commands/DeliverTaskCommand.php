@@ -4,15 +4,16 @@ namespace App\Console\Commands;
 
 use App\Enums\OrderEnums;
 use App\Enums\TaskEnums;
-use App\Models\Course;
 use App\Models\Task;
 use App\Models\Order;
-use App\Models\User;
-use App\Models\Vip;
+use App\Repositories\CourseRepository;
+use App\Repositories\UserRepository;
+use App\Repositories\VipRepository;
 use App\Services\Logic\Deliver\CourseDeliverService;
 use App\Services\Logic\Deliver\VipDeliverService;
 use App\Services\Logic\Point\History\OrderConsumeService;
 use Illuminate\Console\Command;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use App\Lib\Notice\OrderFinish as OrderFinishNotice;
@@ -77,10 +78,10 @@ class DeliverTaskCommand extends Command
                 }
 
                 $order->status = OrderEnums::STATUS_FINISHED;
-                $order->save();
+                $order->update();
 
                 $task->status = TaskEnums::STATUS_FINISHED;
-                $task->save();
+                $task->update();
 
                 DB::commit();
 
@@ -94,7 +95,7 @@ class DeliverTaskCommand extends Command
                 if ($task->try_count > $task->max_try_count) {
                     $task->status = TaskEnums::STATUS_FAILED;
                 }
-                $task->save();
+                $task->update();
                 Log::channel('deliver')->error('Deliver Task Exception ' . json_encode([
                         'file' => $e->getFile(),
                         'line' => $e->getLine(),
@@ -120,9 +121,15 @@ class DeliverTaskCommand extends Command
     protected function handleCourseOrder(Order $order)
     {
 
-        $course = Course::query()->find($order->item_id);
+        $courseRepo = new CourseRepository();
 
-        $user = User::query()->find($order->user_id);
+        $course = $courseRepo->findById($order->item_id);
+
+        $userRepo = new UserRepository();
+
+        $user = $userRepo->findById($order->user_id);
+
+
         $service = new CourseDeliverService();
 
         $service->handle($course, $user);
@@ -131,9 +138,13 @@ class DeliverTaskCommand extends Command
     protected function handleVipOrder(Order $order)
     {
 
-        $vip = Vip::query()->find($order->item_id);
+        $vipRepo = new VipRepository();
 
-        $user = User::query()->find($order->user_id);
+        $vip = $vipRepo->findById($order->item_id);
+
+        $userRepo = new UserRepository();
+
+        $user = $userRepo->findById($order->user_id);
 
         $service = new VipDeliverService();
 
@@ -152,18 +163,29 @@ class DeliverTaskCommand extends Command
      */
     protected function closePendingOrders($userId)
     {
+        $orders = $this->findUserPendingOrders($userId);
+        if ($orders->count() == 0) return;
+
         $itemTypes = [
             OrderEnums::ITEM_COURSE,
             OrderEnums::ITEM_PACKAGE,
         ];
 
-        $status = OrderEnums::STATUS_PENDING;
+        foreach ($orders as $order) {
+            $case1 = in_array($order->item_type, $itemTypes);
+            $case2 = $order->promotion_type == 0;
+            if ($case1 && $case2) {
+                $order->status = OrderEnums::STATUS_CLOSED;
+                $order->update();
+            }
+        }
 
-        Order::query()
-            ->where('user_id', $userId)
-            ->where('status', $status)
-            ->whereIn('item_type', $itemTypes)
-            ->update(['status' => OrderEnums::STATUS_CLOSED]);
+//        $status = OrderEnums::STATUS_PENDING;
+//        Order::query()
+//            ->where('user_id', $userId)
+//            ->where('status', $status)
+//            ->whereIn('item_type', $itemTypes)
+//            ->update(['status' => OrderEnums::STATUS_CLOSED]);
     }
 
 
@@ -193,7 +215,7 @@ class DeliverTaskCommand extends Command
     {
         $itemType = TaskEnums::TYPE_DELIVER;
         $status = TaskEnums::STATUS_PENDING;
-        $createTime = date('Y-m-d', strtotime('-7 days'));
+        $createTime = Carbon::now()->subDays(7);
 
         return Task::query()
             ->where('item_type', $itemType)
@@ -201,6 +223,20 @@ class DeliverTaskCommand extends Command
             ->where('create_time', '>', $createTime)
             ->orderBy('priority')
             ->limit($limit)
+            ->get();
+    }
+
+    /**
+     * @param $userId
+     * @return \Illuminate\Database\Eloquent\Builder[]|\Illuminate\Database\Eloquent\Collection
+     */
+    protected function findUserPendingOrders($userId)
+    {
+        $status = OrderEnums::STATUS_PENDING;
+
+        return Order::query()
+            ->where('user_id', $userId)
+            ->where('status', $status)
             ->get();
     }
 
