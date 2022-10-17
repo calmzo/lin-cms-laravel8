@@ -87,7 +87,7 @@ class Kernel extends ConsoleKernel
         $schedule->command('sync_article_score_task')->cron('0 */33 * * *');
         $schedule->command('sync_question_score_task')->cron('0 */37 * * *');
         $schedule->command('clean_log_task')->dailyAt('03:03');
-        $schedule->command('unlock_user_task')->everySixHours();
+        $schedule->command('unlock_user_task')->dailyAt('03:07');
     }
 
     /**
