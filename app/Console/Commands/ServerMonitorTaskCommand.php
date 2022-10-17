@@ -24,7 +24,7 @@ class ServerMonitorTaskCommand extends Command
      *
      * @var string
      */
-    protected $description = 'Command description';
+    protected $description = '服务监控任务';
 
     protected $cache;
 
