@@ -5,7 +5,7 @@ namespace App\Lib\Notice;
 use App\Enums\TaskEnums;
 use App\Models\Task as Task;
 use App\Models\User as User;
-use App\Models\WechatSubscribe;
+use App\Repositories\WechatSubscribeRepository;
 use App\Services\Logic\Notice\WeChat\AccountLogin as WeChatAccountLoginNotice;
 use App\Traits\ClientTrait;
 
@@ -23,9 +23,9 @@ class AccountLogin
         $params = $task->item_info;
 
         $userId = $task->item_info['user']['id'];
+        $subscribeRepo = new WechatSubscribeRepository();
 
-
-        $subscribe = WechatSubscribe::query()->where('user_id', $userId)->first();
+        $subscribe = $subscribeRepo->findByUserId($userId);
 
         if ($subscribe) {
 
@@ -58,7 +58,7 @@ class AccountLogin
 
         $task->item_id = $user->id;
         $task->item_info = $itemInfo;
-        $task->item_type = json_encode(TaskEnums::TYPE_NOTICE_ACCOUNT_LOGIN);
+        $task->item_type = TaskEnums::TYPE_NOTICE_ACCOUNT_LOGIN;
         $task->priority = TaskEnums::PRIORITY_LOW;
         $task->status = TaskEnums::STATUS_PENDING;
         $task->max_try_count = 1;
