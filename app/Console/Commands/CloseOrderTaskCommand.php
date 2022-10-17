@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 use App\Enums\OrderEnums;
 use Illuminate\Console\Command;
 use App\Models\Order;
+use Illuminate\Support\Carbon;
 
 class CloseOrderTaskCommand extends Command
 {
@@ -64,14 +65,12 @@ class CloseOrderTaskCommand extends Command
     protected function findOrders($limit = 1000)
     {
         $status = OrderEnums::STATUS_PENDING;
-        $time = time() - 12 * 3600;
-        $time = date('Y-m-d H:i:s', $time);
+        $time = Carbon::now()->subDays(12);
         $type = 0;
-
         return Order::query()
             ->where('status', $status)
             ->where('promotion_type', $type)
-            ->where('create_time', $time)
+            ->where('create_time', '<', $time)
             ->limit($limit)
             ->get();
     }
