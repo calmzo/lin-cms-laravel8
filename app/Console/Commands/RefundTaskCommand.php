@@ -13,7 +13,10 @@ use App\Models\Refund;
 use App\Models\Task;
 use App\Models\Trade;
 use App\Models\Order;
+use App\Repositories\CourseUserRepository;
+use App\Repositories\UserRepository;
 use Illuminate\Console\Command;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
@@ -64,7 +67,7 @@ class RefundTaskCommand extends Command
             $order = Order::query()->find($refund->order_id);
             if ($refund->status != RefundEnums::STATUS_APPROVED) {
                 $task->status = TaskEnums::STATUS_CANCELED;
-                $task->save();
+                $task->update();
                 continue;
             }
 
@@ -76,16 +79,16 @@ class RefundTaskCommand extends Command
                 $this->handleOrderRefund($order);
 
                 $refund->status = RefundEnums::STATUS_FINISHED;
-                $refund->save();
+                $refund->update();
 
                 $trade->status = TradeEnums::STATUS_REFUNDED;
-                $trade->save();
+                $trade->update();
 
                 $order->status = OrderEnums::STATUS_REFUNDED;
-                $order->save();
+                $order->update();
 
                 $task->status = TaskEnums::STATUS_FINISHED;
-                $task->save();
+                $task->update();
 
                 DB::commit();
 
@@ -101,7 +104,7 @@ class RefundTaskCommand extends Command
                     $task->status = TaskEnums::STATUS_FAILED;
                 }
 
-                $task->save();
+                $task->update();
                 Log::channel('refund')->error('Refund Task Exception ' . json_encode([
                         'file' => $e->getFile(),
                         'line' => $e->getLine(),
@@ -112,7 +115,7 @@ class RefundTaskCommand extends Command
 
             if ($task->status == TaskEnums::STATUS_FAILED) {
                 $refund->status = RefundEnums::STATUS_FAILED;
-                $refund->save();
+                $refund->update();
             }
         }
 
@@ -155,23 +158,23 @@ class RefundTaskCommand extends Command
      */
     protected function handleOrderRefund(Order $order)
     {
-//        switch ($order->item_type) {
-//            case OrderEnums::ITEM_COURSE:
-//                $this->handleCourseOrderRefund($order);
-//                break;
-//            case OrderEnums::ITEM_PACKAGE:
-//                $this->handlePackageOrderRefund($order);
-//                break;
-//            case OrderEnums::ITEM_VIP:
-//                $this->handleVipOrderRefund($order);
-//                break;
-//            case OrderEnums::ITEM_REWARD:
-//                $this->handleRewardOrderRefund($order);
-//                break;
-//            case OrderEnums::ITEM_TEST:
-//                $this->handleTestOrderRefund($order);
-//                break;
-//        }
+        switch ($order->item_type) {
+            case OrderEnums::ITEM_COURSE:
+                $this->handleCourseOrderRefund($order);
+                break;
+            case OrderEnums::ITEM_PACKAGE:
+                $this->handlePackageOrderRefund($order);
+                break;
+            case OrderEnums::ITEM_VIP:
+                $this->handleVipOrderRefund($order);
+                break;
+            case OrderEnums::ITEM_REWARD:
+                $this->handleRewardOrderRefund($order);
+                break;
+            case OrderEnums::ITEM_TEST:
+                $this->handleTestOrderRefund($order);
+                break;
+        }
     }
 
 
@@ -180,7 +183,7 @@ class RefundTaskCommand extends Command
     {
         $itemType = TaskEnums::TYPE_REFUND;
         $status = TaskEnums::STATUS_PENDING;
-        $createTime = date('Y-m-d H:i:s', strtotime('-3 days'));
+        $createTime = Carbon::now()->subDays(3);
 
         return Task::query()
             ->where('item_type', $itemType)
@@ -201,4 +204,92 @@ class RefundTaskCommand extends Command
 
         $notice->createTask($refund);
     }
+
+    /**
+     * 处理课程订单退款
+     *
+     * @param Order $order
+     */
+    protected function handleCourseOrderRefund(Order $order)
+    {
+        $courseUserRepo = new CourseUserRepository();
+        $courseUser = $courseUserRepo->findCourseStudent($order->item_id, $order->owner_id);
+
+        if ($courseUser) {
+            if (!$courseUser->delete()) {
+                throw new \RuntimeException('Delete Course User Failed');
+            }
+        }
+    }
+
+    /**
+     * 处理套餐订单退款
+     *
+     * @param Order $order
+     */
+    protected function handlePackageOrderRefund(Order $order)
+    {
+        $courseUserRepo = new CourseUserRepository();
+
+        $itemInfo = $order->item_info;
+
+        foreach ($itemInfo['courses'] as $course) {
+
+            $courseUser = $courseUserRepo->findCourseStudent($course['id'], $order->owner_id);
+
+            if ($courseUser) {
+                if (!$courseUser->delete()) {
+                    throw new \RuntimeException('Delete Course User Failed');
+                }
+            }
+        }
+    }
+
+    /**
+     * 处理会员订单退款
+     *
+     * @param Order $order
+     */
+    protected function handleVipOrderRefund(Order $order)
+    {
+        $userRepo = new UserRepository();
+
+        $user = $userRepo->findById($order->owner_id);
+
+        $itemInfo = $order->item_info;
+
+        $diffTime = "-{$itemInfo['vip']['expiry']} months";
+        $baseTime = $itemInfo['vip']['expiry_time'];
+
+        $user->vip_expiry_time = strtotime($diffTime, $baseTime);
+
+        if ($user->vip_expiry_time < time()) {
+            $user->vip = 0;
+        }
+
+        if ($user->update() === false) {
+            throw new \RuntimeException('Update User Vip Failed');
+        }
+    }
+
+    /**
+     * 处理赞赏订单退款
+     *
+     * @param Order $order
+     */
+    protected function handleRewardOrderRefund(Order $order)
+    {
+
+    }
+
+    /**
+     * 处理测试订单退款
+     *
+     * @param Order $order
+     */
+    protected function handleTestOrderRefund(Order $order)
+    {
+
+    }
+
 }
