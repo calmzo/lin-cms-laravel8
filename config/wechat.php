@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 return [
     'oa' => [
-        'app_id' =>  env('WECHAT_OA_APP_ID') ?? '',
-        'app_secret' =>  env('WECHAT_OA_APP_SECRET') ?? '',
-        'app_token' =>  env('WECHAT_OA_APP_TOKEN') ?? '',
-        'aes_key' =>  env('WECHAT_OA_AES_KEY') ?? '',
+        'app_id' => env('WECHAT_OA_APP_ID') ?? '',
+        'app_secret' => env('WECHAT_OA_APP_SECRET') ?? '',
+        'app_token' => env('WECHAT_OA_APP_TOKEN') ?? '',
+        'aes_key' => env('WECHAT_OA_AES_KEY') ?? '',
         'enabled' => 1,
         //通知模板
         'notice_template' => [
@@ -31,6 +31,17 @@ return [
                 'enabled' => 1,
                 'id' => 1234
             ],
+            //直播开始
+            'live_begin' => [
+                'enabled' => 1,
+                'id' => 12345
+            ],
+
+            'goods_deliver' => [
+                'enabled' => 1,
+                'id' => 123456
+            ],
+
         ],
 
 
