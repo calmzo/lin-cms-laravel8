@@ -6,7 +6,7 @@ namespace App\Services\Sync;
 use App\Services\BaseService;
 use Illuminate\Support\Facades\Redis;
 
-class CourseScoreSync extends BaseService
+class CourseScoreSyncService extends BaseService
 {
 
     /**

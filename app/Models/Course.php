@@ -4,8 +4,8 @@ namespace App\Models;
 
 use App\Caches\MaxCourseIdCache;
 use App\Enums\CourseEnums;
-use App\Services\Sync\CourseIndexSync;
-use App\Services\Sync\CourseScoreSync;
+use App\Services\Sync\CourseIndexSyncService;
+use App\Services\Sync\CourseScoreSyncService;
 
 class Course extends BaseModel
 {
@@ -84,10 +84,10 @@ class Course extends BaseModel
 
         static::updating(function ($course) {
             if (time() - strtotime($course->update_time) > 3 * 3600) {
-                $sync = new CourseIndexSync();
+                $sync = new CourseIndexSyncService();
                 $sync->addItem($course->id);
 
-                $sync = new CourseScoreSync();
+                $sync = new CourseScoreSyncService();
                 $sync->addItem($course->id);
             }
         });
