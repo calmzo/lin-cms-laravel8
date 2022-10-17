@@ -9,7 +9,7 @@ use App\Models\Article;
 use App\Models\User;
 use App\Repositories\UserRepository;
 use App\Services\Logic\LogicService;
-use App\Services\Sync\ArticleIndexSync;
+use App\Services\Sync\ArticleIndexSyncService;
 use App\Services\Token\AccountLoginTokenService;
 use App\Traits\ArticleDataTrait;
 
@@ -45,7 +45,7 @@ class ArticleDeleteService extends LogicService
 
     protected function rebuildArticleIndex(Article $article)
     {
-        $sync = new ArticleIndexSync();
+        $sync = new ArticleIndexSyncService();
 
         $sync->addItem($article->id);
     }
