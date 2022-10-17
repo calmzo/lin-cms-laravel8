@@ -62,7 +62,7 @@ class UnlockUserTaskCommand extends Command
      */
     protected function findUsers($limit = 1000)
     {
-        $time = date('Y-m-d H:i:s', time() - 6 * 3600);
+        $time = time() - 6 * 3600;
 
         return User::query()
             ->where('locked', 1)
