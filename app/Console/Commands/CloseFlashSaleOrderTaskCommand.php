@@ -8,6 +8,7 @@ use App\Services\Logic\FlashSale\Queue;
 use App\Services\Logic\FlashSale\UserOrderCache;
 use Illuminate\Console\Command;
 use App\Models\Order;
+use Illuminate\Support\Carbon;
 
 class CloseFlashSaleOrderTaskCommand extends Command
 {
@@ -53,7 +54,7 @@ class CloseFlashSaleOrderTaskCommand extends Command
         foreach ($orders as $order) {
             $this->incrFlashSaleStock($order->promotion_id);
             $this->pushFlashSaleQueue($order->promotion_id);
-            $this->deleteUserOrderCache($order->owner_id, $order->promotion_id);
+            $this->deleteUserOrderCache($order->user_id, $order->promotion_id);
             $order->status = OrderEnums::STATUS_CLOSED;
             $order->update();
         }
@@ -94,7 +95,7 @@ class CloseFlashSaleOrderTaskCommand extends Command
     {
         $status = OrderEnums::STATUS_PENDING;
         $type = OrderEnums::PROMOTION_FLASH_SALE;
-        $time = time() - 15 * 60;
+        $time = Carbon::now()->subMinutes(15);
 
         return Order::query()
             ->where('status', $status)
