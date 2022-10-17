@@ -2,10 +2,9 @@
 
 namespace App\Services\Sync;
 
+use App\Services\BaseService;
 
-use Illuminate\Support\Facades\Redis;
-
-class ArticleIndexSync
+class ArticleIndexSyncService extends BaseService
 {
 
     /**
@@ -15,13 +14,13 @@ class ArticleIndexSync
 
     public function addItem($articleId)
     {
-        $redis = Redis::connection();
+        $redis = $this->getRedis();
 
         $key = $this->getSyncKey();
 
-        $redis->sAdd($key, $articleId);
+        $redis->sadd($key, $articleId);
 
-        if ($redis->sCard($key) == 1) {
+        if ($redis->scard($key) == 1) {
             $redis->expire($key, $this->lifetime);
         }
     }

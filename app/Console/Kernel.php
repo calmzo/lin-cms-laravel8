@@ -11,6 +11,7 @@ use App\Console\Commands\NoticeTaskCommand;
 use App\Console\Commands\PointGiftDeliverTaskCommand;
 use App\Console\Commands\RefundTaskCommand;
 use App\Console\Commands\ServerMonitorTaskCommand;
+use App\Console\Commands\SyncArticleIndexTaskCommand;
 use App\Console\Commands\SyncCourseIndexTaskCommand;
 use App\Console\Commands\SyncGroupIndexTaskCommand;
 use App\Console\Commands\SyncLearningTaskCommand;
@@ -44,6 +45,7 @@ class Kernel extends ConsoleKernel
         SyncCourseIndexTaskCommand::class,
         SyncGroupIndexTaskCommand::class,
         SyncUserIndexTaskCommand::class,
+        SyncArticleIndexTaskCommand::class,
         CleanLogTaskCommand::class,
         UnlockUserTaskCommand::class,
         //
@@ -71,6 +73,7 @@ class Kernel extends ConsoleKernel
         $schedule->command('sync_course_index_task')->cron('*/11 * * * *');
         $schedule->command('sync_group_index_task')->cron('*/17 * * * *');
         $schedule->command('sync_user_index_task')->cron('*/23 * * * *');
+        $schedule->command('sync_article_index_task')->cron('0 */27 * * *');
 //        $schedule->command('command:clean_log_task')->monthly();
         $schedule->command('command:unlock_user_task')->everySixHours();
     }
