@@ -5,7 +5,10 @@ namespace App\Models;
 class OrderStatus extends BaseModel
 {
 
-    const UPDATED_AT = NULL;
+    public $fillable = [
+        'order_id', 'status'
+    ];
+
 
     public function order()
     {
