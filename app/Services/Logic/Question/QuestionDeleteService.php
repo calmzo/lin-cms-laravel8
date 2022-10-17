@@ -8,7 +8,7 @@ use App\Models\Question;
 use App\Models\User;
 use App\Repositories\UserRepository;
 use App\Services\Logic\LogicService;
-use App\Services\Sync\QuestionIndexSync;
+use App\Services\Sync\QuestionIndexSyncService;
 use App\Services\Token\AccountLoginTokenService;
 use App\Traits\QuestionTrait;
 use App\Validators\QuestionValidator;
@@ -54,7 +54,7 @@ class QuestionDeleteService extends LogicService
 
     protected function rebuildQuestionIndex(Question $question)
     {
-        $sync = new QuestionIndexSync();
+        $sync = new QuestionIndexSyncService();
 
         $sync->addItem($question->id);
     }
