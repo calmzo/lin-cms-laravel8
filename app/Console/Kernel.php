@@ -68,6 +68,7 @@ class Kernel extends ConsoleKernel
         SyncCourseStatTaskCommand::class,
         CloseQuestionTaskCommand::class,
         SitemapTaskCommand::class,
+        TeacherLiveNoticeTaskCommand::class,
         //
     ];
 
@@ -106,6 +107,7 @@ class Kernel extends ConsoleKernel
         $schedule->command('sync_course_stat_task')->dailyAt('03:19');
         $schedule->command('close_question_task')->dailyAt('03:23');
         $schedule->command('sitemap_task')->dailyAt('04:03');
+        $schedule->command('teacher_live_notice_task')->dailyAt('04:07');
     }
 
     /**
