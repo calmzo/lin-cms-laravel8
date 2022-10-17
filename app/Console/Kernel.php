@@ -13,6 +13,7 @@ use App\Console\Commands\PointGiftDeliverTaskCommand;
 use App\Console\Commands\RefundTaskCommand;
 use App\Console\Commands\RevokeVipTaskCommand;
 use App\Console\Commands\ServerMonitorTaskCommand;
+use App\Console\Commands\SitemapTaskCommand;
 use App\Console\Commands\SyncAppInfoTaskCommand;
 use App\Console\Commands\SyncArticleIndexTaskCommand;
 use App\Console\Commands\SyncArticleScoreTaskCommand;
@@ -66,6 +67,7 @@ class Kernel extends ConsoleKernel
         SyncTagStatTaskCommand::class,
         SyncCourseStatTaskCommand::class,
         CloseQuestionTaskCommand::class,
+        SitemapTaskCommand::class,
         //
     ];
 
@@ -103,6 +105,7 @@ class Kernel extends ConsoleKernel
         $schedule->command('sync_tag_stat_task')->dailyAt('03:17');
         $schedule->command('sync_course_stat_task')->dailyAt('03:19');
         $schedule->command('close_question_task')->dailyAt('03:23');
+        $schedule->command('sitemap_task')->dailyAt('04:03');
     }
 
     /**
