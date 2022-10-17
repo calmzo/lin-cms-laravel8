@@ -13,7 +13,7 @@ class UnlockUserTaskCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'command:unlock_user_task';
+    protected $signature = 'unlock_user_task';
 
     /**
      * The console command description.
@@ -46,11 +46,11 @@ class UnlockUserTaskCommand extends Command
         if ($users->count() == 0) return;
 
         echo '------ start unlock user task ------' . PHP_EOL;
-//        foreach ($users as $user) {
-//            $user->save(['locked' => 0]);
-//        }
-        $userIds = $users->pluck('id');
-        User::query()->whereIn('id', $userIds)->update(['locked' => 0]);
+        foreach ($users as $user) {
+            $user->update(['locked' => 0]);
+        }
+//        $userIds = $users->pluck('id');
+//        User::query()->whereIn('id', $userIds)->update(['locked' => 0]);
         echo '------ end unlock user task ------' . PHP_EOL;
     }
 
