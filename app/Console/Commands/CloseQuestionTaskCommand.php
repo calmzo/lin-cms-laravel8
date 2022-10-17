@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use App\Models\Question;
 use Illuminate\Console\Command;
+use Illuminate\Support\Carbon;
 
 class CloseQuestionTaskCommand extends Command
 {
@@ -61,11 +62,13 @@ class CloseQuestionTaskCommand extends Command
      */
     protected function findQuestions($limit = 1000)
     {
-        $time = time() - 7 * 86400;
+        $time = Carbon::now()->subDays(7);
+        echo $time . PHP_EOL;
 
         return Question::query()
             ->where('create_time', '<', $time)
             ->where('answer_count', 0)
+            ->where('closed', 0)
             ->limit($limit)
             ->get();
     }
