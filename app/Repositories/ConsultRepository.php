@@ -64,4 +64,9 @@ class ConsultRepository extends BaseRepository
         return $query->paginate($count, ['*'], 'page', $page);
     }
 
+    public function findById($id)
+    {
+        return Consult::query()->find($id);
+    }
+
 }
