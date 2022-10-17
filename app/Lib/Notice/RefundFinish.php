@@ -5,10 +5,11 @@ namespace App\Lib\Notice;
 use App\Enums\TaskEnums;
 use App\Models\Refund;
 use App\Models\Task;
-use App\Models\User;
-use App\Models\WechatSubscribe;
 use App\Lib\Notice\Sms\RefundFinish as SmsRefundFinishNotice;
 use App\Lib\Notice\WeChat\RefundFinish as WeChatRefundFinishNotice;
+use App\Repositories\RefundRepository;
+use App\Repositories\UserRepository;
+use App\Repositories\WechatSubscribeRepository;
 
 class RefundFinish
 {
@@ -20,11 +21,13 @@ class RefundFinish
 
         if (!$wechatNoticeEnabled && !$smsNoticeEnabled) return;
         $refundId = $task->item_info['refund']['id'];
+        $refundRepo = new RefundRepository();
 
-        $refund = Refund::query()->find($refundId);
+        $refund = $refundRepo->findById($refundId);
 
-        $user = User::query()->find($refund->owner_id);
+        $userRepo = new UserRepository();
 
+        $user = $userRepo->findById($refund->user_id);
         $params = [
             'user' => [
                 'id' => $user->id,
@@ -39,7 +42,9 @@ class RefundFinish
             ],
         ];
 
-        $subscribe = WechatSubscribe::query()->where('user_id', $refund->owner_id)->first();
+        $subscribeRepo = new WechatSubscribeRepository();
+
+        $subscribe = $subscribeRepo->findByUserId($refund->user_id);
 
         if ($wechatNoticeEnabled && $subscribe) {
             $notice = new WeChatRefundFinishNotice();
@@ -60,7 +65,7 @@ class RefundFinish
         ];
 
         $task->item_id = $refund->id;
-        $task->item_info = json_encode($itemInfo);
+        $task->item_info = $itemInfo;
         $task->item_type = TaskEnums::TYPE_NOTICE_REFUND_FINISH;
         $task->priority = TaskEnums::PRIORITY_MIDDLE;
         $task->status = TaskEnums::STATUS_PENDING;
@@ -74,7 +79,7 @@ class RefundFinish
 
         if ($oa['enabled'] == 0) return false;
 
-        $template = json_decode($oa['notice_template'], true);
+        $template = $oa['notice_template'];
 
         $result = $template['refund_finish']['enabled'] ?? 0;
 
@@ -85,7 +90,7 @@ class RefundFinish
     {
         $sms = config('sms');
 
-        $template = json_decode($sms['template'], true);
+        $template = $sms['template'];
 
         $result = $template['refund_finish']['enabled'] ?? 0;
 
