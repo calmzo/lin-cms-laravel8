@@ -13,7 +13,7 @@ class CloseOrderTaskCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'command:close_order';
+    protected $signature = 'close_order';
 
     /**
      * The console command description.
@@ -47,13 +47,10 @@ class CloseOrderTaskCommand extends Command
 
         echo '------ start close order task ------' . PHP_EOL;
 
-//        foreach ($orders as $order) {
-//            $order->status = OrderEnums::STATUS_CLOSED;
-//            $order->save();
-//        }
-        $orderIds = $orders->pluck('id');
-        Order::query()->whereIn('id', $orderIds)->update(['status' => OrderEnums::STATUS_CLOSED]);
-
+        foreach ($orders as $order) {
+            $order->status = OrderEnums::STATUS_CLOSED;
+            $order->update();
+        }
         echo '------ end close order task ------' . PHP_EOL;
     }
 

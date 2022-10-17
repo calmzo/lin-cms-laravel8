@@ -140,7 +140,7 @@ class PointGiftDeliverTaskCommand extends Command
             throw new \RuntimeException('Course Not Found');
         }
 
-        $redeem->status = PointGiftRedeemModel::STATUS_FINISHED;
+        $redeem->status = PointGiftRedeemEnums::STATUS_FINISHED;
 
         if ($redeem->update() === false) {
             throw new \RuntimeException('Update Point Redeem Status Failed');
