@@ -5,6 +5,7 @@ namespace App\Console;
 use App\Console\Commands\CleanLogTaskCommand;
 use App\Console\Commands\CloseFlashSaleOrderTaskCommand;
 use App\Console\Commands\CloseOrderTaskCommand;
+use App\Console\Commands\CloseQuestionTaskCommand;
 use App\Console\Commands\CloseTradeCommand;
 use App\Console\Commands\DeliverTaskCommand;
 use App\Console\Commands\NoticeTaskCommand;
@@ -64,6 +65,7 @@ class Kernel extends ConsoleKernel
         SyncAppInfoTaskCommand::class,
         SyncTagStatTaskCommand::class,
         SyncCourseStatTaskCommand::class,
+        CloseQuestionTaskCommand::class,
         //
     ];
 
@@ -100,6 +102,7 @@ class Kernel extends ConsoleKernel
         $schedule->command('sync_app_info_task')->dailyAt('03:13');
         $schedule->command('sync_tag_stat_task')->dailyAt('03:17');
         $schedule->command('sync_course_stat_task')->dailyAt('03:19');
+        $schedule->command('close_question_task')->dailyAt('03:23');
     }
 
     /**
