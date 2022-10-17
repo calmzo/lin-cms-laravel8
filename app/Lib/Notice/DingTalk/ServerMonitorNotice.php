@@ -13,7 +13,7 @@ class ServerMonitorNotice extends DingTalkNotice
         if (!$this->enabled) return;
 
         $notice = new DingTalkNotice();
-        $item_info = json_decode($task->item_info, true);
+        $item_info = $task->item_info;
         $content = $item_info['content'] ?? '';
         $notice->atTechSupport($content);
     }
@@ -26,7 +26,7 @@ class ServerMonitorNotice extends DingTalkNotice
 
         $itemInfo = ['content' => $content];
         $task->item_id = time();
-        $task->item_info = json_encode($itemInfo, JSON_UNESCAPED_UNICODE);
+        $task->item_info = $itemInfo;
         $task->item_type = TaskEnums::TYPE_STAFF_NOTICE_SERVER_MONITOR;
         $task->priority = TaskEnums::PRIORITY_HIGH;
         $task->status = TaskEnums::STATUS_PENDING;
