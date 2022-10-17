@@ -61,7 +61,7 @@ class Kernel extends ConsoleKernel
         $schedule->command('close_flash_sale_order')->everyFifteenMinutes();
         $schedule->command('notice_task')->everyMinute();
         $schedule->command('close_order')->everyThreeMinutes();
-//        $schedule->command('refund_task')->everyMinute();
+        $schedule->command('refund_task')->cron('*/7 * * * *');
 //        $schedule->command('command:clean_log_task')->monthly();
         $schedule->command('command:unlock_user_task')->everySixHours();
     }
