@@ -5,10 +5,11 @@ namespace App\Lib\Notice\DingTalk;
 use App\Lib\Validators\CommonValidator;
 use App\Repositories\AccountRepository;
 use App\Repositories\CourseRepository;
+use App\Services\BaseService;
 use GuzzleHttp\Client as HttpClient;
 use Illuminate\Support\Facades\Log;
 
-class DingTalkNotice
+class DingTalkNotice extends BaseService
 {
 
     /**
