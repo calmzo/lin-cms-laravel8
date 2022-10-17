@@ -17,7 +17,9 @@ class CreateOrderStatus extends Migration
             $table->id();
             $table->integer('order_id')->unsigned()->default(0)->comment('订单编号');
             $table->integer('status')->unsigned()->default(1)->comment('订单状态');
-            $table->timestamp('create_time');
+            $table->timestamp('create_time')->comment('创建时间');
+            $table->timestamp('update_time')->comment('更新时间');
+            $table->integer('deleted')->unsigned()->default(0)->comment('删除标识');
             $table->index('order_id');
         });
     }
