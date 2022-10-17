@@ -26,6 +26,15 @@ return [
             'enabled' => 1,
             'id' => 1234
         ],
+        'live_begin' => [
+            'enabled' => 1,
+            'id' => 12345
+        ],
+
+        'goods_deliver' => [
+            'enabled' => 1,
+            'id' => 123456
+        ],
 
     ]
 ];
