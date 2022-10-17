@@ -12,6 +12,7 @@ use App\Console\Commands\PointGiftDeliverTaskCommand;
 use App\Console\Commands\RefundTaskCommand;
 use App\Console\Commands\ServerMonitorTaskCommand;
 use App\Console\Commands\SyncCourseIndexTaskCommand;
+use App\Console\Commands\SyncGroupIndexTaskCommand;
 use App\Console\Commands\SyncLearningTaskCommand;
 use App\Console\Commands\TeacherLiveNoticeTaskCommand;
 use App\Console\Commands\UnlockUserTaskCommand;
@@ -40,6 +41,7 @@ class Kernel extends ConsoleKernel
         CloseOrderTaskCommand::class,
         RefundTaskCommand::class,
         SyncCourseIndexTaskCommand::class,
+        SyncGroupIndexTaskCommand::class,
         CleanLogTaskCommand::class,
         UnlockUserTaskCommand::class,
         //
@@ -65,6 +67,7 @@ class Kernel extends ConsoleKernel
         $schedule->command('close_order')->everyThreeMinutes();
         $schedule->command('refund_task')->cron('*/7 * * * *');
         $schedule->command('sync_course_index_task')->cron('*/11 * * * *');
+        $schedule->command('sync_group_index_task')->cron('*/17 * * * *');
 //        $schedule->command('command:clean_log_task')->monthly();
         $schedule->command('command:unlock_user_task')->everySixHours();
     }
