@@ -8,6 +8,7 @@ use App\Lib\Pay\Alipay;
 use App\Lib\Pay\Wxpay;
 use App\Models\Trade;
 use Illuminate\Console\Command;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Log;
 
 class CloseTradeCommand extends Command
@@ -24,7 +25,7 @@ class CloseTradeCommand extends Command
      *
      * @var string
      */
-    protected $description = '及哦啊已关闭任务';
+    protected $description = '交易关闭任务';
 
     /**
      * Create a new command instance.
@@ -93,7 +94,7 @@ class CloseTradeCommand extends Command
 
         $trade->status = TradeEnums::STATUS_CLOSED;
 
-        $trade->save();
+        $trade->update();
     }
 
     /**
@@ -130,7 +131,7 @@ class CloseTradeCommand extends Command
 
         $trade->status = TradeEnums::STATUS_CLOSED;
 
-        $trade->save();
+        $trade->update();
     }
 
     /**
@@ -143,7 +144,7 @@ class CloseTradeCommand extends Command
     {
         $status = TradeEnums::STATUS_PENDING;
 
-        $createTime = date('Y-m-d H:i:s', time() - 15 * 60);
+        $createTime = Carbon::now()->subMinutes(15);
 
         return Trade::query()
             ->where('status', $status)
