@@ -4,7 +4,7 @@ namespace App\Services\Sync;
 
 use App\Services\BaseService;
 
-class QuestionIndexSync extends BaseService
+class QuestionIndexSyncService extends BaseService
 {
 
     /**

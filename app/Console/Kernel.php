@@ -15,6 +15,7 @@ use App\Console\Commands\SyncArticleIndexTaskCommand;
 use App\Console\Commands\SyncCourseIndexTaskCommand;
 use App\Console\Commands\SyncGroupIndexTaskCommand;
 use App\Console\Commands\SyncLearningTaskCommand;
+use App\Console\Commands\SyncQuestionIndexTaskCommand;
 use App\Console\Commands\SyncUserIndexTaskCommand;
 use App\Console\Commands\TeacherLiveNoticeTaskCommand;
 use App\Console\Commands\UnlockUserTaskCommand;
@@ -46,6 +47,7 @@ class Kernel extends ConsoleKernel
         SyncGroupIndexTaskCommand::class,
         SyncUserIndexTaskCommand::class,
         SyncArticleIndexTaskCommand::class,
+        SyncQuestionIndexTaskCommand::class,
         CleanLogTaskCommand::class,
         UnlockUserTaskCommand::class,
         //
@@ -74,6 +76,7 @@ class Kernel extends ConsoleKernel
         $schedule->command('sync_group_index_task')->cron('0 */17 * * *');
         $schedule->command('sync_user_index_task')->cron('0 */23 * * *');
         $schedule->command('sync_article_index_task')->cron('0 */27 * * *');
+        $schedule->command('sync_question_index_task')->cron('0 */29 * * *');
 //        $schedule->command('command:clean_log_task')->monthly();
         $schedule->command('command:unlock_user_task')->everySixHours();
     }
