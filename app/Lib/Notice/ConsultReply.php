@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Logic\Notice;
+namespace App\Lib\Notice;
 
 use App\Models\Consult;
 use App\Models\Course;
@@ -78,7 +78,7 @@ class ConsultReply
         ];
 
         $task->item_id = $consult->id;
-        $task->item_info = json_encode($itemInfo);
+        $task->item_info = $itemInfo;
         $task->item_type = Task::TYPE_NOTICE_CONSULT_REPLY;
         $task->priority = Task::PRIORITY_LOW;
         $task->status = Task::STATUS_PENDING;
@@ -93,7 +93,7 @@ class ConsultReply
 
         if ($oa['enabled'] == 0) return false;
 
-        $template = json_decode($oa['notice_template'], true);
+        $template = $oa['notice_template'];
 
         $result = $template['consult_reply']['enabled'] ?? 0;
 
@@ -104,7 +104,7 @@ class ConsultReply
     {
         $sms = config('sms');
 
-        $template = json_decode($sms['template'], true);
+        $template = $sms['template'];
 
         $result = $template['consult_reply']['enabled'] ?? 0;
 
