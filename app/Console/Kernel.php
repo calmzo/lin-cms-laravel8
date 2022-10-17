@@ -21,6 +21,7 @@ use App\Console\Commands\SyncGroupIndexTaskCommand;
 use App\Console\Commands\SyncLearningTaskCommand;
 use App\Console\Commands\SyncQuestionIndexTaskCommand;
 use App\Console\Commands\SyncQuestionScoreTaskCommand;
+use App\Console\Commands\SyncTagStatTaskCommand;
 use App\Console\Commands\SyncUserIndexTaskCommand;
 use App\Console\Commands\TeacherLiveNoticeTaskCommand;
 use App\Console\Commands\UnlockUserTaskCommand;
@@ -60,6 +61,7 @@ class Kernel extends ConsoleKernel
         UnlockUserTaskCommand::class,
         RevokeVipTaskCommand::class,
         SyncAppInfoTaskCommand::class,
+        SyncTagStatTaskCommand::class,
         //
     ];
 
@@ -94,6 +96,7 @@ class Kernel extends ConsoleKernel
         $schedule->command('unlock_user_task')->dailyAt('03:07');
         $schedule->command('revoke_vip_task')->dailyAt('03:11');
         $schedule->command('sync_app_info_task')->dailyAt('03:13');
+        $schedule->command('sync_tag_stat_task')->dailyAt('03:17');
     }
 
     /**

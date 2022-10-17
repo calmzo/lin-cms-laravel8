@@ -2,6 +2,9 @@
 
 namespace App\Repositories;
 
+use App\Models\ArticleTag;
+use App\Models\CourseTag;
+use App\Models\QuestionTag;
 use App\Models\Tag;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
@@ -45,5 +48,26 @@ class TagRepository extends BaseRepository
             ->whereIn('id', $ids)
             ->get($columns);
     }
+
+    public function countFollows($tagId)
+    {
+        return CourseTag::query()->where('tag_id', $tagId)->count(); //todo
+    }
+
+    public function countCourses($tagId)
+    {
+        return CourseTag::query()->where('tag_id', $tagId)->count();
+    }
+
+    public function countArticles($tagId)
+    {
+        return ArticleTag::query()->where('tag_id', $tagId)->count();
+    }
+
+    public function countQuestions($tagId)
+    {
+        return QuestionTag::query()->where('tag_id', $tagId)->count();
+    }
+
 
 }
