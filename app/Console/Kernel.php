@@ -17,6 +17,7 @@ use App\Console\Commands\SyncArticleIndexTaskCommand;
 use App\Console\Commands\SyncArticleScoreTaskCommand;
 use App\Console\Commands\SyncCourseIndexTaskCommand;
 use App\Console\Commands\SyncCourseScoreTaskCommand;
+use App\Console\Commands\SyncCourseStatTaskCommand;
 use App\Console\Commands\SyncGroupIndexTaskCommand;
 use App\Console\Commands\SyncLearningTaskCommand;
 use App\Console\Commands\SyncQuestionIndexTaskCommand;
@@ -62,6 +63,7 @@ class Kernel extends ConsoleKernel
         RevokeVipTaskCommand::class,
         SyncAppInfoTaskCommand::class,
         SyncTagStatTaskCommand::class,
+        SyncCourseStatTaskCommand::class,
         //
     ];
 
@@ -97,6 +99,7 @@ class Kernel extends ConsoleKernel
         $schedule->command('revoke_vip_task')->dailyAt('03:11');
         $schedule->command('sync_app_info_task')->dailyAt('03:13');
         $schedule->command('sync_tag_stat_task')->dailyAt('03:17');
+        $schedule->command('sync_course_stat_task')->dailyAt('03:19');
     }
 
     /**
