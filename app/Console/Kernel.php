@@ -12,6 +12,7 @@ use App\Console\Commands\PointGiftDeliverTaskCommand;
 use App\Console\Commands\RefundTaskCommand;
 use App\Console\Commands\RevokeVipTaskCommand;
 use App\Console\Commands\ServerMonitorTaskCommand;
+use App\Console\Commands\SyncAppInfoTaskCommand;
 use App\Console\Commands\SyncArticleIndexTaskCommand;
 use App\Console\Commands\SyncArticleScoreTaskCommand;
 use App\Console\Commands\SyncCourseIndexTaskCommand;
@@ -58,6 +59,7 @@ class Kernel extends ConsoleKernel
         CleanLogTaskCommand::class,
         UnlockUserTaskCommand::class,
         RevokeVipTaskCommand::class,
+        SyncAppInfoTaskCommand::class,
         //
     ];
 
@@ -91,6 +93,7 @@ class Kernel extends ConsoleKernel
         $schedule->command('clean_log_task')->dailyAt('03:03');
         $schedule->command('unlock_user_task')->dailyAt('03:07');
         $schedule->command('revoke_vip_task')->dailyAt('03:11');
+        $schedule->command('sync_app_info_task')->dailyAt('03:13');
     }
 
     /**
