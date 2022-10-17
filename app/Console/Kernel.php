@@ -18,6 +18,7 @@ use App\Console\Commands\SyncCourseScoreTaskCommand;
 use App\Console\Commands\SyncGroupIndexTaskCommand;
 use App\Console\Commands\SyncLearningTaskCommand;
 use App\Console\Commands\SyncQuestionIndexTaskCommand;
+use App\Console\Commands\SyncQuestionScoreTaskCommand;
 use App\Console\Commands\SyncUserIndexTaskCommand;
 use App\Console\Commands\TeacherLiveNoticeTaskCommand;
 use App\Console\Commands\UnlockUserTaskCommand;
@@ -52,6 +53,7 @@ class Kernel extends ConsoleKernel
         SyncQuestionIndexTaskCommand::class,
         SyncCourseScoreTaskCommand::class,
         SyncArticleScoreTaskCommand::class,
+        SyncQuestionScoreTaskCommand::class,
         CleanLogTaskCommand::class,
         UnlockUserTaskCommand::class,
         //
@@ -83,7 +85,8 @@ class Kernel extends ConsoleKernel
         $schedule->command('sync_question_index_task')->cron('0 */29 * * *');
         $schedule->command('sync_course_score_task')->cron('0 */31 * * *');
         $schedule->command('sync_article_score_task')->cron('0 */33 * * *');
-//        $schedule->command('command:clean_log_task')->monthly();
+        $schedule->command('sync_question_score_task')->cron('0 */37 * * *');
+        $schedule->command('clean_log_task')->dailyAt('03:03');
         $schedule->command('command:unlock_user_task')->everySixHours();
     }
 

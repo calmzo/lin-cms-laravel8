@@ -11,7 +11,7 @@ class CleanLogTaskCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'command:clean_log_task';
+    protected $signature = 'clean_log_task';
 
     /**
      * The console command description.
