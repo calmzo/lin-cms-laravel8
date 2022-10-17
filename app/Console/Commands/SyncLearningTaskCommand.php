@@ -55,7 +55,7 @@ class SyncLearningTaskCommand extends Command
 
         $syncKey = $sync->getSyncKey();
 
-        $requestIds = $redis->sMembers($syncKey);
+        $requestIds = $redis->smembers($syncKey);
 
         if (!$requestIds) return;
 
@@ -65,7 +65,7 @@ class SyncLearningTaskCommand extends Command
 
             $this->handleLearning($itemKey);
 
-            $redis->sRem($syncKey, $requestId);
+            $redis->srem($syncKey, $requestId);
         }
     }
 
