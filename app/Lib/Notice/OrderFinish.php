@@ -6,9 +6,10 @@ use App\Enums\TaskEnums;
 use App\Models\Order;
 use App\Models\Task;
 use App\Lib\Notice\Sms\OrderFinish as SmsOrderFinishNotice;
-use App\Models\Users\User;
-use App\Models\WechatSubscribe;
 use App\Lib\Notice\WeChat\OrderFinish as WeChatOrderFinishNotice;
+use App\Repositories\OrderRepository;
+use App\Repositories\UserRepository;
+use App\Repositories\WechatSubscribeRepository;
 
 
 class OrderFinish
@@ -23,9 +24,12 @@ class OrderFinish
         }
 
         $orderId = $task->item_info['order']['id'];
-        $order = Order::query()->find($orderId);
 
-        $user = User::query()->find($order->user_id);
+        $orderRepo = new OrderRepository();
+        $order = $orderRepo->findById($orderId);
+
+        $userRepo = new UserRepository();
+        $user = $userRepo->findById($order->user_id);
 
         $params = [
             'user' => [
@@ -41,7 +45,9 @@ class OrderFinish
             ],
         ];
 
-        $subscribe = WechatSubscribe::query()->where('user_id', $order->user_id)->first();
+        $subscribeRepo = new WechatSubscribeRepository();
+
+        $subscribe = $subscribeRepo->findByUserId($order->user_id);
         $notice = new WeChatOrderFinishNotice();
         $notice->handle($subscribe, $params);
 
@@ -64,7 +70,7 @@ class OrderFinish
         ];
 
         $task->item_id = $order->id;
-        $task->item_info = json_encode($itemInfo);
+        $task->item_info = $itemInfo;
         $task->item_type = TaskEnums::TYPE_NOTICE_ORDER_FINISH;
         $task->priority = TaskEnums::PRIORITY_HIGH;
         $task->status = TaskEnums::STATUS_PENDING;
@@ -79,7 +85,7 @@ class OrderFinish
 
         if ($oa['enabled'] == 0) return false;
 
-        $template = json_decode($oa['notice_template'], true);
+        $template = $oa['notice_template'];
 
         $result = $template['order_finish']['enabled'] ?? 0;
 
