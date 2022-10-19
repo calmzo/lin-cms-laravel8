@@ -51,7 +51,7 @@ class Kernel extends ConsoleKernel
         CloseFlashSaleOrderTaskCommand::class,
         NoticeTaskCommand::class,
         CloseOrderTaskCommand::class,
-        RefundTaskCommand::class,
+//        RefundTaskCommand::class,
         SyncCourseIndexTaskCommand::class,
         SyncGroupIndexTaskCommand::class,
         SyncUserIndexTaskCommand::class,
@@ -90,7 +90,7 @@ class Kernel extends ConsoleKernel
         $schedule->command('close_flash_sale_order')->everyFifteenMinutes()->appendOutputTo( storage_path('logs/close_flash_sale_order.log'));
         $schedule->command('notice_task')->everyMinute()->appendOutputTo( storage_path('logs/notice_task.log'));
         $schedule->command('close_order')->everyThreeHours()->appendOutputTo( storage_path('logs/close_order.log'));
-        $schedule->command('refund_task')->cron('0 */7 * * *')->appendOutputTo( storage_path('logs/refund_task.log'));
+//        $schedule->command('refund_task')->cron('0 */7 * * *')->appendOutputTo( storage_path('logs/refund_task.log'));
         $schedule->command('sync_course_index_task')->cron('0 */11 * * *')->appendOutputTo( storage_path('logs/sync_course_index_task.log'));
 //        $schedule->command('sync_group_index_task')->cron('0 */17 * * *')->appendOutputTo( storage_path('logs/sync_group_index_task.log'));
         $schedule->command('sync_user_index_task')->cron('0 */23 * * *')->appendOutputTo( storage_path('logs/sync_user_index_task.log'));
